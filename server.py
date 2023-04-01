@@ -10,45 +10,43 @@ Read about it online.
 """
 import os
 
-# accessible as a variable in index.html:
+# Accessed from template folder
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, g, redirect, Response
-
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+
+# Setting up flask
+from flask import Flask, request, render_template, g, redirect, Response
 app = Flask(__name__, template_folder=tmpl_dir)
 
-# Database website
+# Creates database connecting to the given URI
 DATABASE_USERNAME = "al3625"
 DATABASE_PASSWRD = "bread"
 DATABASE_HOST = "34.148.107.47"
 DATABASEURI = f"postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWRD}@{DATABASE_HOST}/project1"
-
-
-# creates a database engine that knows how to connect to the URI above.
 engine = create_engine(DATABASEURI)
 
 
 # Example of running queries in your database
 # Note that this will probably not work if you already have a table named 'test' in your database, containing meaningful data. This is only an example showing you how to run queries in your database using SQLAlchemy.
-with engine.connect() as conn:
-	create_table_command = """
-	CREATE TABLE IF NOT EXISTS test (
-		id serial,
-		name text
-	)
-	"""
-	res = conn.execute(text(create_table_command))
-	insert_table_command = """INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace')"""
-	res = conn.execute(text(insert_table_command))
-	# you need to commit for create, insert, update queries to reflect
-	conn.commit()
+# with engine.connect() as conn:
+# 	create_table_command = """
+# 	CREATE TABLE IF NOT EXISTS test (
+# 		id serial,
+# 		name text
+# 	)
+# 	"""
+# 	res = conn.execute(text(create_table_command))
+# 	insert_table_command = """INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace')"""
+# 	res = conn.execute(text(insert_table_command))
+# 	# you need to commit for create, insert, update queries to reflect
+# 	conn.commit()
 
 
 @app.before_request
 def before_request():
 	"""
-	This function is run at the beginning of every web request 
+	This function is run at the beginning of every web request
 	(every time you enter an address in the web browser).
 	We use it to setup a database connection that can be used throughout the request.
 
@@ -82,7 +80,7 @@ def teardown_request(exception):
 #       @app.route("/foobar/", methods=["POST", "GET"])
 #
 # PROTIP: (the trailing / in the path is important)
-# 
+#
 # see for routing: https://flask.palletsprojects.com/en/1.1.x/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 #
@@ -121,14 +119,14 @@ def index():
 	# You can see an example template in templates/index.html
 	#
 	# context are the variables that are passed to the template.
-	# for example, "data" key in the context variable defined below will be 
+	# for example, "data" key in the context variable defined below will be
 	# accessible as a variable in index.html:
 	#
 	#     # will print: [u'grace hopper', u'alan turing', u'ada lovelace']
 	#     <div>{{data}}</div>
-	#     
+	#
 	#     # creates a <div> tag for each element in data
-	#     # will print: 
+	#     # will print:
 	#     #
 	#     #   <div>grace hopper</div>
 	#     #   <div>alan turing</div>
@@ -149,7 +147,7 @@ def index():
 
 #
 # This is an example of a different path.  You can see it at:
-# 
+#
 #     localhost:8111/another
 #
 # Notice that the function name is another() rather than index()
@@ -165,7 +163,7 @@ def another():
 def add():
 	# accessing form inputs from user
 	name = request.form['name']
-	
+
 	# passing params in for each variable into query
 	params = {}
 	params["new_name"] = name
