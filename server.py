@@ -10,7 +10,7 @@ Read about it online.
 """
 import os
 
-# Accessed from template folder
+# Accessed from template folder (index.html)
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
@@ -100,10 +100,9 @@ def index():
 	print(request.args)
 
 
-	#
-	# example of a database query
-	#
-	select_query = "SELECT name from test"
+	# Example of a database query
+	# select_query = "SELECT name from test"
+	select_query = "SELECT name from genre"
 	cursor = g.conn.execute(text(select_query))
 	names = []
 	for result in cursor:
