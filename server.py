@@ -71,20 +71,16 @@ def teardown_request(exception):
 		pass
 
 
-#
 # @app.route is a decorator around index() that means:
-#   run index() whenever the user tries to access the "/" path using a GET request
-#
-# If you wanted the user to go to, for example, localhost:8111/foobar/ with POST or GET then you could use:
-#
-#       @app.route("/foobar/", methods=["POST", "GET"])
-#
+#   run index() when user tries to access the "/" path using a GET request
+# If you wanted the user to go to, for example, localhost:8111/foobar/ with POST
+#   or GET then you could use: @app.route("/foobar/", methods=["POST", "GET"])
 # PROTIP: (the trailing / in the path is important)
-#
 # see for routing: https://flask.palletsprojects.com/en/1.1.x/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
-#
 @app.route('/')
+
+
 def index():
 	"""
 	request is a special object that Flask provides to access web request information:
@@ -99,9 +95,7 @@ def index():
 	# DEBUG: this is debugging code to see what request looks like
 	print(request.args)
 
-
 	# Example of a database query
-	# select_query = "SELECT name from test"
 	select_query = "SELECT name from genre"
 	cursor = g.conn.execute(text(select_query))
 	names = []
@@ -109,61 +103,35 @@ def index():
 		names.append(result[0])
 	cursor.close()
 
-	#
 	# Flask uses Jinja templates, which is an extension to HTML where you can
 	# pass data to a template and dynamically generate HTML based on the data
-	# (you can think of it as simple PHP)
+	# (you can think of it as simple PHP). Example: templates/index.html
 	# documentation: https://realpython.com/primer-on-jinja-templating/
 	#
-	# You can see an example template in templates/index.html
-	#
-	# context are the variables that are passed to the template.
+	# Context are the variables that are passed to the template.
 	# for example, "data" key in the context variable defined below will be
-	# accessible as a variable in index.html:
-	#
-	#     # will print: [u'grace hopper', u'alan turing', u'ada lovelace']
-	#     <div>{{data}}</div>
-	#
-	#     # creates a <div> tag for each element in data
-	#     # will print:
-	#     #
-	#     #   <div>grace hopper</div>
-	#     #   <div>alan turing</div>
-	#     #   <div>ada lovelace</div>
-	#     #
-	#     {% for n in data %}
-	#     <div>{{n}}</div>
-	#     {% endfor %}
-	#
+	# accessible as a variable in index.html. Will print HTML form of data
+	# and also creates div tag for each element in data
 	context = dict(data = names)
 
-
-	#
-	# render_template looks in the templates/ folder for files.
-	# for example, the below file reads template/index.html
-	#
+	# render_template looks in the templates/ folder for files (index.html)
 	return render_template("index.html", **context)
 
-#
-# This is an example of a different path.  You can see it at:
-#
-#     localhost:8111/another
-#
-# Notice that the function name is another() rather than index()
+
+
+# This is an example of editing a different sub-page
 # The functions for each app.route need to have different names
-#
 @app.route('/another')
 def another():
 	return render_template("another.html")
 
 
-# Example of adding new data to the database
+# This is an example of creating a method within the same subpage
+# This example adds new data to the database
+# Accesses form inputs from user and then passes pareameters into query
 @app.route('/add', methods=['POST'])
 def add():
-	# accessing form inputs from user
 	name = request.form['name']
-
-	# passing params in for each variable into query
 	params = {}
 	params["new_name"] = name
 	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
@@ -171,6 +139,7 @@ def add():
 	return redirect('/')
 
 
+# Create later for users
 @app.route('/login')
 def login():
 	abort(401)
@@ -179,7 +148,6 @@ def login():
 
 if __name__ == "__main__":
 	import click
-
 	@click.command()
 	@click.option('--debug', is_flag=True)
 	@click.option('--threaded', is_flag=True)
@@ -197,9 +165,7 @@ if __name__ == "__main__":
 			python server.py --help
 
 		"""
-
 		HOST, PORT = host, port
 		print("running on %s:%d" % (HOST, PORT))
 		app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
-
 run()
