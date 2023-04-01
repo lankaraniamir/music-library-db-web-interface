@@ -84,8 +84,8 @@ def teardown_request(exception):
 @app.route('/')
 def homepage():
 	# Example of a database query
-	select_query = "SELECT name from genre"
-	# select_query = "SELECT * from genre"
+	# select_query = "SELECT name from genre"
+	select_query = "SELECT * from genre"
 	cursor = g.conn.execute(text(select_query))
 	names = []
 	for result in cursor:
