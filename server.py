@@ -95,7 +95,6 @@ def add():
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
-    error = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -110,6 +109,7 @@ def login():
         cursor.close()
 
 
+        error = None
         if not users:
             error = 'Incorrect username. Try again.'
         elif len(users) > 1:
