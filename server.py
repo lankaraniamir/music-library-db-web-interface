@@ -138,11 +138,12 @@ def logout():
 @app.route('/profile/<username>')
 def profile(username):
     select_query = (
-        "SELECT S.title AS song, "
+        "SELECT S.title AS song, S.year as year, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), NULL), '{}') AS featured_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
-            "ARRAY_AGG(DISTINCT genre) AS genres "
+            "ARRAY_AGG(DISTINCT genre) AS genres, "
+            "O.like as like, O.stars as stars "
         "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
         "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
         "AND S.song_id = G.song_id AND S.song_id = O.song_id "
