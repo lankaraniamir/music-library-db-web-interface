@@ -5,8 +5,8 @@
 <ul>
     {% for song in song|sort(attribute="stars")%}
     <li>
-        {{song.title,<tab></tab>song.main_artist,<tab></tab>song.other_artist,
-        <tab></tab>song.album,<tab></tab>song.year,<tab></tab>song.genre,<tab></tab>song.like,<tab></tab>song.stars}}
+        {{song.title}},<tab></tab>{{song.main_artist}},<tab></tab>{{song.other_artist}},
+        <tab></tab>{{song.album}},<tab></tab>{{song.year}},<tab></tab>{{song.genre}},<tab></tab>{{song.like}},<tab></tab>{{song.stars}}
     </li>
     {% endfor %}
 </ul>
