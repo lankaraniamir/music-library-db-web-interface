@@ -61,12 +61,13 @@ def home():
 
 @app.route('/users')
 def users():
-	select_query = "SELECT username FROM app_user"
+	# select_query = "SELECT username FROM app_user"
+	select_query = "SELECT * FROM app_user"
 	cursor = g.conn.execute(text(select_query))
 
 	users = []
 	for result in cursor:
-		users.append(result[0])
+		users.append(result)
 	cursor.close()
 
 	context = dict(users = users)
