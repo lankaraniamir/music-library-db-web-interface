@@ -16,7 +16,8 @@ from sqlalchemy.pool import NullPool
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 
 # Setting up flask
-from flask import Flask, request, render_template, g, redirect, Response, flash
+from flask import Flask, request, render_template, g, redirect, Response, session,
+# flash
 app = Flask(__name__, template_folder=tmpl_dir)
 
 
@@ -118,41 +119,48 @@ def login():
             error = 'Incorrect password. Try again.'
 
         if error is None:
-            # session.clear()
-            # session['username'] = users[0].password
-            return redirect('home')
+            session.clear()
+            session['username'] = users[0].password
+            return redirect('home', user=username)
 
 
         return render_template('login.html', error=error)
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+	session.clear()
+	return redirect('/')
 
 
-# @app.route('/register', methods=('GET', 'POST'))
-# def register():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         error = None
 
-#         if not username:
-#             error = 'Username is required.'
-#         elif not password:
-#             error = 'Password is required.'
 
-#         if error is None:
-#             select_query=(f'SELECT * FROM app_user WHERE username = {username}')
-#             if not g.conn.execute(text(select_query)):
-#                 g.conn.execute(
-#                     "INSERT INTO app_user (username, password) VALUES (?, ?)",
-#                     (username, password),
-#                 )
-#                 g.conn.commit()
-#             else:
-#                 error = f"User {username} is already registered."
-#         flash(error)
 
-#     return render_template('templates/register.html')
+@app.route('/register', methods=('GET', 'POST'))
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        error = None
+
+        if not username:
+            error = 'Username is required.'
+        elif not password:
+            error = 'Password is required.'
+
+        if error is None:
+            select_query=(f'SELECT * FROM app_user WHERE username = {username}')
+            if not g.conn.execute(text(select_query)):
+                g.conn.execute(
+                    "INSERT INTO app_user (username, password) VALUES (?, ?)",
+                    (username, password),
+                )
+                g.conn.commit()
+            else:
+                error = f"User {username} is already registered."
+        # flash(error)
+
+    return render_template('templates/register.html')
 
 # # Create later for users
 # @app.route('/login')
