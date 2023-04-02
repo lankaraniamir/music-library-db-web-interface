@@ -107,7 +107,7 @@ def login():
 
         if not user:
             error = 'Incorrect username.'
-        elif user['password'] != password:
+        elif user.password != password:
             error = 'Incorrect password.'
 
         if error is None:
