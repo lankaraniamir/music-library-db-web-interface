@@ -126,7 +126,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        select_query=(f'SELECT * FROM app_user WHERE username = ?', (username)')
+        select_query=(f'SELECT * FROM app_user WHERE username = ?', (username))
         g.conn.execute(text(select_query))
 
         if user is None:
