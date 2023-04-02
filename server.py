@@ -56,10 +56,10 @@ def teardown_request(exception):
 		pass
 
 @app.route('/')
-def base():
+def home():
 	return render_template("base.html", title="Homepage")
 
-@app.route('/app_user')
+@app.route('/users')
 def users():
 	select_query = "SELECT username FROM app_user"
 	cursor = g.conn.execute(text(select_query))
@@ -73,6 +73,15 @@ def users():
 	return render_template("users.html", **context)
 
 
+@app.route('/charts')
+def charts():
+	abort(401)
+	this_is_never_executed()
+
+@app.route('/genres')
+def charts():
+	abort(401)
+	this_is_never_executed()
 
 
 @app.route('/add', methods=['POST'])
