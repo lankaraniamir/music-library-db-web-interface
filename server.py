@@ -79,7 +79,7 @@ def charts():
 	this_is_never_executed()
 
 @app.route('/genres')
-def charts():
+def genres():
 	abort(401)
 	this_is_never_executed()
 
