@@ -59,11 +59,11 @@ def teardown_request(exception):
 
 @app.route('/')
 def home():
-    return render_template("templates/base.html", title="Homepage")
+    return render_template("base.html", title="Homepage")
     # if 'username' in session:
-    #     return render_template('templates/base.html', title=session['username'])
+    #     return render_template('base.html', title=session['username'])
     # else:
-    # return render_template("templates/base.html", title="Homepage")
+    # return render_template("base.html", title="Homepage")
 
 @app.route('/users')
 def users():
@@ -168,7 +168,7 @@ def register():
                 error = f"User {username} is already registered."
         flash(error)
 
-    return render_template('templates/register.html')
+    return render_template('register.html')
 
 if __name__ == "__main__":
 	import click
