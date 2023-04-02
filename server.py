@@ -28,7 +28,7 @@ DATABASE_HOST = "34.148.107.47"
 DATABASEURI = f"postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWRD}@{DATABASE_HOST}/project1"
 engine = create_engine(DATABASEURI)
 
-
+@app.secret_key = b'11+\x0e\x9b\xe9A\xe4ZR]\xb5'
 @app.before_request
 def before_request():
 	"""
@@ -44,7 +44,6 @@ def before_request():
 		print("uh oh, problem connecting to database")
 		import traceback; traceback.print_exc()
 		g.conn = None
-
 @app.teardown_request
 def teardown_request(exception):
 	"""
@@ -55,6 +54,8 @@ def teardown_request(exception):
 		g.conn.close()
 	except Exception as e:
 		pass
+
+
 
 @app.route('/')
 def home():
