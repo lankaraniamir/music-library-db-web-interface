@@ -5,9 +5,9 @@
 {% block content %}
 <h1>{{ test_name }} {{ title }}</h1>
 <ul>
-{% for user in users|sort(attribute="username")%}
+{% for user in users|sort()%}
     <li>
-        {{user.username}}
+        {{user}}
     </li>
 {% endfor %}
 </ul>
