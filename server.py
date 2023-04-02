@@ -120,7 +120,7 @@ def login():
             # session['username'] = user['username']
             return redirect(url_for('home'))
 
-        flash(error)
+        # flash(error)
     return render_template('login.html')
 
 
