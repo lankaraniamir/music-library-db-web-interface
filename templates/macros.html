@@ -4,6 +4,7 @@
     {% if menu_item == "profile" %}
         <a href="{{ url_for('profile', username=session['username']) }}{{ mode }}">{{
         session['username']|upper}}</a>
+        <header>{{request.endpoint}}</header>
         {% if request.endpoint == profile/{{session['username']}}" %}
             ←
         {% endif %}
