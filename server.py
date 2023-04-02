@@ -93,6 +93,29 @@ def add():
 	g.conn.commit()
 	return redirect('/')
 
+@app.route('/login', methods=('GET', 'POST'))
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        params = {}
+        params["username"] = username
+        params["password"] = password
+        cursor=g.conn.execute(text('SELECT * FROM app_user WHERE username = (:username)'), params)
+
+        if cursor is None:
+            error = 'Incorrect username.'
+        elif cursor['password'] != password:
+            error = 'Incorrect password.'
+
+        if error is None:
+            # session.clear()
+            # session['username'] = user['username']
+            return redirect(url_for('home'))
+
+        flash(error)
+    return render_template('login.html')
+
 
 
 # @app.route('/register', methods=('GET', 'POST'))
@@ -120,27 +143,6 @@ def add():
 #         flash(error)
 
 #     return render_template('templates/register.html')
-
-@app.route('/login', methods=('GET', 'POST'))
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        select_query=(f'SELECT * FROM app_user WHERE username = ?', (username))
-        user = g.conn.execute(text(select_query))
-
-        if user is None:
-            error = 'Incorrect username.'
-        elif user['password'] != password:
-            error = 'Incorrect password.'
-
-        if error is None:
-            session.clear()
-            session['username'] = user['username']
-            return redirect(url_for('home'))
-
-        flash(error)
-    return render_template('login.html')
 
 # # Create later for users
 # @app.route('/login')
