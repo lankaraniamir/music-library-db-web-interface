@@ -16,7 +16,7 @@ from sqlalchemy.pool import NullPool
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 
 # Setting up flask
-from flask import Flask, request, render_template, g, redirect, Response, flash, session
+from flask import Flask, request, render_template, g, redirect, Response, flash, session, url_for
 # flash
 app = Flask(__name__, template_folder=tmpl_dir)
 
@@ -54,8 +54,6 @@ def teardown_request(exception):
 		g.conn.close()
 	except Exception as e:
 		pass
-
-
 
 @app.route('/')
 def home():
