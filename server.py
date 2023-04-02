@@ -59,10 +59,11 @@ def teardown_request(exception):
 
 @app.route('/')
 def home():
-    if 'username' in session:
-        return render_template('home.html', title=session['username'], user=session['username'])
-    else:
-        return render_template("home.html", title="Homepage")
+    return render_template("templates/base.html", title="Homepage")
+    # if 'username' in session:
+    #     return render_template('templates/base.html', title=session['username'])
+    # else:
+    # return render_template("templates/base.html", title="Homepage")
 
 @app.route('/users')
 def users():
@@ -125,7 +126,7 @@ def login():
         if error is None:
             session.clear()
             session['username'] = users[0].password
-            return redirect('home')
+            return redirect('/')
 
         return render_template('login.html', error=error)
     return render_template('login.html')
