@@ -1,7 +1,8 @@
 {# templates/_navigation.html #}
 {% import "macros.html" as macros %}
 
-{% if session['username'] is defined %}
+{% if session['username'] %}
+    <h1>{{session['username'}}</h1>
     {% set links = ["home", "charts","genres", "users", "contribute", "logout"] %}
 {% else %}
     {% set links = ["home", "charts","genres", "login", "register"] %}
