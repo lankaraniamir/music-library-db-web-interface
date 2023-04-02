@@ -89,7 +89,8 @@ def homepage():
 	cursor = g.conn.execute(text(select_query))
 	names = []
 	for result in cursor:
-		names.append(result[0])
+		# names.append(result[0])
+		names.append(result)
 	cursor.close()
 
 
