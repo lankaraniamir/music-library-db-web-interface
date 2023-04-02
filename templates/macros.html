@@ -2,11 +2,12 @@
 
 {% macro nav_link(menu_item) %}
     {% if menu_item == "profile" %}
-        <a href="{{ url_for(profile, session['username']) }}{{ mode }}">{{
+        <a href="{{ url_for(profile, username=session['username']) }}{{ mode }}">{{
         menu_item|upper }}</a>
     {% else %}
         <a href="{{ url_for(menu_item) }}{{ mode }}">{{ menu_item|upper }}</a>
     {% endif %}
+
     {% if request.endpoint == menu_item %}
         ←
     {% endif %}
