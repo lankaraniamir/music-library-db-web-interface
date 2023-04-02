@@ -56,56 +56,25 @@ def teardown_request(exception):
 		pass
 
 @app.route('/')
-def index():
-	# Sorting options
-	# select_query = "SELECT username from app_user"
-	# cursor = g.conn.execute(text(select_query))
-	# usernames = []
-	# for result in cursor:
-	# 	usernames.append(result[0])
-	# cursor.close()
-    # select_query = """
+def base():
 	return render_template("base.html", title="Homepage")
 
-	select_query = "SELECT * from song"
-	cursor = g.conn.execute(text(select_query))
-	names = []
-
-
-
-# @app.route('/')
-# def homepage():
-# 	# Example of a database query
-# 	# select_query = "SELECT name from genre"
-# 	# select_query = "SELECT * from genre"
-# 	select_query = "Choose option:SELECT * from genre"
-# 	cursor = g.conn.execute(text(select_query))
-# 	names = []
-# 	for result in cursor:
-# 		names.append(result[0])
-# 	cursor.close()
-
-# 	context = dict(data = names)
-
-# 	# render_template looks in the templates/ folder for files (index.html)
-# 	return render_template("homepage.html", **context)
-
-
 @app.route('/app_user')
-def app_user():
-	return render_template("app_user.html")
+def users():
+	select_query = "SELECT username FROM app_user"
+	cursor = g.conn.execute(text(select_query))
 
-# This is an example of creating another webpage
-# The link for this webpage should be in the index.html file
-# as a reference to '/another'
-@app.route('/another')
-def another():
-	return render_template("another.html")
+	users = []
+	for result in cursor:
+		users.append(result[0])
+	cursor.close()
+
+	context = dict(users = users)
+	return render_template("users.html", **context)
 
 
-# This is an example of creating a method within the same subpage
-# This example adds new data to the database
-# Accesses form inputs from user and then passes pareameters into query
+
+
 @app.route('/add', methods=['POST'])
 def add():
 	name = request.form['name']
@@ -114,6 +83,8 @@ def add():
 	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
 	g.conn.commit()
 	return redirect('/')
+
+
 
 
 # Create later for users
