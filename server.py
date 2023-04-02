@@ -121,13 +121,13 @@ def add():
 
 #     return render_template('templates/register.html')
 
-@bp.route('/login', methods=('GET', 'POST'))
+@app.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         select_query=(f'SELECT * FROM app_user WHERE username = ?', (username))
-        g.conn.execute(text(select_query))
+        user = g.conn.execute(text(select_query))
 
         if user is None:
             error = 'Incorrect username.'
@@ -137,7 +137,7 @@ def login():
         if error is None:
             session.clear()
             session['username'] = user['username']
-            return redirect(url_for('index'))
+            return redirect(url_for('home'))
 
         flash(error)
     return render_template('login.html')
