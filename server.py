@@ -103,7 +103,7 @@ def login():
         select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
         cursor = g.conn.execute(text(select_query))
 
-        print(cursor())
+        print(cursor)
         user = cursor[0]
 
         if not user:
