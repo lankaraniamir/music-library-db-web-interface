@@ -141,7 +141,13 @@ def logout():
 # @app.route('/<username>')
 @app.route('/profile/<username>')
 def profile(username):
-    select_query = f"SELECT * FROM song WHERE username = '{username}'"
+    select_query = f"""
+        SELECT *
+        FROM song S, song_opinion O
+        WHERE S.username = '{username}'
+        AND S.song_id = O.song_id
+        AND (O.love = True OR O.stars IS NOT NULL)
+    """
     cursor = g.conn.execute(text(select_query))
 
     songs = []
