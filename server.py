@@ -56,7 +56,7 @@ def teardown_request(exception):
 		pass
 
 @app.route('/')
-def homepage():
+def index():
 	# Sorting options
 	# select_query = "SELECT username from app_user"
 	# cursor = g.conn.execute(text(select_query))
