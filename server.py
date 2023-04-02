@@ -99,13 +99,15 @@ def login():
         username = request.form['username']
         password = request.form['password']
         params = {}
-        params["username"] = username
-        params["password"] = password
-        cursor=g.conn.execute(text('SELECT * FROM app_user WHERE username = (:username)'), params)
 
-        if cursor is None:
+        select_query = f"SELECT * FROM app_user WHERE username = {username}"
+        cursor = g.conn.execute(text(select_query))
+
+        user = cursor[0]
+
+        if not user:
             error = 'Incorrect username.'
-        elif cursor['password'] != password:
+        elif user['password'] != password:
             error = 'Incorrect password.'
 
         if error is None:
