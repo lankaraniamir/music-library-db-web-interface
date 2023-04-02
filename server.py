@@ -59,6 +59,7 @@ def teardown_request(exception):
 
 @app.route('/')
 def home():
+	session.clear()
 	return render_template("base.html", title="Homepage")
 
 @app.route('/users')
