@@ -1,0 +1,9 @@
+{# templates/macros.html #}
+
+{% macro nav_link(menu_item) %}
+    <!-- {% set mode = "?mode=dark" if request.args.get("mode") == "dark" else "" %} -->
+    <a href="{{ url_for(menu_item) }}{{ mode }}">{{ menu_item|upper }}</a>
+    {% if request.endpoint == menu_item %}
+        ←
+    {% endif %}
+{% endmacro %}

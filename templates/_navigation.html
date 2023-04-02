@@ -2,7 +2,8 @@
 
 <nav>
 {% for menu_item in ["home", "charts","genres", "users", "login"] %}
-    <a href="{{ url_for(menu_item) }}">{{ menu_item }}</a>
+    <!-- <a href="{{ url_for(menu_item) }}">{{ menu_item|upper }}</a> -->
+    {{ macros.nav_link(menu_item) }}
 {% endfor %}
 </nav>
 <!-- your music, contriibute -->
