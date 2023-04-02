@@ -88,21 +88,20 @@ def genres():
 def contribute():
 	return render_template("contribute.html", title="Contribute")
 
-@app.route('/add', methods=['POST'])
-def add():
-	name = request.form['name']
-	params = {}
-	params["new_name"] = name
-	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
-	g.conn.commit()
-	return redirect('/')
+# @app.route('/add', methods=['POST'])
+# def add():
+# 	name = request.form['name']
+# 	params = {}
+# 	params["new_name"] = name
+# 	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
+# 	g.conn.commit()
+# 	return redirect('/')
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        params = {}
 
         select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
         cursor = g.conn.execute(text(select_query))
@@ -141,7 +140,7 @@ def profile(username):
     select_query = f"""
         SELECT *
         FROM song S, song_opinion O
-        WHERE S.username = '{username}'
+        WHERE O.username = '{username}'
         AND S.song_id = O.song_id
         AND (O.love = True OR O.stars IS NOT NULL)
     """
