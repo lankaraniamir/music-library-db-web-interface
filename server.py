@@ -141,9 +141,15 @@ def logout():
 # @app.route('/<username>')
 @app.route('/profile/<username>')
 def profile(username):
-	# select_query = "SELECT * FROM app_user"
-	# cursor = g.conn.execute(text(select_query))
-    return redirect('/')
+    select_query = "SELECT * FROM song WHERE username = %s"
+    cursor = g.conn.execute(text(select_query))
+
+    songs = []
+    for result in cursor:
+        songs.append(result)
+    cursor.close()
+
+    return render_template(profile.html)
 
 
 
