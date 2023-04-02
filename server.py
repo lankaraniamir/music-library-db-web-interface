@@ -126,7 +126,7 @@ def login():
         if error is None:
             session.clear()
             session['username'] = users[0].username
-            return redirect(url_for('profile', users[0].username))
+            return redirect(url_for('profile', username=users[0].username))
 
         return render_template('login.html', error=error)
     return render_template('login.html')
