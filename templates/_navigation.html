@@ -2,7 +2,7 @@
 {% import "macros.html" as macros %}
 
 <nav>
-{% for menu_item in ["home", "charts","genres", "users", "login"] %}
+{% for menu_item in ["home", "charts","genres", "users", "login", "contribute"] %}
     <!-- <a href="{{ url_for(menu_item) }}">{{ menu_item|upper }}</a> -->
     {{ macros.nav_link(menu_item) }}
 {% endfor %}

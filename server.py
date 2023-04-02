@@ -16,7 +16,7 @@ from sqlalchemy.pool import NullPool
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 
 # Setting up flask
-from flask import Flask, request, render_template, g, redirect, Response
+from flask import Flask, request, render_template, g, redirect, Response, flash
 app = Flask(__name__, template_folder=tmpl_dir)
 
 
@@ -76,14 +76,13 @@ def users():
 
 @app.route('/charts')
 def charts():
-	abort(401)
-	this_is_never_executed()
-
+	return render_template("charts.html", title="Charts")
 @app.route('/genres')
 def genres():
-	abort(401)
-	this_is_never_executed()
-
+	return render_template("genres.html", title="Genres")
+@app.route('/contribute')
+def genres():
+	return render_template("contribute.html", title="Contribute")
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -96,13 +95,59 @@ def add():
 
 
 
+# @app.route('/register', methods=('GET', 'POST'))
+# def register():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         error = None
 
-# Create later for users
-@app.route('/login')
+#         if not username:
+#             error = 'Username is required.'
+#         elif not password:
+#             error = 'Password is required.'
+
+#         if error is None:
+#             select_query=(f'SELECT * FROM app_user WHERE username = {username}')
+#             if not g.conn.execute(text(select_query)):
+#                 g.conn.execute(
+#                     "INSERT INTO app_user (username, password) VALUES (?, ?)",
+#                     (username, password),
+#                 )
+#                 g.conn.commit()
+#             else:
+#                 error = f"User {username} is already registered."
+#         flash(error)
+
+#     return render_template('templates/register.html')
+
+@bp.route('/login', methods=('GET', 'POST'))
 def login():
-	return render_template("login.html", title="Login")
-	# abort(401)
-	# this_is_never_executed()
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        select_query=(f'SELECT * FROM app_user WHERE username = ?', (username)')
+        g.conn.execute(text(select_query))
+
+        if user is None:
+            error = 'Incorrect username.'
+        elif user['password'] != password:
+            error = 'Incorrect password.'
+
+        if error is None:
+            session.clear()
+            session['username'] = user['username']
+            return redirect(url_for('index'))
+
+        flash(error)
+    return render_template('login.html')
+
+# # Create later for users
+# @app.route('/login')
+# def login():
+# 	return render_template("login.html", title="Login")
+# 	# abort(401)
+# 	# this_is_never_executed()
 
 
 if __name__ == "__main__":
