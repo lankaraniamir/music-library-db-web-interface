@@ -3,8 +3,8 @@
 {% macro nav_link(menu_item) %}
     {% if menu_item == "profile" %}
         <a href="{{ url_for('profile', username=session['username']) }}{{ mode }}">{{
-        session['username']}}</a>
-        {% if request.endpoint == "profile, username{{session['username']}}" %}
+        session['username']|upper}}</a>
+        {% if request.endpoint == profile/{{session['username']}}" %}
             ←
         {% endif %}
     {% else %}
