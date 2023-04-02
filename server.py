@@ -73,7 +73,7 @@ def users():
 	cursor.close()
 
 	context = dict(users = users)
-	return render_template("users.html", **context)
+	return render_template("users.html", title="Users", **context)
 
 
 @app.route('/charts')

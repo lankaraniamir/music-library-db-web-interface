@@ -1,7 +1,7 @@
 {# templates/_navigation.html #}
 {% import "macros.html" as macros %}
 
-{% if session['username'] %}
+{% if session['username'] is defined %}
     {% set links = ["home", "charts","genres", "users", "contribute", "logout"] %}
 {% else %}
     {% set links = ["home", "charts","genres", "login", "register"] %}
@@ -12,4 +12,3 @@
         {{ macros.nav_link(menu_item) }}
     {% endfor %}
 </nav>
-
