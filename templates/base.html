@@ -1,0 +1,22 @@
+{# templates/base.html #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <nav>
+        <a href="{{url_for('index') }}"></a>"
+        <a href="#">Music</a>
+        <a href="#">Users</a>
+    </nav>
+    <!-- <hr>
+    <div class="content">
+        {% block content %} {% endblock %}
+    </div> -->
+    <h1>Welcome to {{ title }}!</h1>
+</body>
+</html>

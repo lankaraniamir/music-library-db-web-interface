@@ -28,29 +28,6 @@ DATABASEURI = f"postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWRD}@{DATABASE_HO
 engine = create_engine(DATABASEURI)
 
 
-# Example of running queries in your database
-# Note that this will probably not work if you already have a table named 'test' in your database, containing meaningful data. This is only an example showing you how to run queries in your database using SQLAlchemy.
-# with engine.connect() as conn:
-# 	create_table_command = """
-# 	CREATE TABLE IF NOT EXISTS test (
-# 		id serial,
-# 		name text
-# 	)
-# 	"""
-# 	res = conn.execute(text(create_table_command))
-# 	insert_table_command = """INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace')"""
-# 	res = conn.execute(text(insert_table_command))
-# 	# you need to commit for create, insert, update queries to reflect
-# 	conn.commit()
-
-"""
-request is a special object that Flask provides to access web request information:
-request.method:   "GET" or "POST"
-request.form:     if the browser submitted a form, this contains the data in the form
-request.args:     dictionary of URL arguments, e.g., {a:1, b:2} for http://localhost?a=1&b=2
-See its API: https://flask.palletsprojects.com/en/1.1.x/api/#incoming-request-data
-"""
-
 @app.before_request
 def before_request():
 	"""
@@ -78,40 +55,45 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
-
-
-
 @app.route('/')
 def homepage():
-	# Example of a database query
-	# select_query = "SELECT name from genre"
-	select_query = "SELECT * from genre"
+	# Sorting options
+	# select_query = "SELECT username from app_user"
+	# cursor = g.conn.execute(text(select_query))
+	# usernames = []
+	# for result in cursor:
+	# 	usernames.append(result[0])
+	# cursor.close()
+    # select_query = """
+	return render_template("base.html", title="Homepage")
+
+	select_query = "SELECT * from song"
 	cursor = g.conn.execute(text(select_query))
 	names = []
-	for result in cursor:
-		# names.append(result[0])
-		names.append(result)
-	cursor.close()
 
 
 
+# @app.route('/')
+# def homepage():
+# 	# Example of a database query
+# 	# select_query = "SELECT name from genre"
+# 	# select_query = "SELECT * from genre"
+# 	select_query = "Choose option:SELECT * from genre"
+# 	cursor = g.conn.execute(text(select_query))
+# 	names = []
+# 	for result in cursor:
+# 		names.append(result[0])
+# 	cursor.close()
+
+# 	context = dict(data = names)
+
+# 	# render_template looks in the templates/ folder for files (index.html)
+# 	return render_template("homepage.html", **context)
 
 
-	# Flask uses Jinja templates, which is an extension to HTML where you can
-	# pass data to a template and dynamically generate HTML based on the data
-	# (you can think of it as simple PHP). Example: templates/index.html
-	# documentation: https://realpython.com/primer-on-jinja-templating/
-	#
-	# Context are the variables that are passed to the template.
-	# for example, "data" key in the context variable defined below will be
-	# accessible as a variable in index.html. Will print HTML form of data
-	# and also creates div tag for each element in data
-	context = dict(data = names)
-
-	# render_template looks in the templates/ folder for files (index.html)
-	return render_template("my_index.html", **context)
-
-
+@app.route('/app_user')
+def another():
+	return render_template("app_user.html")
 
 # This is an example of creating another webpage
 # The link for this webpage should be in the index.html file
