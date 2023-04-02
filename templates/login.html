@@ -3,7 +3,6 @@
 
 {% block content %}
 <h2>Login</h2>
-{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
 <form action="{{ url_for('login') }}" method=post>
     <dl>
         <dt>Username:
@@ -13,10 +12,5 @@
         <dd><input type=submit value=Login>
     </dl>
 </form>
+{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
 {% endblock %}
-
-<div>
-{% if error is defined %}
-    <body>{{error}}</body>
-{% endif %}
-</div>
