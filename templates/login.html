@@ -8,13 +8,11 @@
 {% block content %}
 <h2>Login</h2>
 <form action="{{ url_for('login') }}" method=post>
-    <dl>
-        <dt>Username:
+        Username:
         <input type=text name=username><br>
-        <dt>Password:
+        Password:
         <input type=password name=password><br>
-        <dt><input type=submit value=Login>
-    </dl>
+        <input type=submit value=Login>
 </form>
 {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
 {% endblock %}
