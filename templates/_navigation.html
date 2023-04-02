@@ -1,10 +1,20 @@
 {# templates/_navigation.html #}
 {% import "macros.html" as macros %}
 
+{% if session['username'] %}
+    {% set links = ["home", "charts","genres", "users", "contribute"", "logout"] %}
+{% else %}
+    {% set links = ["home", "charts","genres", "login", "register"] %}
+{% endif %}
+
 <nav>
-{% for menu_item in ["home", "charts","genres", "users", "login", "contribute"] %}
-    <!-- <a href="{{ url_for(menu_item) }}">{{ menu_item|upper }}</a> -->
-    {{ macros.nav_link(menu_item) }}
-{% endfor %}
+    {% for menu_item in ["home", "charts","genres", "users", "contribute", "register", "logout"] %}
+        {{ macros.nav_link(menu_item) }}
+    {% endfor %}
 </nav>
+
+
+<!-- {% for menu_item in ["home", "charts","genres", "users", "contribute", "register", "logout"] %} -->
+<!-- {% for menu_item in ["home", "charts","genres", "users", "login", "register", "logout"] %} -->
+<!-- <a href="{{ url_for(menu_item) }}">{{ menu_item|upper }}</a> -->
 <!-- your music, contriibute -->

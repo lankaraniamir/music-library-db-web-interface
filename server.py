@@ -111,7 +111,7 @@ def login():
 
         error = None
         if not users:
-            error = 'Incorrect username. Try again.'
+            error = 'Username does not exist. Try again.'
         elif len(users) > 1:
             error = "Duplicate username should not exist. Contact site admins."
         elif users[0].password != password:
@@ -120,7 +120,7 @@ def login():
         if error is None:
             # session.clear()
             # session['username'] = users[0].password
-            return redirect(url_for('home'))
+            return redirect('home')
 
 
         return render_template('login.html', error=error)
