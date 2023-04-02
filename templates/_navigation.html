@@ -9,7 +9,7 @@
 {% endif %}
 
 <nav>
-    {% for menu_item in ["home", "charts","genres", "users", "contribute", "register", "logout"] %}
+    {% for menu_item in links %}
         {{ macros.nav_link(menu_item) }}
     {% endfor %}
 </nav>
