@@ -1,7 +1,8 @@
 {# templates/_navigation.html #}
 
 <nav>
-    {% for menu_item in ["home", "charts","genres", "users", "your music", "contribute] %}
+{% for menu_item in ["home", "charts","genres", "users"] %}
     <a href="{{ url_for(menu_item) }}">{{ menu_item }}</a>
-    {% endfor %}
+{% endfor %}
 </nav>
+<!-- your music, contriibute -->
