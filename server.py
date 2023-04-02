@@ -140,7 +140,7 @@ def logout():
 
 # @app.route('/<username>')
 @app.route('/profile/<username>')
-def profile():
+def profile(username):
 	# select_query = "SELECT * FROM app_user"
 	# cursor = g.conn.execute(text(select_query))
     return redirect('/')
