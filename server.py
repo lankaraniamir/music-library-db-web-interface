@@ -95,6 +95,7 @@ def add():
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
+    error = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -109,20 +110,21 @@ def login():
         cursor.close()
 
 
-        error = None
         if not users:
-            error = 'Incorrect username.'
+            error = 'Incorrect username. Try again.'
         elif len(users) > 1:
             error = "Duplicate username should not exist. Contact site admins."
         elif users[0].password != password:
-            error = 'Incorrect password.'
+            error = 'Incorrect password. Try again.'
 
         if error is None:
             # session.clear()
             # session['username'] = users[0].password
             return redirect(url_for('home'))
 
-    return render_template('login.html', error=error)
+
+        return render_template('login.html', error=error)
+    return render_template('login.html')
 
 
 
