@@ -1,7 +1,7 @@
 {# templates/macros.html #}
 
 {% macro nav_link(menu_item) %}
-    {% if request.endpoint == "profile" %}
+    {% if menu_item == "profile" %}
         <a href="{{ url_for(profile, session['username']) }}{{ mode }}">{{
         menu_item|upper }}</a>
     {% else %}
