@@ -139,7 +139,7 @@ def logout():
 
 
 # @app.route('/<username>')
-@app.route('/<username>')
+@app.route('/profile/<username>')
 def profile():
 	# select_query = "SELECT * FROM app_user"
 	# cursor = g.conn.execute(text(select_query))
