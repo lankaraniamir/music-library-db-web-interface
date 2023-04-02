@@ -100,7 +100,7 @@ def login():
         password = request.form['password']
         params = {}
 
-        select_query = f'SELECT * FROM app_user WHERE username = {username}'
+        select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
         cursor = g.conn.execute(text(select_query))
 
         user = cursor
