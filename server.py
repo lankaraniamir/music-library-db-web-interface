@@ -118,7 +118,6 @@ def login():
         print(users)
         print(users[0])
         print(users[0].password)
-        print(error)
         if error is None:
             # session.clear()
             # session['username'] = user['username']
