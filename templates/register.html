@@ -1,3 +1,4 @@
+<!-- Borrows directly from Flask Tutorial's implementation -->
 {% extends 'base.html' %}
 
 {% block header %}
@@ -5,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+<h2>Register</h2>
 <form method="post">
     <label for="username">Username</label>
     <input name="username" id="username" required>

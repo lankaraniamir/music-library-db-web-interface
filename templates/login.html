@@ -1,6 +1,10 @@
 <!-- Borrows directly from Flask Tutorial's implementation -->
 {% extends "base.html" %}
 
+{% block header %}
+<h1>{% block title %}Login{% endblock %}</h1>
+{% endblock %}
+
 {% block content %}
 <h2>Login</h2>
 <form action="{{ url_for('login') }}" method=post>
