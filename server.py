@@ -92,7 +92,7 @@ def homepage():
 
 
 @app.route('/app_user')
-def another():
+def app_user():
 	return render_template("app_user.html")
 
 # This is an example of creating another webpage
