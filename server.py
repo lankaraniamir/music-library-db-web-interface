@@ -81,7 +81,7 @@ def charts():
 def genres():
 	return render_template("genres.html", title="Genres")
 @app.route('/contribute')
-def genres():
+def contribute():
 	return render_template("contribute.html", title="Contribute")
 
 @app.route('/add', methods=['POST'])
