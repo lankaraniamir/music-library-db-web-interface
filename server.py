@@ -16,7 +16,7 @@ from sqlalchemy.pool import NullPool
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 
 # Setting up flask
-from flask import Flask, request, render_template, g, redirect, Response, session,
+from flask import Flask, request, render_template, g, redirect, Response, flash, session
 # flash
 app = Flask(__name__, template_folder=tmpl_dir)
 
@@ -136,31 +136,31 @@ def logout():
 
 
 
-@app.route('/register', methods=('GET', 'POST'))
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        error = None
+# @app.route('/register', methods=('GET', 'POST'))
+# def register():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         error = None
 
-        if not username:
-            error = 'Username is required.'
-        elif not password:
-            error = 'Password is required.'
+#         if not username:
+#             error = 'Username is required.'
+#         elif not password:
+#             error = 'Password is required.'
 
-        if error is None:
-            select_query=(f'SELECT * FROM app_user WHERE username = {username}')
-            if not g.conn.execute(text(select_query)):
-                g.conn.execute(
-                    "INSERT INTO app_user (username, password) VALUES (?, ?)",
-                    (username, password),
-                )
-                g.conn.commit()
-            else:
-                error = f"User {username} is already registered."
-        # flash(error)
+#         if error is None:
+#             select_query=(f'SELECT * FROM app_user WHERE username = {username}')
+#             if not g.conn.execute(text(select_query)):
+#                 g.conn.execute(
+#                     "INSERT INTO app_user (username, password) VALUES (?, ?)",
+#                     (username, password),
+#                 )
+#                 g.conn.commit()
+#             else:
+#                 error = f"User {username} is already registered."
+#         flash(error)
 
-    return render_template('templates/register.html')
+#     return render_template('templates/register.html')
 
 # # Create later for users
 # @app.route('/login')
