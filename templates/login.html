@@ -14,3 +14,7 @@
     </dl>
 </form>
 {% endblock %}
+
+{% if error != None %}
+    <body>{{error}}. Try again.</body>
+{% if failed == True %}

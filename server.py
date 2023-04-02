@@ -108,6 +108,8 @@ def login():
             users.append(result)
         cursor.close()
 
+
+        error = None
         if not users:
             error = 'Incorrect username.'
         elif len(users) > 1:
@@ -115,18 +117,12 @@ def login():
         elif users[0].password != password:
             error = 'Incorrect password.'
 
-        print(users)
-        print(users[0])
-        print(users[0].password)
         if error is None:
             # session.clear()
-            # session['username'] = user['username']
-            print("No error")
+            # session['username'] = users[0].password
             return redirect(url_for('home'))
 
-        # flash(error)
-        print("Error")
-    return render_template('login.html')
+    return render_template('login.html', error=error)
 
 
 
