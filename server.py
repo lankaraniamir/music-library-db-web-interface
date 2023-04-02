@@ -125,7 +125,7 @@ def login():
 
         if error is None:
             session.clear()
-            session['username'] = users[0].password
+            session['username'] = users[0].username
             return redirect('/')
 
         return render_template('login.html', error=error)
@@ -138,14 +138,18 @@ def logout():
 	return redirect('/')
 
 
+# @app.route('/<username>')
 @app.route('/<username>')
 def profile():
+	# select_query = "SELECT * FROM app_user"
+	# cursor = g.conn.execute(text(select_query))
     return redirect('/')
 
 
 
 @app.route('/register', methods=('GET', 'POST'))
 def register():
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
