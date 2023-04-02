@@ -103,12 +103,16 @@ def login():
         select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
         cursor = g.conn.execute(text(select_query))
 
-        print(cursor)
-        user = cursor[0]
+        users = []
+        for result in cursor:
+            users.append(result)
+        cursor.close()
 
-        if not user:
+        if not users:
             error = 'Incorrect username.'
-        elif user.password != password:
+        elif len(users) > 1:
+            error = "Duplicate username should not exist. Contact site admins."
+        elif users[0].password != password:
             error = 'Incorrect password.'
 
         if error is None:
