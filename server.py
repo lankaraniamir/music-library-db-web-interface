@@ -159,7 +159,7 @@ def profile(username):
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
     elif selection == 'albums':
         select_query = (
-            "SELECT R.title AS release, S.year as year, "
+            "SELECT R.title AS release, R.year as year, "
                 "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
                 "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
                 "STRING_AGG(DISTINCT genre, ', ') AS genres, "
@@ -177,7 +177,7 @@ def profile(username):
                 # "STRING_AGG( DISTINCT JO.playlist_creator ) "
             "FROM playlist P, other_playlist_creator O "
             "WHERE P.playlist_id = O.playlist_id "
-            f"AND (P.original_creator = '{username}' OR O.username = '{username}) "
+            f"AND (P.original_creator = '{username}' OR O.username = '{username}') "
         )
         columns = ["playlists", "date_created", "date_modified", "track_count"]
     else:
