@@ -78,7 +78,7 @@ def contribute():
 # 	return redirect('/')
 
 
-@app.route('/profile')
+@app.route('/users')
 def users():
 	# select_query = "SELECT username FROM app_user"
 	select_query = "SELECT * FROM app_user"
@@ -94,7 +94,7 @@ def users():
 
 
 
-@app.route('/profile/<username>', methods=('GET', 'POST'))
+@app.route('/users/<username>', methods=('GET', 'POST'))
 def profile(username):
     error = None
     if request.method == 'POST' and len(request.form) > 0:
