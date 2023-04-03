@@ -179,7 +179,7 @@ def profile(username):
             "WHERE P.playlist_id = O.playlist_id "
             f"AND (P.original_creator = '{username}' OR O.username = '{username}') "
         )
-        columns = ["playlists", "track_count", "date_created", "date_modified"]
+        columns = ["playlists", "date_created", "date_modified", "track_count"]
     else:
         return render_template('profile.html', title=username, user=username,
                                data=None, sort=None, columns=None)
