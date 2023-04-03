@@ -137,19 +137,60 @@ def logout():
 
 @app.route('/profile/<username>')
 def profile(username):
-    select_query = (
-        "SELECT S.title AS song, S.year as year, "
-            "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
-            "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
-            "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
-            "STRING_AGG(DISTINCT genre, ', ') AS genres, "
-            "O.love as love, O.stars as stars "
-        "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
-        "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
-        "AND S.song_id = G.song_id AND S.song_id = O.song_id "
-        f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
-        "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
-    )
+    # if request.method == 'POST'
+    selection = request.form['options']
+    if selection == 'songs':
+        select_query = (
+            "SELECT S.title AS song, S.year as year, "
+                "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
+                "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
+                "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
+                "STRING_AGG(DISTINCT genre, ', ') AS genres, "
+                "O.love as love, O.stars as stars "
+            "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
+            "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
+            "AND S.song_id = G.song_id AND S.song_id = O.song_id "
+            f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
+            "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
+        )
+        columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
+    elif selection == 'albums':
+        select_query = (
+            "SELECT R.title AS release, S.year as year, "
+                "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
+                "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
+                "STRING_AGG(DISTINCT genre, ', ') AS genres, "
+                "O.love as love, O.stars as stars, R.release_type AS release_type "
+            "FROM release R, artist A, release_credit C, release_in_genre G, release_opinion O "
+            "WHERE R.relase_id = C.release_id AND A.artist_id = C.artist_id "
+            "AND R.release_id = G.release_id AND R.release_id = O.release_id "
+            f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
+            "GROUP BY R.release_id, R.title, R.year, O.love, O.stars;"
+        )
+        columns = ["releases","main_artists","other_artists","year","genres","release_type","love","stars"]
+    else:
+        select_query = (
+            "SELECT Distinct P.title as playlists, date_created, date_modified, track_count "
+                # "STRING_AGG( DISTINCT JO.playlist_creator ) "
+            "FROM playlist P, other_playlist_creator O "
+            "WHERE P.playlist_id = O.playlist_id "
+            f"AND (P.original_creator = '{username}' OR O.username = '{username}) "
+        )
+        columns = ["playlists", "date_created", "date_modified", "track_count"]
+
+
+        #     "SELECT R.title AS playlist, S.year as year, "
+        #         "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
+        #         "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
+        #         "STRING_AGG(DISTINCT genre, ', ') AS genres, "
+        #         "O.love as love, O.stars as stars "
+        #     "FROM playlist R, artist A, release_credit C, release_in_genre G, release_opinion O "
+        #     "WHERE R.relase_id = C.release_id AND A.artist_id = C.artist_id "
+        #     "AND R.release_id = G.release_id AND R.release_id = O.release_id "
+        #     f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
+        #     "GROUP BY R.release_id, R.title, R.year, O.love, O.stars;"
+        # )
+
     cursor = g.conn.execute(text(select_query))
 
     songs = []
@@ -158,13 +199,12 @@ def profile(username):
     cursor.close()
 
     return render_template('profile.html', title=username, user=username,
-                           songs=songs, sort="stars")
+                           songs=songs, sort="stars", columns=columns)
 
 
 
 @app.route('/register', methods=('GET', 'POST'))
 def register():
-
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
