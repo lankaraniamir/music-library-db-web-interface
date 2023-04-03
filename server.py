@@ -101,10 +101,10 @@ def genre(name):
         f"WHERE parent_genre = '{name}' "
     ))
     print(cursor)
-    result = []
+    children = []
     for row in cursor:
-        result.append(row)
-    print(result)
+        children.append(row)
+    print(children)
     cursor.close()
 
     # children = get_query(
