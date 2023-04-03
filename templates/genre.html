@@ -3,6 +3,7 @@
 {% block content %}
 <h2>{{ test_name }} {{ title }}</h2>
 <ul>
+    <div>
     <section>
     <b>Child Genres</b>
     {% for genre in children %}
@@ -11,7 +12,9 @@
     </li>
     {% endfor %}
     </section>
+    </div>
 
+    <div>
     <section>
     <b>Parent Genres</b>
     {% for genre in parents %}
@@ -20,5 +23,6 @@
     </li>
     {% endfor %}
     </section>
+    </div>
 </ul>
 {% endblock content %}
