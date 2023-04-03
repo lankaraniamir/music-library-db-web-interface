@@ -149,7 +149,7 @@ def genre(name):
         "UNION SELECT DISTINCT parent_genre FROM subgenres "
     ") AS SG "
     "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; ",
-    single=True
+    single=False
     )
 
     print(all_songs)
