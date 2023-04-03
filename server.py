@@ -65,7 +65,7 @@ def genres():
 	cursor = g.conn.execute(text(select_query))
 	genres = []
 	for result in cursor:
-		users.append(result)
+		genres.append(result)
 	cursor.close()
 
 	context = dict(genres = genres)
