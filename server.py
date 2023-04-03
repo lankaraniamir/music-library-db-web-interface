@@ -185,8 +185,8 @@ def login():
 
         if error is None:
             session.clear()
-            session['username'] = users[0].username
-            return redirect(url_for('profile', username=users[0].username))
+            session['username'] = username
+            return redirect(url_for('profile', username=username))
 
     return render_template('login.html', error=error)
 
@@ -231,6 +231,7 @@ def register():
                 else:
                     g.conn.execute(text(f"INSERT INTO app_user (username, password) VALUES {username, password}"))
                 g.conn.commit()
+                return redirect(url_for('profile', username=username))
 
     return render_template('register.html', error=error)
 
