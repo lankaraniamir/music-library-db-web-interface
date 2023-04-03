@@ -137,8 +137,10 @@ def logout():
 
 @app.route('/profile/<username>', methods=('GET', 'POST'))
 def profile(username):
-    # if request.method == 'POST'
-    selection = request.form['options']
+    if request.method == 'POST'
+        selection = request.form['options']
+    else:
+          selection = 'songs'
     if selection == 'songs':
         select_query = (
             "SELECT S.title AS song, S.year as year, "
