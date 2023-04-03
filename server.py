@@ -110,7 +110,7 @@ def genre(name):
         "SELECT DISTINCT parent_genre "
         "FROM genre_inheritance "
         f"WHERE sub_genre = '{name}' ",
-        single = TRUE
+        single = True
     )
 
     # query = (
