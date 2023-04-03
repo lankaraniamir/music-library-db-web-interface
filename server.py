@@ -139,7 +139,7 @@ def logout():
 def profile(username):
     select_query = (
         "SELECT S.title AS song, S.year as year, "
-            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), NULL) AS main_artists, "
+            "ARRAY_REMOVE(STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), NULL), '{}') AS featured_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
             "ARRAY_AGG(DISTINCT genre) AS genres, "
@@ -157,7 +157,8 @@ def profile(username):
         songs.append(result)
     cursor.close()
 
-    return render_template('profile.html', title=username, songs=songs, sort="stars")
+    return render_template('profile.html', title=username, user=username,
+                           songs=songs, sort="stars")
 
 
 
