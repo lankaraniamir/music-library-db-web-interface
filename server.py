@@ -55,6 +55,7 @@ def get_query(query, dict=True):
     result = []
     for row in cursor:
         result.append(row)
+        print(row)
     cursor.close()
     return result
 
@@ -95,17 +96,13 @@ def genre(name):
     # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
     # )
 
+
     cursor = g.conn.execute(text(
         "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
         f"WHERE parent_genre = '{name}' "
     ))
-    print(cursor)
-    children = cursor.mappings()
-    # children = []
-    # for row in cursor:
-    #     children.append(row)
-    print(children)
+    children = cursor.mappings().all()
     cursor.close()
 
     # children = get_query(
