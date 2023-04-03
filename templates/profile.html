@@ -11,10 +11,11 @@
 
 {% block content %}
 <h3>{{user}}'s Music</h3>
-<form action="/foo" method="POST">
-    <input type="radio" id="red" name="color" value="red">
-    <label for="red">Red</label><br>
-    <input type="radio" id="blue" name="color" value="blue">
+<h5>{{user}}'s Music</h5>
+<form action="/user_select" method="POST">
+    <input type="radio" id="songs" name="selection" value="songs">
+    <label for="songs">Songs</label><br>
+    <input type="radio" id="albums" name="selection" value="albums">
     <label for="blue">Blue</label><br>
     <input type="submit">
 </form>

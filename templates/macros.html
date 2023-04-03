@@ -39,9 +39,9 @@
 {% macro nav_link(menu_item) %}
     {% if menu_item == "profile" %}
         <a href="{{ url_for('profile', username=session['username']) }}{{ mode }}">{{
-        session['username']|upper}}</a>
+        capitalize(session['username'])}}</a>
     {% else %}
-        <a href="{{ url_for(menu_item) }}{{ mode }}">{{ menu_item|upper }}</a>
+        <a href="{{ url_for(menu_item) }}{{ mode }}">{{ capitalize(menu_item) }}</a>
     {% endif %}
 
     {% if request.endpoint == menu_item %}
