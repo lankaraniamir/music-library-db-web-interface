@@ -146,6 +146,9 @@ def profile(username):
     else:
         selection = None
 
+numeric(2,1)
+
+
     if selection == 'songs':
         select_query = (
             "SELECT S.title AS song, S.year as year, "
@@ -153,7 +156,7 @@ def profile(username):
                 "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
                 "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
                 "STRING_AGG(DISTINCT genre, ', ') AS genres, "
-                "O.love as love, O.stars/2 as stars "
+                "O.love as love, ROUND(O.stars/2, 1) as stars "
             "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
             "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
             "AND S.song_id = G.song_id AND S.song_id = O.song_id "
@@ -167,7 +170,7 @@ def profile(username):
                 "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
                 "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
                 "STRING_AGG(DISTINCT genre, ', ') AS genres, "
-                "O.love as love, O.stars/2 as stars, R.release_type AS release_type "
+                "O.love as love, ROUND(O.stars/2, 1) as stars, R.release_type AS release_type "
             "FROM release R, artist A, release_credit C, release_in_genre G, release_opinion O "
             "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id "
             "AND R.release_id = G.release_id AND R.release_id = O.release_id "
