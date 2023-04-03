@@ -8,7 +8,6 @@
 {% for user in users|sort(attribute="username")%}
     <li>
         <a href="{{ url_for('profile', username=user.username) }}">{{user.username}}</a>
-       <!-- <a href="{{ url for('profile', username=user.username )}}">{{user.username}}</a> -->
     </li>
 {% endfor %}
 </ul>
