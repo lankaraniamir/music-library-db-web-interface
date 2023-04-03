@@ -56,7 +56,7 @@ def get_query(query, dict=True):
     for row in cursor:
         result.append(row)
         print(row)
-        print(row)
+        print(row[0])
     cursor.close()
     return result
 
