@@ -5,42 +5,62 @@
 <ul>
 
     <section>
-    <b>Subgenres</b>
-    {% for genre in subgenres %}
-    <li>
-        <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
-    </li>
-    {% endfor %}
+    {% if subgenres %}
+        <b>All Subgenres</b>
+        {% for genre in subgenres %}
+            <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
+        {% endfor %}
+    {% else %}
+        <b>No subgenres</b>
+    {% endif %}
     </section>
     &nbsp
 
     <section>
-    <b>Child Genres</b>
-    {% for genre in children %}
-    <li>
-        <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
-    </li>
-    {% endfor %}
+    {% if chilidren %}
+        <b>Child Genres</b>
+        {% for genre in children %}
+            <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
+        {% endfor %}
+    {% else %}
+        <b>No child genres</b>
+    {% endif %}
     </section>
     &nbsp
 
     <section>
-    <b>Parent Genres</b>
-    {% for genre in parents %}
-    <li>
-        <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
-    </li>
-    {% endfor %}
+    {% if parents %}
+        <b>Parent Genres</b>
+        {% for genre in parents %}
+            <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
+        {% endfor %}
+    {% else %}
+        <b>No parent genres</b>
+    {% endif %}
     </section>
     &nbsp
 
     <section>
-    <b>Songs</b>
-    {% for song in songs %}
-    <li>
-        <a href="{{ url_for('song', title=song) }}">{{song}}</a>
-    </li>
-    {% endfor %}
+    {% if songs %}
+        <b>Songs</b>
+        {% for song in songs %}
+            <li><a href="{{ url_for('song', title=song) }}">{{song}}</a></li>
+        {% endfor %}
+    {% else %}
+        <b>No songs in genre</b>
+    {% endif %}
     </section>
+
+    <!-- <section> -->
+    <!-- {% if albums %} -->
+        <!-- <b>Songs</b> -->
+        <!-- {% for song in songs %} -->
+            <!-- <li><a href="{{ url_for('song', title=song) }}">{{song}}</a></li> -->
+        <!-- {% endfor %} -->
+    <!-- {% else %} -->
+        <!-- <b>No albums in genre</b> -->
+    <!-- {% endif %} -->
+    <!-- </section> -->
+
 </ul>
 {% endblock content %}
