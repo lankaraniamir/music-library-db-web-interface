@@ -15,7 +15,7 @@
     </tr>
     {% for song in songs|sort(attribute="stars")%}
         <tr>
-        {% for value in song.values() %}
+        {% for key, value in song.items() %}
             {% if value == None %}
             	<td></td>
             {% else %}
