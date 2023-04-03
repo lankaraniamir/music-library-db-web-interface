@@ -23,7 +23,6 @@
     {% for song in songs|sort(attribute="stars")%}
         <tr>
             <td>{{song.song}}</td>
-            <td>{{song[song]}}</td>
             {{ macros.att_display(song.year) }}
             {{ macros.att_display(song.main_artists) }}
             {{ macros.att_display(song.other_artists) }}
