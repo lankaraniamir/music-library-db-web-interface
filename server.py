@@ -141,7 +141,7 @@ def profile(username):
         "SELECT S.title AS song, S.year as year, "
             "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
             "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
-            "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END ', ') AS other_artists, "
+            "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
             # "NULLIF(STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', '), 'NULL') AS featured_artists, "
             # "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), NULL), '{}') AS featured_artists, "
             "STRING_AGG(DISTINCT genre, ', ') AS genres, "
