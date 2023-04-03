@@ -13,11 +13,13 @@
 
 {% macro reference(page, var=None, text=None, caps=False) %}
     {% if var == None and text == None %}
-        <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
+        <a href="{{ url_for(page) }}">{{ f_capitalize(page.var, caps=caps) }}</a>
     {% elif var != None and text == None %}
-        <a href="{{ url_for(page, var=page.var) }}">{{ f_capitalize(page, caps=caps) }}</a>
+        <a href="{{ url_for(page, var=page.var) }}">{{ f_capitalize(page.var, caps=caps) }}</a>
+    {% elif var == None
+        <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
-        {{f_capitalize(text)}}
+        <a href="{{ url_for(page, var=page.var) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% endif %}
 {% endmacro %}
 
@@ -62,7 +64,7 @@
         <a href="{{ url_for('profile', username=session['username']) }}">{{
         capitalize(session['username'])}}</a>
     {% else %}
-        {{reference(menu_item, caps=True)}}
+        {{reference(menu_item, text=menu_item, caps=True)}}
     {% endif %}
 
     {% if request.endpoint == menu_item %}
