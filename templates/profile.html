@@ -7,8 +7,16 @@
 
 {% block title %}{{user}}'s Music{% endblock title %}
 
-{% block content %}
-<h2>{{user}}'s Music</h2>
 
+
+{% block content %}
+<h3>{{user}}'s Music</h3>
+<form action="/foo" method="POST">
+    <input type="radio" id="red" name="color" value="red">
+    <label for="red">Red</label><br>
+    <input type="radio" id="blue" name="color" value="blue">
+    <label for="blue">Blue</label><br>
+    <input type="submit">
+</form>
 {{ macros.display_all_as_table(songs, columns) }}
 {% endblock content %}

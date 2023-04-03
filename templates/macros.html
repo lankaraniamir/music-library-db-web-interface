@@ -1,12 +1,12 @@
 {# templates/macros.html #}
 
 {% macro display_val(value) %}
-    {% if value == True %}
+    {% if value == None %}
+        -
+    {% elif value == True %}
         ❤️
     {% elif value == False %}
         ♡️
-    {% elif value == None %}
-        -
     {% elif value != None %}
         {{value}}
     {% endif %}
