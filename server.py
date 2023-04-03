@@ -135,7 +135,7 @@ def logout():
 	return redirect('/')
 
 
-@app.route('/profile/<username>')
+@app.route('/profile/<username>', methods=('GET', 'POST'))
 def profile(username):
     # if request.method == 'POST'
     selection = request.form['options']
