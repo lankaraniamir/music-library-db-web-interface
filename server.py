@@ -71,7 +71,6 @@ def home():
 @app.route('/genres')
 def genres():
 	genres = get_query("SELECT * FROM genre")
-
 	context = dict(genres = genres)
 	return render_template("genres.html", title="All Genres", **context)
 
@@ -126,7 +125,7 @@ def genre(name):
     # f"WHERE SG.primary_genre != {name}; "
     )
 
-    select_query = (
+    query = (
     "SELECT DISTINCT title "
     "FROM song S, song_in_genre G, ( "
         "WITH RECURSIVE "
@@ -144,12 +143,7 @@ def genre(name):
     ") AS SG "
     "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
     )
-
-    cursor = g.conn.execute(text(select_query))
-    songs = []
-    for result in cursor:
-        songs.append(result)
-    cursor.close()
+    descendant_genres = get_query(query)
 
     context = dict(songs = songs)
     return render_template("genre.html", title=name, **context)
