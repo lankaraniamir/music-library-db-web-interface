@@ -2,7 +2,7 @@
 
 <!-- https://shubhamjain.co/2018/09/17/capitalizing-first-letter-in-jinja/ -->
 {% macro capitalize(text) %}
-    {{ text[0]|upper }}{{ text[1:-1] }}
+    {{ text[0]|upper }}{{ text[1:] }}
 {% endmacro %}
 
 {% macro display_val(value) %}
@@ -38,10 +38,10 @@
 
 {% macro nav_link(menu_item) %}
     {% if menu_item == "profile" %}
-        <a href="{{ url_for('profile', username=session['username']) }}{{ mode }}">{{
+        <a href="{{ url_for('profile', username=session['username']) }}">{{
         capitalize(session['username'])}}</a>
     {% else %}
-        <a href="{{ url_for(menu_item) }}{{ mode }}">{{ capitalize(menu_item) }}</a>
+        <a href="{{ url_for(menu_item) }}">{{ capitalize(menu_item) }}</a>
     {% endif %}
 
     {% if request.endpoint == menu_item %}
