@@ -22,6 +22,9 @@
 {% endmacro %}
 
 
+<a href="{{ url_for(page,) }}">{{ capitalize(menu_item) }}</a>
+{{ text[0]|upper }}{{ text[1:] }}{% endmacro %}
+
 {% macro display_val(value) %}
     {% if value == None %}
         -
