@@ -149,7 +149,7 @@ def profile(username):
         columns = ["playlists", "date_created", "date_modified", "track_count"]
     else:
         return render_template('profile.html', title=username, user=username,
-                               data=None, sort=None, columns=None, error=error)
+                               data=None, sort=None, columns=None, error=error, selection=selection)
 
     cursor = g.conn.execute(text(select_query))
 
@@ -159,8 +159,8 @@ def profile(username):
     cursor.close()
 
     return render_template('profile.html', title=username, user=username,
-                           data=rows, sort="stars", columns=columns, error=error
-                           group=selection)
+                           data=rows, sort="stars", columns=columns, error=error,
+                           selection=selection)
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
