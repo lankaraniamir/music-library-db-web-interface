@@ -18,6 +18,9 @@
 {% endmacro %}
 
 {% macro display_all_as_table(entity, columns) %}
+{% if not entity %}
+    <p>No data to display.</p>
+{% else %}
 <table>
     <tr>
         {% for col in columns %}
@@ -32,6 +35,7 @@
         </tr>
     {% endfor %}
 </table>
+{% endif %}
 {% endmacro %}
 
 {% macro nav_link(menu_item) %}
