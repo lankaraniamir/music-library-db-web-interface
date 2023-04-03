@@ -159,7 +159,7 @@ def profile(username):
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
     elif selection == 'albums':
         select_query = (
-            "SELECT R.title AS release, R.year as year, "
+            "SELECT R.title AS release, R.release_date as release_date, "
                 "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
                 "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
                 "STRING_AGG(DISTINCT genre, ', ') AS genres, "
@@ -168,7 +168,7 @@ def profile(username):
             "WHERE R.relase_id = C.release_id AND A.artist_id = C.artist_id "
             "AND R.release_id = G.release_id AND R.release_id = O.release_id "
             f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
-            "GROUP BY R.release_id, R.title, R.year, O.love, O.stars;"
+            "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
         columns = ["releases","main_artists","other_artists","year","genres","release_type","love","stars"]
     elif selection == 'playlists':
@@ -179,7 +179,7 @@ def profile(username):
             "WHERE P.playlist_id = O.playlist_id "
             f"AND (P.original_creator = '{username}' OR O.username = '{username}') "
         )
-        columns = ["playlists", "date_created", "date_modified", "track_count"]
+        columns = ["playlists", "track_count", "date_created", "date_modified", "track_count"]
     else:
         return render_template('profile.html', title=username, user=username,
                                columns=None)
