@@ -3,10 +3,15 @@
 {% block content %}
 <h2>{{ test_name }} {{ title }}</h2>
 <ul>
-    {% for song in songs|sort(attribute="n")%}
+    {% for genre in genres|sort(attribute="n")%}
     <li>
-        <a href="{{ url_for('song', title=song.title) }}">{{song.title}}</a>
+        <a href="{{ url_for('genre', name=genre.name) }}">{{genre.name}}</a>
     </li>
     {% endfor %}
+    <!-- {% for song in songs|sort(attribute="n")%} -->
+    <!-- <li> -->
+    <!-- <a href="{{ url_for('song', title=song.title) }}">{{song.title}}</a> -->
+    <!-- </li> -->
+    <!-- {% endfor %} -->
 </ul>
 {% endblock content %}

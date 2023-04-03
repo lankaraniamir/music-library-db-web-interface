@@ -145,7 +145,7 @@ def genre(name):
     )
     descendant_genres = get_query(query)
 
-    context = dict(songs = songs)
+    context = dict(genres = genres)
     return render_template("genre.html", title=name, **context)
 
 
