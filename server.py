@@ -157,14 +157,14 @@ def genre(name):
     "   subgenres(sub_genre, parent_genre) AS ( "
     "       SELECT sub_genre, parent_genre "
     "       FROM genre_inheritance "
-    f"       WHERE parent_genre = '{name}' AND sub_genre != '{name}'"
+    f"       WHERE parent_genre = '{name}'"
     "       UNION "
     "           SELECT A.sub_genre, A.parent_genre "
     "           FROM genre_inheritance A "
     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
     "   ) "
     "SELECT DISTINCT sub_genre FROM subgenres "
-    "UNION SELECT DISTINCT parent_genre FROM subgenres ",
+    # "UNION SELECT DISTINCT parent_genre FROM subgenres ",
     single=True
     )
     print(subgenres)
