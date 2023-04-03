@@ -148,7 +148,8 @@ def genre(name):
         "SELECT DISTINCT sub_genre FROM subgenres "
         "UNION SELECT DISTINCT parent_genre FROM subgenres "
     ") AS SG "
-    "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
+    "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; ",
+    single=True
     )
 
     # context = dict(descendants = descendants)
