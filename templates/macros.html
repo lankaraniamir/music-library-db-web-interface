@@ -3,6 +3,8 @@
 {% macro display_val(value) %}
     {% if value == True %}
         ❤️
+    {% elif value == False %}
+        ♡️
     {% elif value != None %}
         {{value}}
     {% endif %}
