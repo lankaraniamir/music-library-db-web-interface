@@ -96,12 +96,12 @@ def genre(name):
     # )
 
     cursor = g.conn.execute(text(
-        "SELECT sub_genre "
+        "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
         f"WHERE parent_genre = '{name}' "
     ))
     print(cursor)
-    children = cursor.mappings().all()
+    children = cursor.mappings()
     # children = []
     # for row in cursor:
     #     children.append(row)
