@@ -9,13 +9,16 @@
     <li>
         <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
     </li>
-    </section>
     {% endfor %}
+    </section>
+
+    <section>
     <h3>Parent Genres</h3>
     {% for genre in parents %}
     <li>
         <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
     </li>
     {% endfor %}
+    </section>
 </ul>
 {% endblock content %}
