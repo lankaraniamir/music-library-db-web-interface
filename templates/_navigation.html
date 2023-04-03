@@ -2,14 +2,14 @@
 {% import "macros.html" as macros %}
 
 {% if session['username'] %}
-{% set links = ["charts","genres", "users", "contribute", "profile",
-"logout"] %}
+    {% set links = ["charts","genres", "users", "contribute", "profile",
+    "logout"] %}
 {% else %}
     {% set links = ["charts","genres", "login", "register"] %}
 {% endif %}
 
 <nav>
     {% for menu_item in links %}
-        {{ macros.nav_link(menu_item) }}
+        {{ macros.nav_link(menu_item) }} /
     {% endfor %}
 </nav>
