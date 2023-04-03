@@ -218,12 +218,14 @@ def register():
         else:
             select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
             cursor = g.conn.execute(text(f"SELECT * FROM app_user WHERE username = '{username}'"))
-            print(cursor)
-            if len(cursor) > 0:
+            matching_user = []
+            for result in cursor:
+                matching_user.append(result)
+            cursor.close()
+
+            if len(matching_user) > 0:
                 error = f"User {username} is already registered."
-                cursor.close()
             else:
-                cursor.close()
                 if name:
                     g.conn.execute(text(f"INSERT INTO app_user (username, password, name) VALUES {username, password, name[:30]}"))
                 else:
