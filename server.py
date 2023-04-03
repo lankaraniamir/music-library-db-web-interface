@@ -50,13 +50,14 @@ def teardown_request(exception):
 
 
 
-def get_query(query, dict=True):
+def get_query(query, single=True):
     cursor = g.conn.execute(text(query))
     result = []
     for row in cursor:
-        result.append(row)
-        print(row)
-        print(row[0])
+        if single:
+            result.append(row[0])
+        else:
+            result.append(row)
     cursor.close()
     return result
 
