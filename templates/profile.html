@@ -18,7 +18,10 @@
             <td>{{song.song}}</td>
             <td>{{song.year}}</td>
             <td>{{song.main_artists}}</td>
-            <td>{{song.featured_artists}}</td>
+            if song.featured_artists == None:
+                <td>{{song.featured_artists}}</td>
+            <!-- else:  -->
+            	<!-- <td>None</td> -->
             <td>{{song.other_artists}}</td>
             <td>{{song.genres}}</td>
             <td>{{song.love}}</td>
