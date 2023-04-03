@@ -12,8 +12,10 @@
         ❤️
     {% elif value == False %}
         ♡️
-    {% elif value != None %}
+    {% elif value is string %}
         {{capitalize(value)}}
+    {% else %}
+        {{value}}
     {% endif %}
 {% endmacro %}
 
