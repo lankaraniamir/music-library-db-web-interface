@@ -6,13 +6,13 @@
     <h3>Child Genres</h2>
     {% for genre in children %}
     <li>
-        <a href="{{ url_for('genre', name=genre.name) }}">{{genre.name}}</a>
+        <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
     </li>
     {% endfor %}
     <h3>Parent Genres</h2>
     {% for genre in parents %}
     <li>
-        <a href="{{ url_for('genre', name=genre.name) }}">{{genre.name}}</a>
+        <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
     </li>
     {% endfor %}
 </ul>
