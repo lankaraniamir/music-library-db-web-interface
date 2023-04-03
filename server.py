@@ -96,7 +96,7 @@ def genre(name):
     # )
 
     cursor = g.conn.execute(text(
-        "SELECT DISTINCT sub_genre "
+        "SELECT sub_genre "
         "FROM genre_inheritance "
         f"WHERE parent_genre = '{name}' "
     ))
