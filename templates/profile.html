@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}{{user}}'s Music{% endblock title %}
+{% block title %}{{macros.capitalise(user)}}'s Music{% endblock title %}
 
 
 {% block content %}
-<h2>{{user}}'s Music/h2>
+<h3>{{macros.capitalise(user)}}'s Music</h3>
 
 {% if columns %}
-    <h3>{{macros.capitalize(user)}}'s Music</h3>
     {{ macros.display_all_as_table(data, columns) }}
 {% endif %}
 
