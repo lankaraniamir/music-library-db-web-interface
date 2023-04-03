@@ -218,7 +218,8 @@ def register():
         else:
             select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
             cursor = g.conn.execute(text(f"SELECT * FROM app_user WHERE username = '{username}'"))
-            if cursor:
+            print(cursor)
+            if len(cursor) > 0:
                 error = f"User {username} is already registered."
                 cursor.close()
             else:
