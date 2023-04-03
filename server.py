@@ -107,7 +107,7 @@ def genre(name):
     f"WHERE sub_genre = '{name}' "
     )
 
-    select_query = (
+    query = (
     "SELECT DISTINCT sub_genre "
     "FROM ( "
         "WITH RECURSIVE "
