@@ -205,7 +205,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        name = request.form['name']
+        name     = request.form['name']
 
         if not username:
             error = 'Username is required.'
@@ -216,16 +216,17 @@ def register():
         elif len(username) > 15:
             error = 'Password is more than 15 characters.'
         else:
-            cursor = g.conn.execute(f"SELECT * FROM app_user WHERE username = '{username}'")
+            select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
+            cursor = g.conn.execute(text(f"SELECT * FROM app_user WHERE username = '{username}'"))
             if cursor:
                 error = f"User {username} is already registered."
                 cursor.close()
             else:
                 cursor.close()
                 if name:
-                    g.conn.execute(f"INSERT INTO app_user (username, password, name) VALUES {username, password, name}")
+                    g.conn.execute(text(f"INSERT INTO app_user (username, password, name) VALUES {username, password, name[:30]}"))
                 else:
-                    g.conn.execute(f"INSERT INTO app_user (username, password) VALUES {username, password}")
+                    g.conn.execute(text(f"INSERT INTO app_user (username, password) VALUES {username, password}"))
                 g.conn.commit()
 
     return render_template('register.html', error=error)
