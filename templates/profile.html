@@ -26,12 +26,6 @@
             {{ macros.att_display(song.year) }}
             {{ macros.att_display(song.main_artists) }}
             {{ macros.att_display(song.other_artists) }}
-            {% if song.featured_artists == None %}
-            	<td></td>
-            {% else %}
-                 <td>{{song.featured_artists}}</td>
-            {% endif %}
-            {{ macros.att_display(song.other_artists) }}
             <td>{{song.genres}}</td>
             <td>{{song.love}}</td>
             <td>{{song.stars}}</td>
