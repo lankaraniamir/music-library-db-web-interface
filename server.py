@@ -205,7 +205,7 @@ def profile(username):
         selection = None
 
     if selection == 'songs':
-        select_query = (
+        query = (
         "SELECT S.title AS song, S.year as year, "
             "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
             "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
@@ -221,7 +221,7 @@ def profile(username):
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
 
     elif selection == 'albums':
-        select_query = (
+        query = (
         "SELECT R.title AS releases, R.release_date as release_date, "
             "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
             "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
@@ -236,7 +236,7 @@ def profile(username):
         columns = ["releases","main_artists","other_artists","year","genres","release_type","love","stars"]
 
     elif selection == 'playlists':
-        select_query = (
+        query = (
         "SELECT Distinct P.title as playlists, date_created, date_modified, track_count "
             # "STRING_AGG( DISTINCT JO.playlist_creator ) "
         "FROM playlist P, other_playlist_creator O "
@@ -249,12 +249,7 @@ def profile(username):
         return render_template('profile.html', title=username, user=username,
                                data=None, sort=None, columns=None, error=error, selection=selection)
 
-    rows = get_query(select_query)
-    # cursor = g.conn.execute(text(select_query))
-    # rows = []
-    # for result in cursor:
-    #     rows.append(result)
-    # cursor.close()
+    rows = get_query(query)
     return render_template('profile.html', title=username, user=username,
                            data=rows, sort="stars", columns=columns, error=error,
                            selection=selection)
@@ -273,21 +268,14 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
-        cursor = g.conn.execute(text(select_query))
-
-        users = []
-        for result in cursor:
-            users.append(result)
-        cursor.close()
-
+        query = f"SELECT * FROM app_user WHERE username = '{username}'"
+        users = get_query(query)
         if not users:
             error = 'Username does not exist. Try again.'
         elif len(users) > 1:
             error = "Duplicate username should not exist. Contact site admins."
         elif users[0].password != password:
             error = 'Incorrect password. Try again.'
-
         if error is None:
             session.clear()
             session['username'] = username
@@ -312,13 +300,7 @@ def register():
         elif len(username) > 15:
             error = 'Password is more than 15 characters.'
         else:
-            select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
-            cursor = g.conn.execute(text(f"SELECT * FROM app_user WHERE username = '{username}'"))
-            matching_user = []
-            for result in cursor:
-                matching_user.append(result)
-            cursor.close()
-
+            matching_user = get_query(f"SELECT * FROM app_user WHERE username = '{username}'")
             if len(matching_user) > 0:
                 error = f"User {username} is already registered."
             else:
@@ -336,7 +318,6 @@ def logout():
     # session.pop('username', None)
 	session.clear()
 	return redirect('/')
-
 
 
 
