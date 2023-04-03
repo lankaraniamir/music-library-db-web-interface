@@ -110,7 +110,7 @@ def genre(name):
         "SELECT DISTINCT parent_genre "
         "FROM genre_inheritance "
         f"WHERE sub_genre = '{name}' ",
-        single = True
+        single = False
     )
 
     # query = (
@@ -152,6 +152,7 @@ def genre(name):
     single=False
     )
 
+    print(parents)
     print(all_songs)
     # context = dict(descendants = descendants)
     context = dict(children = children, parents = parents, song=all_songs)
