@@ -1,7 +1,9 @@
 {# templates/macros.html #}
 
 {% macro display_val(value) %}
-    {% if value != None %}
+    {% if value == True %}
+        ❤️
+    {% if value != None or value != False %}
         {{value}}
     {% endif %}
 {% endmacro %}
@@ -20,6 +22,7 @@
             {% endfor %}
         </tr>
     {% endfor %}
+</table>
 {% endmacro %}
 
 {% macro nav_link(menu_item) %}
