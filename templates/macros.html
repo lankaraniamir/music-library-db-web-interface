@@ -63,7 +63,6 @@
         capitalize(session['username'])}}</a>
     {% else %}
         {{reference(menu_item, caps=True)}}
-        <a href="{{ url_for(menu_item) }}">{{ capitalize(menu_item) }}</a>
     {% endif %}
 
     {% if request.endpoint == menu_item %}
