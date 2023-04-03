@@ -6,7 +6,7 @@
 <ul>
     {% for genre in genres|sort(attribute="n")%}
     <li>
-        macros.reference(genre, var=name, caps=True)
+        {{macros.reference(genre, var=name, caps=True)}}
     </li>
     {% endfor %}
 </ul>
