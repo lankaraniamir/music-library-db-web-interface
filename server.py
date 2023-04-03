@@ -166,10 +166,7 @@ def genre(name):
     "SELECT DISTINCT sub_genre FROM subgenres ",
     single=True
     )
-    print(subgenres)
-    print(name)
 
-    # context = dict(descendants = descendants)
     context = dict(children=children, parents=parents, songs=all_songs,
                    subgenres=subgenres)
     return render_template("genre.html", title=name, **context)
