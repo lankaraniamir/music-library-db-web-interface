@@ -4,10 +4,12 @@
 
 
 {% block content %}
-<h3>{{macros.capitalize(user)}}'s Music</h3>
 
 {% if columns %}
+    <h3>{{macros.capitalize(user)}}'s {{selection}}</h3>
     {{ macros.display_all_as_table(data, columns) }}
+{% else %}
+    <h3>{{macros.capitalize(user)}}'s Music</h3>
 {% endif %}
 
 <div>

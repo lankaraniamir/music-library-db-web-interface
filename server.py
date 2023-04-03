@@ -159,7 +159,8 @@ def profile(username):
     cursor.close()
 
     return render_template('profile.html', title=username, user=username,
-                           data=rows, sort="stars", columns=columns, error=error)
+                           data=rows, sort="stars", columns=columns, error=error
+                           group=selection)
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
