@@ -21,9 +21,10 @@
     </li>
     {% endfor %}
     </section>
+    &nbsp
 
     <section>
-    <b>Parent Genres</b>
+    <b>Songs</b>
     {% for song in songs %}
     <li>
         <a href="{{ url_for('song', title=song.title) }}">{{song.title}}</a>
