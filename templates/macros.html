@@ -11,15 +11,15 @@
     {% endif %}
 {% endmacro %}
 
-{% macro reference(page, var=None, text=None, caps=False) %}
-    {% if var == None and text != none %}
+{% macro reference(page, attr=None, var=None, text=None, caps=False) %}
+    {% if attr == None and text != none %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
-    {% elif var != None and text != None %}
-        <a href="{{ url_for(page, var=var) }}">{{ f_capitalize(text, caps=caps) }}</a>
-    {% elif var == None %}
+    {% elif attr != None and text != None %}
+        <a href="{{ url_for(page, attr=var) }}">{{ f_capitalize(text, caps=caps) }}</a>
+    {% elif attr == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% else %}
-        <a href="{{ url_for(page, var=var) }}">{{ f_capitalize(var, caps=caps) }}</a>
+        <a href="{{ url_for(page, attr=var) }}">{{ f_capitalize(var, caps=caps) }}</a>
     {% endif %}
 {% endmacro %}
 
@@ -61,8 +61,9 @@
 
 {% macro nav_link(menu_item) %}
     {% if menu_item == "profile" %}
-        {{ reference('profile', var=(session['username']), text=(session['username']),
-        caps=True) }}
+        {{ reference('profile', attr='username',
+            var=session['username'], text=session['username'],
+            caps=True) }}
     {% else %}
         {{reference(menu_item, text=menu_item, caps=True)}}
     {% endif %}
