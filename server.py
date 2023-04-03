@@ -137,7 +137,7 @@ def logout():
 
 @app.route('/profile/<username>', methods=('GET', 'POST'))
 def profile(username):
-    if request.method == 'POST'
+    if request.method == 'POST':
         selection = request.form['options']
     else:
           selection = 'songs'
