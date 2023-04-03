@@ -2,10 +2,8 @@
 
 
 {% macro att_display(value) %}
-    {% if value == None %}
-        <td></td>
-    {% else %}
-            <td>{{value}}</td>
+    {% if value != None %}
+        {{value}}
     {% endif %}
 {% endmacro %}
 
