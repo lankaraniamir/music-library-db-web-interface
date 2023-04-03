@@ -152,7 +152,7 @@ def genre(name):
     single=False
     )
 
-    print(parents)
+    print(children)
     print(all_songs)
     # context = dict(descendants = descendants)
     context = dict(children = children, parents = parents, song=all_songs)
