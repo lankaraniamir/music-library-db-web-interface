@@ -159,7 +159,7 @@ def profile(username):
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
     elif selection == 'albums':
         select_query = (
-            "SELECT R.title AS release, R.release_date as release_date, "
+            "SELECT R.title AS releases, R.release_date as release_date, "
                 "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
                 "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
                 "STRING_AGG(DISTINCT genre, ', ') AS genres, "
@@ -182,7 +182,7 @@ def profile(username):
         columns = ["playlists", "track_count", "date_created", "date_modified"]
     else:
         return render_template('profile.html', title=username, user=username,
-                               columns=None)
+                               data=None, sort=None, columns=None)
 
     cursor = g.conn.execute(text(select_query))
 
