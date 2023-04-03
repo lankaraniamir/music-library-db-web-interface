@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% import "macros.html" as macros %}
 
+{% set columns =
+    [song,"year","main_artists","featured_artists","other_artists","genres","love","stars"]
+%}
+
+{% block title %}{{user}}'s Music{% endblock title %}
+
+{% block content %}
 {% block content %}
 <h2>{{user}}'s Music</h2>
 <table>
@@ -17,9 +24,8 @@
     {% for song in songs|sort(attribute="stars")%}
         <tr>
             <td>{{song.song}}</td>
-            <td>{{song.year}}</td>
+            <td>{{song.{{columns[0]}}}}</td>
             {{ macros.att_display(song.year) }}
-            <!-- <td>{{song.main_artists}}</td> -->
             {{ macros.att_display(song.main_artists) }}
             {{ macros.att_display(song.other_artists) }}
             {% if song.featured_artists == None %}
