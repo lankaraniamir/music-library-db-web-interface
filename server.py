@@ -50,6 +50,16 @@ def teardown_request(exception):
 
 
 
+def get_query(query):
+    cursor = g.conn.execute(text(query))
+    result = []
+    for row in cursor:
+        result.append(row)
+    cursor.close()
+    return result
+
+
+
 @app.route('/')
 def home():
     if 'username' in session:
@@ -60,19 +70,62 @@ def home():
 
 @app.route('/genres')
 def genres():
-	select_query = "SELECT * FROM genre"
-
-	cursor = g.conn.execute(text(select_query))
-	genres = []
-	for result in cursor:
-		genres.append(result)
-	cursor.close()
+	genres = get_query("SELECT * FROM genre")
 
 	context = dict(genres = genres)
 	return render_template("genres.html", title="All Genres", **context)
 
 @app.route('/genres/<name>')
 def genre(name):
+    # select_query = (
+    # "SELECT DISTINCT genre "
+    # "FROM ( "
+    #     "WITH RECURSIVE "
+    #     "   subgenres(sub_genre, parent_genre) AS ( "
+    #     "       SELECT sub_genre, parent_genre "
+    #     "       FROM genre_inheritance "
+    #     f"       WHERE parent_genre = '{name}' "
+    #     "       UNION "
+    #     "           SELECT A.sub_genre, A.parent_genre "
+    #     "           FROM genre_inheritance A "
+    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+    #     "   ) "
+    #     "SELECT DISTINCT sub_genre FROM subgenres "
+    #     "UNION SELECT DISTINCT parent_genre FROM subgenres "
+    # ") AS SG "
+    # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
+    # )
+
+    select_query = (
+    "SELECT DISTINCT sub_genre "
+    "FROM genre_inheritance A "
+    f"WHERE parent_genre = '{name}' "
+    )
+
+    select_query = (
+    "SELECT DISTINCT parent_genre "
+    "FROM genre_inheritance A "
+    f"WHERE sub_genre = '{name}' "
+    )
+
+    select_query = (
+    "SELECT DISTINCT sub_genre "
+    "FROM ( "
+        "WITH RECURSIVE "
+        "   subgenres(sub_genre, parent_genre) AS ( "
+        "       FROM genre_inheritance "
+        f"       WHERE parent_genre = '{name}' "
+        "       UNION "
+        "           SELECT A.sub_genre, A.parent_genre "
+        "           FROM genre_inheritance A "
+        "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+        "   ) "
+        "SELECT DISTINCT sub_genre FROM subgenres "
+        "UNION SELECT DISTINCT parent_genre FROM subgenres "
+    ") AS SG "
+    # f"WHERE SG.primary_genre != {name}; "
+    )
+
     select_query = (
     "SELECT DISTINCT title "
     "FROM song S, song_in_genre G, ( "
@@ -100,6 +153,8 @@ def genre(name):
 
     context = dict(songs = songs)
     return render_template("genre.html", title=name, **context)
+
+
 # add radio button for primary, secondary, or both
 # error = None
 # if request.method == 'POST' and len(request.form) > 0:
@@ -126,17 +181,17 @@ def song(title):
 
 @app.route('/users')
 def users():
-	# select_query = "SELECT username FROM app_user"
-	select_query = "SELECT * FROM app_user"
-	cursor = g.conn.execute(text(select_query))
+    # select_query = "SELECT * FROM app_user"
+    # cursor = g.conn.execute(text(select_query))
 
-	users = []
-	for result in cursor:
-		users.append(result)
-	cursor.close()
+    # users = []
+    # for result in cursor:
+    # 	users.append(result)
+    # cursor.close()
 
-	context = dict(users = users)
-	return render_template("users.html", title="All Users", **context)
+    users = get_query("SELECT * FROM app_user")
+    context = dict(users = users)
+    return render_template("users.html", title="All Users", **context)
 
 @app.route('/users/<username>', methods=('GET', 'POST'))
 def profile(username):
@@ -194,11 +249,12 @@ def profile(username):
         return render_template('profile.html', title=username, user=username,
                                data=None, sort=None, columns=None, error=error, selection=selection)
 
-    cursor = g.conn.execute(text(select_query))
-    rows = []
-    for result in cursor:
-        rows.append(result)
-    cursor.close()
+    rows = get_query(select_query)
+    # cursor = g.conn.execute(text(select_query))
+    # rows = []
+    # for result in cursor:
+    #     rows.append(result)
+    # cursor.close()
     return render_template('profile.html', title=username, user=username,
                            data=rows, sort="stars", columns=columns, error=error,
                            selection=selection)
