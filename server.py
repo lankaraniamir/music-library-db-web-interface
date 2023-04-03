@@ -101,9 +101,10 @@ def genre(name):
         f"WHERE parent_genre = '{name}' "
     ))
     print(cursor)
-    children = []
-    for row in cursor:
-        children.append(row)
+    children = cursor.mappings().all()
+    # children = []
+    # for row in cursor:
+    #     children.append(row)
     print(children)
     cursor.close()
 
