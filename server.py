@@ -60,9 +60,9 @@ def home():
 
 @app.route('/genres')
 def genres():
-	select_query = "SELECT * FROM genres"
-	cursor = g.conn.execute(text(select_query))
+	select_query = "SELECT * FROM genre"
 
+	cursor = g.conn.execute(text(select_query))
 	genres = []
 	for result in cursor:
 		users.append(result)
@@ -73,9 +73,6 @@ def genres():
 
 @app.route('/genres/<name>')
 def genre(name):
-    select_query = "SELECT * FROM genres"
-    cursor = g.conn.execute(text(select_query))
-
     select_query = (
     "SELECT DISTINCT title "
     "FROM song S, song_in_genre G, ( "
@@ -95,6 +92,7 @@ def genre(name):
     "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
     )
 
+    cursor = g.conn.execute(text(select_query))
     songs = []
     for result in cursor:
         songs.append(result)
