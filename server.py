@@ -140,7 +140,8 @@ def profile(username):
     select_query = (
         "SELECT S.title AS song, S.year as year, "
             "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), NULL), '{}') AS featured_artists, "
+            "NULLIF(STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', '), 'NULL') AS featured_artists, "
+            # "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), NULL), '{}') AS featured_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
             "ARRAY_AGG(DISTINCT genre) AS genres, "
             "O.love as love, O.stars as stars "
