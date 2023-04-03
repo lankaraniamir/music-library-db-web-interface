@@ -9,17 +9,6 @@
 
 {% block content %}
 <h2>{{user}}'s Music</h2>
-<table>
-    <tr>
-        <th>song</th>
-        <th>year</th>
-        <th>main_artists</th>
-        <th>featured_artists</th>
-        <th>other_artists</th>
-        <th>genres</th>
-        <th>love</th>
-        <th>stars</th>
-    </tr>
     {{ macros.display_all_as_table(songs, columns) }}
 </table>
 {% endblock content %}
