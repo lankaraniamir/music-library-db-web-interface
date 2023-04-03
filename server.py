@@ -80,7 +80,7 @@ def genre(name):
         "   subgenres(sub_genre, parent_genre) AS ( "
         "       SELECT sub_genre, parent_genre "
         "       FROM genre_inheritance "
-        f"       WHERE parent_genre = {name} "
+        f"       WHERE parent_genre = '{name}' "
         "       UNION "
         "           SELECT A.sub_genre, A.parent_genre "
         "           FROM genre_inheritance A "
@@ -136,7 +136,7 @@ def users():
 	cursor.close()
 
 	context = dict(users = users)
-	return render_template("users.html", title="Users", **context)
+	return render_template("users.html", title="All Users", **context)
 
 @app.route('/users/<username>', methods=('GET', 'POST'))
 def profile(username):
