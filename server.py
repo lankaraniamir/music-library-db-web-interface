@@ -132,6 +132,25 @@ def genre(name):
     # )
     # descendants = get_query(query)
 
+    # all_songs = get_query(
+    # "SELECT DISTINCT title "
+    # "FROM song S, song_in_genre G, ( "
+    #     "WITH RECURSIVE "
+    #     "   subgenres(sub_genre, parent_genre) AS ( "
+    #     "       SELECT sub_genre, parent_genre "
+    #     "       FROM genre_inheritance "
+    #     f"       WHERE parent_genre = '{name}' "
+    #     "       UNION "
+    #     "           SELECT A.sub_genre, A.parent_genre "
+    #     "           FROM genre_inheritance A "
+    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+    #     "   ) "
+    #     "SELECT DISTINCT sub_genre FROM subgenres "
+    #     "UNION SELECT DISTINCT parent_genre FROM subgenres "
+    # ") AS SG "
+    # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; ",
+    # single=True
+    # )
     all_songs = get_query(
     "SELECT DISTINCT title "
     "FROM song S, song_in_genre G, ( "
@@ -148,7 +167,8 @@ def genre(name):
         "SELECT DISTINCT sub_genre FROM subgenres "
         "UNION SELECT DISTINCT parent_genre FROM subgenres "
     ") AS SG "
-    "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; ",
+    "WHERE (G.genre = SG.sub_genre or G.genre = SG.parent_genre) and "
+    "S.song_id = G.song_id and G.primary_genre = True; ",
     single=True
     )
 

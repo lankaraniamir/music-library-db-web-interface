@@ -5,18 +5,6 @@
 <ul>
 
     <section>
-    {% if subgenres %}
-        <b>All Subgenres</b>
-        {% for genre in subgenres %}
-            <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
-        {% endfor %}
-    {% else %}
-        <b>No subgenres</b>
-    {% endif %}
-    </section>
-    &nbsp
-
-    <section>
     {% if children %}
         <b>Child Genres</b>
         {% for genre in children %}
@@ -36,6 +24,18 @@
         {% endfor %}
     {% else %}
         <b>No parent genres</b>
+    {% endif %}
+    </section>
+    &nbsp
+
+    <section>
+    {% if subgenres %}
+        <b>All Subgenres</b>
+        {% for genre in subgenres %}
+            <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
+        {% endfor %}
+    {% else %}
+        <b>No subgenres</b>
     {% endif %}
     </section>
     &nbsp
