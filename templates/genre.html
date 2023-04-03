@@ -4,7 +4,7 @@
 <h2>{{ test_name }} {{ title }}</h2>
 <ul>
     <section>
-    <br>Child Genres</br>
+    <b>Child Genres</b>
     {% for genre in children %}
     <li>
         <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
