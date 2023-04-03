@@ -6,7 +6,7 @@
 
     <section>
     <b>Subgenres</b>
-    {% for genre in sub_genres %}
+    {% for genre in subgenres %}
     <li>
         <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
     </li>
