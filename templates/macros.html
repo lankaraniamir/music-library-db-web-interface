@@ -10,7 +10,7 @@
     {% for row in entity %}
         <tr>
             {% for col in columns %}
-                <td>{{ macros.display_val(row[col]) }}</td>
+                <td>{{ display_val(row[col]) }}</td>
             {% endfor %}
         </tr>
     {% endfor %}
