@@ -41,7 +41,7 @@
         <a href="{{ url_for('profile', username=session['username']) }}">{{
         capitalize(session['username'])}}</a>
     {% else %}
-        <a href="{{ url_for(menu_item)}}">{{ capitalize(menu_item)}}</a>&nbsp
+        <a href="{{ url_for(menu_item) }}">{{ menu_item}}</a>&nbsp
     {% endif %}
 
     {% if request.endpoint == menu_item %}
