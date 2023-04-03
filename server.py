@@ -58,25 +58,73 @@ def home():
         return render_template('login.html')
     # return render_template("base.html", title="Homepage")
 
-@app.route('/charts')
-def charts():
-	return render_template("charts.html", title="Charts")
 @app.route('/genres')
 def genres():
-	return render_template("genres.html", title="Genres")
-@app.route('/contribute')
-def contribute():
-	return render_template("contribute.html", title="Contribute")
+	select_query = "SELECT * FROM genres"
+	cursor = g.conn.execute(text(select_query))
 
-# @app.route('/add', methods=['POST'])
-# def add():
-# 	name = request.form['name']
-# 	params = {}
-# 	params["new_name"] = name
-# 	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
-# 	g.conn.commit()
-# 	return redirect('/')
+	genres = []
+	for result in cursor:
+		users.append(result)
+	cursor.close()
 
+	context = dict(genres = genres)
+	return render_template("genres.html", title="All Genres", **context)
+
+@app.route('/genres/<name>')
+def genre(name):
+    select_query = "SELECT * FROM genres"
+    cursor = g.conn.execute(text(select_query))
+
+    select_query = (
+    "SELECT DISTINCT title "
+    "FROM song S, song_in_genre G, ( "
+        "WITH RECURSIVE "
+        "   subgenres(sub_genre, parent_genre) AS ( "
+        "       SELECT sub_genre, parent_genre "
+        "       FROM genre_inheritance "
+        f"       WHERE parent_genre = {name} "
+        "       UNION "
+        "           SELECT A.sub_genre, A.parent_genre "
+        "           FROM genre_inheritance A "
+        "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+        "   ) "
+        "SELECT DISTINCT sub_genre FROM subgenres "
+        "UNION SELECT DISTINCT parent_genre FROM subgenres "
+    ") AS SG "
+    "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
+    )
+
+    songs = []
+    for result in cursor:
+        songs.append(result)
+    cursor.close()
+
+    context = dict(songs = songs)
+    return render_template("genre.html", title=name, **context)
+# add radio button for primary, secondary, or both
+# error = None
+# if request.method == 'POST' and len(request.form) > 0:
+#     selection = request.form['selection']
+# elif request.method == 'POST' and len(request.form) == 0:
+#     error = "Please select a category."
+#     selection = None
+# else:
+#     selection = None
+
+
+
+
+@app.route('/song/<title>')
+def song(title):
+    return redirect(url_for('profile', username=session['username']))
+
+
+
+
+""""""
+""" *** USER INFO ***"""
+""""""
 
 @app.route('/users')
 def users():
@@ -92,8 +140,6 @@ def users():
 	context = dict(users = users)
 	return render_template("users.html", title="Users", **context)
 
-
-
 @app.route('/users/<username>', methods=('GET', 'POST'))
 def profile(username):
     error = None
@@ -105,67 +151,68 @@ def profile(username):
     else:
         selection = None
 
-
     if selection == 'songs':
         select_query = (
-            "SELECT S.title AS song, S.year as year, "
-                "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
-                "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
-                "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
-                "STRING_AGG(DISTINCT genre, ', ') AS genres, "
-                "O.love as love, ROUND(O.stars/2, 1) as stars "
-            "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
-            "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
-            "AND S.song_id = G.song_id AND S.song_id = O.song_id "
-            f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
-            "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
+        "SELECT S.title AS song, S.year as year, "
+            "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
+            "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
+            "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
+            "STRING_AGG(DISTINCT genre, ', ') AS genres, "
+            "O.love as love, ROUND(O.stars/2, 1) as stars "
+        "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
+        "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
+        "AND S.song_id = G.song_id AND S.song_id = O.song_id "
+        f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
+        "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
         )
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
+
     elif selection == 'albums':
         select_query = (
-            "SELECT R.title AS releases, R.release_date as release_date, "
-                "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
-                "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
-                "STRING_AGG(DISTINCT genre, ', ') AS genres, "
-                "O.love as love, ROUND(O.stars/2, 1) as stars, R.release_type AS release_type "
-            "FROM release R, artist A, release_credit C, release_in_genre G, release_opinion O "
-            "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id "
-            "AND R.release_id = G.release_id AND R.release_id = O.release_id "
-            f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
-            "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
+        "SELECT R.title AS releases, R.release_date as release_date, "
+            "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
+            "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
+            "STRING_AGG(DISTINCT genre, ', ') AS genres, "
+            "O.love as love, ROUND(O.stars/2, 1) as stars, R.release_type AS release_type "
+        "FROM release R, artist A, release_credit C, release_in_genre G, release_opinion O "
+        "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id "
+        "AND R.release_id = G.release_id AND R.release_id = O.release_id "
+        f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
+        "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
         columns = ["releases","main_artists","other_artists","year","genres","release_type","love","stars"]
+
     elif selection == 'playlists':
         select_query = (
-            "SELECT Distinct P.title as playlists, date_created, date_modified, track_count "
-                # "STRING_AGG( DISTINCT JO.playlist_creator ) "
-            "FROM playlist P, other_playlist_creator O "
-            "WHERE P.playlist_id = O.playlist_id "
-            f"AND (P.original_creator = '{username}' OR O.username = '{username}') "
+        "SELECT Distinct P.title as playlists, date_created, date_modified, track_count "
+            # "STRING_AGG( DISTINCT JO.playlist_creator ) "
+        "FROM playlist P, other_playlist_creator O "
+        "WHERE P.playlist_id = O.playlist_id "
+        f"AND (P.original_creator = '{username}' OR O.username = '{username}') "
         )
         columns = ["playlists", "date_created", "date_modified", "track_count"]
+
     else:
         return render_template('profile.html', title=username, user=username,
                                data=None, sort=None, columns=None, error=error, selection=selection)
 
     cursor = g.conn.execute(text(select_query))
-
     rows = []
     for result in cursor:
         rows.append(result)
     cursor.close()
-
     return render_template('profile.html', title=username, user=username,
                            data=rows, sort="stars", columns=columns, error=error,
                            selection=selection)
 
 
 
+
+
 """"""
-""" *** LOGIN AND USER ***"""
+""" *** LOGIN & REGISTRATION ***"""
 """"""
 
-@app.route('/login', methods=('GET', 'POST'))
 def login():
     error = None
     if request.method == 'POST':
@@ -235,6 +282,23 @@ def logout():
     # session.pop('username', None)
 	session.clear()
 	return redirect('/')
+
+
+
+
+
+""""""
+""" *** Not made ***"""
+""""""
+@app.route('/contribute')
+def contribute():
+	return render_template("contribute.html", title="Contribute")
+@app.route('/charts')
+def charts():
+	return render_template("charts.html", title="Charts")
+
+
+
 
 
 """ More Pre-made ***"""

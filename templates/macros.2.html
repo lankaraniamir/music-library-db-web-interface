@@ -12,14 +12,11 @@
 
 {% macro reference(page, var=None, text=None, caps=False) %}
     {% if var == None and text == None %}
-        <a href="{{ url_for('page') }}">{{ f_capitalize(page, caps) }}</a>
+        <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps) }}</a>
     {% elif var != None and text == None %}
-        <a href="{{ url_for(page, var=page.var }}">{{ f_capitalize(page, caps) }}</a>
-    {% else %}
-        {{f_capitalize(text)}}
-    {% endif %}
-{% endmacro %}
+        <a href="{{ url_for(page, ) }}">{{ f_capitalize(page, caps) }}</a>
 
+        -
 
 <a href="{{ url_for(page,) }}">{{ capitalize(menu_item) }}</a>
 {{ text[0]|upper }}{{ text[1:] }}{% endmacro %}

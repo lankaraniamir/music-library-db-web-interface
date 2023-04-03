@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
-
 {% block content %}
 <h2>{{ test_name }} {{ title }}</h2>
 <ul>
-    {% for genre in genres|sort(attribute="n")%}
+    {% for song in songs|sort(attribute="n")%}
     <li>
-        <a href="{{ url_for('genre', genre=genre.name) }}">{{genre.name}}</a>
+        <a href="{{ url_for('song', title=song.title) }}">{{song.title}}</a>
     </li>
     {% endfor %}
 </ul>
