@@ -3,7 +3,8 @@
 {% block content %}
 <h2>{{ test_name }} {{ title }}</h2>
 <ul>
-    {% for genre in genres|sort(attribute="n")%}
+    <h3>Descendant Genres </h2>
+    {% for genre in descendants|sort(attribute="n")%}
     <li>
         <a href="{{ url_for('genre', name=genre.name) }}">{{genre.name}}</a>
     </li>

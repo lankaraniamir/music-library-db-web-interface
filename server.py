@@ -124,28 +124,28 @@ def genre(name):
     ") AS SG "
     # f"WHERE SG.primary_genre != {name}; "
     )
+    descendants = get_query(query)
 
-    query = (
-    "SELECT DISTINCT title "
-    "FROM song S, song_in_genre G, ( "
-        "WITH RECURSIVE "
-        "   subgenres(sub_genre, parent_genre) AS ( "
-        "       SELECT sub_genre, parent_genre "
-        "       FROM genre_inheritance "
-        f"       WHERE parent_genre = '{name}' "
-        "       UNION "
-        "           SELECT A.sub_genre, A.parent_genre "
-        "           FROM genre_inheritance A "
-        "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
-        "   ) "
-        "SELECT DISTINCT sub_genre FROM subgenres "
-        "UNION SELECT DISTINCT parent_genre FROM subgenres "
-    ") AS SG "
-    "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
-    )
-    descendant_genres = get_query(query)
+    # query = (
+    # "SELECT DISTINCT title "
+    # "FROM song S, song_in_genre G, ( "
+    #     "WITH RECURSIVE "
+    #     "   subgenres(sub_genre, parent_genre) AS ( "
+    #     "       SELECT sub_genre, parent_genre "
+    #     "       FROM genre_inheritance "
+    #     f"       WHERE parent_genre = '{name}' "
+    #     "       UNION "
+    #     "           SELECT A.sub_genre, A.parent_genre "
+    #     "           FROM genre_inheritance A "
+    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+    #     "   ) "
+    #     "SELECT DISTINCT sub_genre FROM subgenres "
+    #     "UNION SELECT DISTINCT parent_genre FROM subgenres "
+    # ") AS SG "
+    # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
+    # )
 
-    context = dict(genres = genres)
+    context = dict(descendants = descendants)
     return render_template("genre.html", title=name, **context)
 
 
