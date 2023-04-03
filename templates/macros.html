@@ -61,9 +61,9 @@
 
 {% macro nav_link(menu_item) %}
     {% if menu_item == "profile" %}
-        {{ reference('profile', attr='username',
+        {{ reference('profile', attr=username,
             var=session['username'], text=session['username'],
-            caps=True) }}
+        caps=True) }}
     {% else %}
         {{reference(menu_item, text=menu_item, caps=True)}}
     {% endif %}
