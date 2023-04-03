@@ -157,7 +157,7 @@ def profile(username):
         songs.append(result)
     cursor.close()
 
-    return render_template('profile.html', user=username, songs=songs, sort="love")
+    return render_template('profile.html', title=username, songs=songs, sort="stars")
 
 
 
