@@ -95,11 +95,11 @@ def genre(name):
     # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
     # )
 
-    cursor = g.conn.execute(
+    cursor = g.conn.execute(text(
         "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
         f"WHERE parent_genre = '{name}' "
-    )
+    ))
     print(cursor)
     result = []
     for row in cursor:
