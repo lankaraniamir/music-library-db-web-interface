@@ -27,7 +27,7 @@
     <b>Songs</b>
     {% for song in songs %}
     <li>
-        <a href="{{ url_for('song', title=song) }}">{{title}}</a>
+        <a href="{{ url_for('song', title=song) }}">{{song}}</a>
     </li>
     {% endfor %}
     </section>
