@@ -164,14 +164,14 @@ def genre(name):
     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
     "   ) "
     "SELECT DISTINCT sub_genre FROM subgenres ",
-    # "UNION SELECT DISTINCT parent_genre FROM subgenres ",
     single=True
     )
     print(subgenres)
     print(name)
 
     # context = dict(descendants = descendants)
-    context = dict(children = children, parents = parents, songs = all_songs)
+    context = dict(children=children, parents=parents, songs=all_songs
+                   subgenres=subgenres)
     return render_template("genre.html", title=name, **context)
 
 
