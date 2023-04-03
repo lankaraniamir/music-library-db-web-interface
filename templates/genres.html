@@ -6,7 +6,7 @@
 <ul>
     {% for genre in genres|sort(attribute="n")%}
     <li>
-        <a href="{{ url_for('genre', name=genre.name) }}">{{genre.name}}</a>
+        <a href="{{ url_for('genre', name=genre.name) }}">{{capitalize(genre.name)}}</a>
     </li>
     {% endfor %}
 </ul>
