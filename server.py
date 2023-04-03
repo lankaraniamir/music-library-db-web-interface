@@ -97,44 +97,6 @@ def contribute():
 # 	g.conn.commit()
 # 	return redirect('/')
 
-@app.route('/login', methods=('GET', 'POST'))
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
-        cursor = g.conn.execute(text(select_query))
-
-        users = []
-        for result in cursor:
-            users.append(result)
-        cursor.close()
-
-
-        error = None
-        if not users:
-            error = 'Username does not exist. Try again.'
-        elif len(users) > 1:
-            error = "Duplicate username should not exist. Contact site admins."
-        elif users[0].password != password:
-            error = 'Incorrect password. Try again.'
-
-        if error is None:
-            session.clear()
-            session['username'] = users[0].username
-            return redirect(url_for('profile', username=users[0].username))
-
-        return render_template('login.html', error=error)
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    # session.pop('username', None)
-	session.clear()
-	return redirect('/')
-
-
 @app.route('/profile/<username>', methods=('GET', 'POST'))
 def profile(username):
     error = None
@@ -199,33 +161,79 @@ def profile(username):
     return render_template('profile.html', title=username, user=username,
                            data=rows, sort="stars", columns=columns, error=error)
 
+@app.route('/login', methods=('GET', 'POST'))
+def login():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        select_query = f"SELECT * FROM app_user WHERE username = '{username}'"
+        cursor = g.conn.execute(text(select_query))
+
+        users = []
+        for result in cursor:
+            users.append(result)
+        cursor.close()
+
+        if not users:
+            error = 'Username does not exist. Try again.'
+        elif len(users) > 1:
+            error = "Duplicate username should not exist. Contact site admins."
+        elif users[0].password != password:
+            error = 'Incorrect password. Try again.'
+
+        if error is None:
+            session.clear()
+            session['username'] = users[0].username
+            return redirect(url_for('profile', username=users[0].username))
+
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+def logout():
+    # session.pop('username', None)
+	session.clear()
+	return redirect('/')
+
+
 
 
 @app.route('/register', methods=('GET', 'POST'))
 def register():
+    error = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        error = None
+        name = request.form['name']
 
         if not username:
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif len(username) > 15:
+            error = 'Username is more than 15 characters.'
+        else:
+            error = 'Password is more than 15 characters.'
 
         if error is None:
             select_query=(f'SELECT * FROM app_user WHERE username = {username}')
-            if not g.conn.execute(text(select_query)):
+            if not g.conn.execute(text(select_query)) and not name:
                 g.conn.execute(
                     "INSERT INTO app_user (username, password) VALUES (?, ?)",
                     (username, password),
                 )
                 g.conn.commit()
+            if not g.conn.execute(text(select_query)) and name:
+                g.conn.execute(
+                    "INSERT INTO app_user (username, password, name) VALUES (?, ?, ?)",
+                    (username, password, name),
+                )
+                g.conn.commit()
             else:
                 error = f"User {username} is already registered."
-        flash(error)
 
-    return render_template('register.html')
+    return render_template('register.html', error=error)
 
 if __name__ == "__main__":
 	import click
