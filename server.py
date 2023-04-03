@@ -169,6 +169,7 @@ def genre(name):
     single=True
     )
     print(subgenres)
+    print(name)
 
     # context = dict(descendants = descendants)
     context = dict(children = children, parents = parents, songs = all_songs)
