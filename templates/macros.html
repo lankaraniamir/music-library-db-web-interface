@@ -1,5 +1,14 @@
 {# templates/macros.html #}
 
+
+{% macro att_display(value) %}
+    {% if value == None %}
+        <td></td>
+    {% else %}
+            <td>{{value}}</td>
+    {% endif %}
+{% endmacro %}
+
 {% macro nav_link(menu_item) %}
     {% if menu_item == "profile" %}
         <a href="{{ url_for('profile', username=session['username']) }}{{ mode }}">{{

@@ -15,22 +15,13 @@
     </tr>
     {% for song in songs|sort(attribute="stars")%}
         <tr>
-            <td>{{song.song}}</td>
-            <td>{{song.year}}</td>
-            <td>{{song.main_artists}}</td>
-            {% if song.featured_artists == None %}
+        {% for value in song.values() %}
+            {% if value == None %}
             	<td></td>
             {% else %}
-                 <td>{{song.featured_artists}}</td>
+                 <td>{{value}}</td>
             {% endif %}
-            {% if song.other_artists == None %}
-            	<td></td>
-            {% else %}
-                 <td>{{song.other_artists}}</td>
-            {% endif %}
-            <td>{{song.genres}}</td>
-            <td>{{song.love}}</td>
-            <td>{{song.stars}}</td>
+        {% endfor %}
         </tr>
     {% endfor %}
 </table>
