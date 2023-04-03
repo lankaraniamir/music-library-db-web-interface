@@ -152,6 +152,7 @@ def genre(name):
     single=True
     )
 
+    print(all_songs)
     # context = dict(descendants = descendants)
     context = dict(children = children, parents = parents, song=all_songs)
     return render_template("genre.html", title=name, **context)
