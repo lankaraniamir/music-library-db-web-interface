@@ -79,33 +79,25 @@ def genres():
 
 @app.route('/genres/<name>')
 def genre(name):
-    # select_query = (
-    # "SELECT DISTINCT genre "
-    # "FROM ( "
-    #     "WITH RECURSIVE "
-    #     "   subgenres(sub_genre, parent_genre) AS ( "
-    #     "       SELECT sub_genre, parent_genre "
-    #     "       FROM genre_inheritance "
-    #     f"       WHERE parent_genre = '{name}' "
-    #     "       UNION "
-    #     "           SELECT A.sub_genre, A.parent_genre "
-    #     "           FROM genre_inheritance A "
-    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
-    #     "   ) "
-    #     "SELECT DISTINCT sub_genre FROM subgenres "
-    #     "UNION SELECT DISTINCT parent_genre FROM subgenres "
-    # ") AS SG "
-    # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; "
-    # )
-
-
-    # cursor = g.conn.execute(text(
-    #     "SELECT DISTINCT sub_genre "
-    #     "FROM genre_inheritance "
-    #     f"WHERE parent_genre = '{name}' "
-    # ))
-    # children = cursor.mappings().all()
-    # cursor.close()
+    genres = get_query(
+    "SELECT DISTINCT genre "
+    "FROM ( "
+        "WITH RECURSIVE "
+        "   subgenres(sub_genre, parent_genre) AS ( "
+        "       SELECT sub_genre, parent_genre "
+        "       FROM genre_inheritance "
+        f"       WHERE parent_genre = '{name}' "
+        "       UNION "
+        "           SELECT A.sub_genre, A.parent_genre "
+        "           FROM genre_inheritance A "
+        "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+        "   ) "
+        "SELECT DISTINCT sub_genre FROM subgenres "
+        "UNION SELECT DISTINCT parent_genre FROM subgenres "
+    ") AS SG "
+    "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; ",
+    single=True
+    )
 
     children = get_query(
         "SELECT DISTINCT sub_genre "
@@ -117,7 +109,8 @@ def genre(name):
     parents = get_query(
         "SELECT DISTINCT parent_genre "
         "FROM genre_inheritance "
-        f"WHERE sub_genre = '{name}' "
+        f"WHERE sub_genre = '{name}' ",
+        single = TRUE
     )
 
     # query = (
