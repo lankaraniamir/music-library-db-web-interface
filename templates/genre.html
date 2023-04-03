@@ -3,11 +3,13 @@
 {% block content %}
 <h2>{{ test_name }} {{ title }}</h2>
 <ul>
-    <h3>Child Genres</h3>
+    <section>
+    <br>Child Genres</br>
     {% for genre in children %}
     <li>
         <a href="{{ url_for('genre', name=genre) }}">{{genre}}</a>
     </li>
+    </section>
     {% endfor %}
     <h3>Parent Genres</h3>
     {% for genre in parents %}
