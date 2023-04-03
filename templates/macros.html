@@ -3,7 +3,7 @@
 {% macro display_val(value) %}
     {% if value == True %}
         ❤️
-    {% if value != None or value != False %}
+    {% if value != None AND value != False %}
         {{value}}
     {% endif %}
 {% endmacro %}
