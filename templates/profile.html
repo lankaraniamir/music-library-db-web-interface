@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<h3>{{macros.capitalise(user)}}'s Music</h3>
+<h3>{{macros.capitalize(user)}}'s Music</h3>
 
 {% if columns %}
     {{ macros.display_all_as_table(data, columns) }}
