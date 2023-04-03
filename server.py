@@ -157,10 +157,7 @@ def profile(username):
 
     songs = []
     for result in cursor:
-        # Modelled from
-        # https://stackoverflow.com/questions/14965973/how-to-access-sqlalchemy-object-in-jinja-template-using-column-key
-        result_dict = {c.name: getattr(result, c.name) for c in result.__table__.columns}
-        songs.append(result_dict)
+        songs.append(result)
     cursor.close()
 
     return render_template('profile.html', title=username, user=username,
