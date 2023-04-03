@@ -3,16 +3,17 @@
 {% block content %}
 <h2>{{ test_name }} {{ title }}</h2>
 <ul>
-    <h3>Descendant Genres </h2>
-    {% for genre in descendants|sort(attribute="n")%}
+    <h3>Child Genres</h2>
+    {% for genre in children)%}
     <li>
         <a href="{{ url_for('genre', name=genre.name) }}">{{genre.name}}</a>
     </li>
     {% endfor %}
-    <!-- {% for song in songs|sort(attribute="n")%} -->
-    <!-- <li> -->
-    <!-- <a href="{{ url_for('song', title=song.title) }}">{{song.title}}</a> -->
-    <!-- </li> -->
-    <!-- {% endfor %} -->
+    <h3>Parent Genres</h2>
+    {% for genre in parents)%}
+    <li>
+        <a href="{{ url_for('genre', name=genre.name) }}">{{genre.name}}</a>
+    </li>
+    {% endfor %}
 </ul>
 {% endblock content %}

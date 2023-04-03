@@ -3,7 +3,7 @@
 {% block content %}
 <h2>{{ test_name }} {{ title }}</h2>
 <ul>
-    {% for genre in genres|sort(attribute="n")%}
+    {% for genre in genres|sort(attribute="name")%}
     <li>
         <a href="{{ url_for('genre', name=genre.name) }}">{{genre.name}}</a>
     </li>
