@@ -1,25 +1,18 @@
 
 """
-Columbia's COMS W4111.001 Introduction to Databases
-Example Webserver
-To run locally:
-    python server.py
-Go to http://localhost:8111 in your browser.
-A debugger such as "pdb" may be helpful for debugging.
-Read about it online.
+Amir & Imani's Music Database Server
 """
 import os
-
-# Accessed from template folder (index.html)
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+from flask import Flask, request, render_template, g, redirect, Response, flash, session, url_for
+
+
+""" Pre-made Server Code """
 
 # Setting up flask
-from flask import Flask, request, render_template, g, redirect, Response, flash, session, url_for
-# flash
+tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
-
 
 # Creates database connecting to the given URI
 DATABASE_USERNAME = "al3625"
@@ -55,28 +48,15 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
+
+
 @app.route('/')
 def home():
-    return render_template("base.html", title="Homepage")
-    # if 'username' in session:
-    #     return render_template('base.html', title=session['username'])
-    # else:
+    if 'username' in session:
+        return redirect(url_for('profile', username=session['username']))
+    else:
+        return render_template('login.html')
     # return render_template("base.html", title="Homepage")
-
-@app.route('/users')
-def users():
-	# select_query = "SELECT username FROM app_user"
-	select_query = "SELECT * FROM app_user"
-	cursor = g.conn.execute(text(select_query))
-
-	users = []
-	for result in cursor:
-		users.append(result)
-	cursor.close()
-
-	context = dict(users = users)
-	return render_template("users.html", title="Users", **context)
-
 
 @app.route('/charts')
 def charts():
@@ -96,6 +76,23 @@ def contribute():
 # 	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
 # 	g.conn.commit()
 # 	return redirect('/')
+
+
+@app.route('/profile')
+def users():
+	# select_query = "SELECT username FROM app_user"
+	select_query = "SELECT * FROM app_user"
+	cursor = g.conn.execute(text(select_query))
+
+	users = []
+	for result in cursor:
+		users.append(result)
+	cursor.close()
+
+	context = dict(users = users)
+	return render_template("users.html", title="Users", **context)
+
+
 
 @app.route('/profile/<username>', methods=('GET', 'POST'))
 def profile(username):
@@ -162,6 +159,12 @@ def profile(username):
                            data=rows, sort="stars", columns=columns, error=error,
                            selection=selection)
 
+
+
+""""""
+""" *** LOGIN AND USER ***"""
+""""""
+
 @app.route('/login', methods=('GET', 'POST'))
 def login():
     error = None
@@ -190,15 +193,6 @@ def login():
             return redirect(url_for('profile', username=username))
 
     return render_template('login.html', error=error)
-
-@app.route('/logout')
-def logout():
-    # session.pop('username', None)
-	session.clear()
-	return redirect('/')
-
-
-
 
 @app.route('/register', methods=('GET', 'POST'))
 def register():
@@ -236,6 +230,14 @@ def register():
 
     return render_template('register.html', error=error)
 
+@app.route('/logout')
+def logout():
+    # session.pop('username', None)
+	session.clear()
+	return redirect('/')
+
+
+""" More Pre-made ***"""
 if __name__ == "__main__":
 	import click
 	@click.command()
