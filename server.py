@@ -146,8 +146,6 @@ def profile(username):
     else:
         selection = None
 
-numeric(2,1)
-
 
     if selection == 'songs':
         select_query = (
