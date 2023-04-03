@@ -50,7 +50,7 @@ def teardown_request(exception):
 
 
 
-def get_query(query, single=True):
+def get_query(query, single=False):
     cursor = g.conn.execute(text(query))
     result = []
     for row in cursor:
@@ -99,19 +99,20 @@ def genre(name):
     # )
 
 
-    cursor = g.conn.execute(text(
-        "SELECT DISTINCT sub_genre "
-        "FROM genre_inheritance "
-        f"WHERE parent_genre = '{name}' "
-    ))
-    children = cursor.mappings().all()
-    cursor.close()
-
-    # children = get_query(
+    # cursor = g.conn.execute(text(
     #     "SELECT DISTINCT sub_genre "
     #     "FROM genre_inheritance "
     #     f"WHERE parent_genre = '{name}' "
-    # )
+    # ))
+    # children = cursor.mappings().all()
+    # cursor.close()
+
+    children = get_query(
+        "SELECT DISTINCT sub_genre "
+        "FROM genre_inheritance "
+        f"WHERE parent_genre = '{name}' ",
+        single=True
+    )
 
     parents = get_query(
         "SELECT DISTINCT parent_genre "
