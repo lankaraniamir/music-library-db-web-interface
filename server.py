@@ -164,7 +164,7 @@ def genre(name):
     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
     "   ) "
     "SELECT DISTINCT sub_genre FROM subgenres "
-    "WHERE sub_genre != '{name}'"
+    "WHERE sub_genre != '{name}' "
     "UNION SELECT DISTINCT parent_genre FROM subgenres ",
     single=True
     )
