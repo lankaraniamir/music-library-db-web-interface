@@ -1,10 +1,19 @@
 {# templates/macros.html #}
 
-
-{% macro att_display(value) %}
+{% macro display_val(value) %}
     {% if value != None %}
         {{value}}
     {% endif %}
+{% endmacro %}
+
+{% macro display_all_as_table(entity, columns) %}
+    {% for row in entity %}
+        <tr>
+            {% for col in columns %}
+                <td>{{ display_val(row[col]) }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
 {% endmacro %}
 
 {% macro nav_link(menu_item) %}

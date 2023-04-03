@@ -20,6 +20,17 @@
         <th>love</th>
         <th>stars</th>
     </tr>
-    {{ macros.display_all_as_table(song, columns) }}}
+    {% for song in songs|sort(attribute="stars")%}
+        <tr>
+            <td>{{ macros.display_val(song[columns[0]])}}</td>
+            <td>{{ macros.display_all(song.year) }}</td>
+            <td>{{ macros.display_all(song.main_artists) }}</td>
+            <td>{{ macros.display_all(song.featured_artists) }}</td>
+            <td>{{ macros.display_all(song.other_artists) }}</td>
+            <td>{{song.genres}}</td>
+            <td>{{song.love}}</td>
+            <td>{{song.stars}}</td>
+        </tr>
+    {% endfor %}
 </table>
 {% endblock content %}
