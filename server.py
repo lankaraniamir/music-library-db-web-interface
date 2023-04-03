@@ -218,17 +218,12 @@ def register():
 
         if error is None:
             select_query=f"SELECT * FROM app_user WHERE username = '{username}'"
-            if not g.conn.execute(text(select_query)) and not name:
-                g.conn.execute(
-                    "INSERT INTO app_user (username, password) VALUES (?, ?)",
-                    (username, password),
-                )
+            matching_user = g.conn.execute(text(select_query))
+            if not matching_user and not name:
+                g.conn.execute(f"INSERT INTO app_user (username, password) VALUES {username, password}"),
                 g.conn.commit()
-            if not g.conn.execute(text(select_query)) and name:
-                g.conn.execute(
-                    "INSERT INTO app_user (username, password, name) VALUES (?, ?, ?)",
-                    (username, password, name),
-                )
+            if not matching_user and name:
+                g.conn.execute(f"INSERT INTO app_user (username, password, name) VALUES {username, password, name}"),
                 g.conn.commit()
             else:
                 error = f"User {username} is already registered."
