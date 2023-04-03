@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% import "macros.html" as macros %}
 
 {% set columns =
     ["song","year","main_artists","featured_artists","other_artists","genres","love","stars"]
@@ -8,9 +7,9 @@
 {% block title %}{{user}}'s Music{% endblock title %}
 
 
-
 {% block content %}
-<h3>{{capitalize(user)}}'s Music</h3>
+
+<h3>{{macros.capitalize(user)}}'s Music</h3>
 {{ macros.display_all_as_table(songs, columns) }}
 
 <div>
@@ -23,4 +22,5 @@
     <input type="submit">
 </form>
 </div>
+
 {% endblock content %}
