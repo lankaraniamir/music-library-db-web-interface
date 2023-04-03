@@ -165,7 +165,7 @@ def profile(username):
                 "STRING_AGG(DISTINCT genre, ', ') AS genres, "
                 "O.love as love, O.stars as stars, R.release_type AS release_type "
             "FROM release R, artist A, release_credit C, release_in_genre G, release_opinion O "
-            "WHERE R.relase_id = C.release_id AND A.artist_id = C.artist_id "
+            "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id "
             "AND R.release_id = G.release_id AND R.release_id = O.release_id "
             f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
             "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
@@ -179,7 +179,7 @@ def profile(username):
             "WHERE P.playlist_id = O.playlist_id "
             f"AND (P.original_creator = '{username}' OR O.username = '{username}') "
         )
-        columns = ["playlists", "track_count", "date_created", "date_modified", "track_count"]
+        columns = ["playlists", "track_count", "date_created", "date_modified"]
     else:
         return render_template('profile.html', title=username, user=username,
                                columns=None)
