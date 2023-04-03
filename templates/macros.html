@@ -1,9 +1,7 @@
 {# templates/macros.html #}
 
 {% macro display_val(value) %}
-    {% if value == True %}
-        {{value}}
-    {% elif value != None and value != False %}
+    {% if value != None %}
         {{value}}
     {% endif %}
 {% endmacro %}
