@@ -137,8 +137,12 @@ def logout():
 
 @app.route('/profile/<username>', methods=('GET', 'POST'))
 def profile(username):
-    if request.method == 'POST':
+    error = None
+    if request.method == 'POST' and len(request.form) > 0:
         selection = request.form['selection']
+    elif request.method == 'POST' and len(request.form) == 0:
+        error = "Please select a category."
+        selection = None
     else:
         selection = None
 
@@ -182,7 +186,7 @@ def profile(username):
         columns = ["playlists", "date_created", "date_modified", "track_count"]
     else:
         return render_template('profile.html', title=username, user=username,
-                               data=None, sort=None, columns=None)
+                               data=None, sort=None, columns=None, error=error)
 
     cursor = g.conn.execute(text(select_query))
 
@@ -192,7 +196,7 @@ def profile(username):
     cursor.close()
 
     return render_template('profile.html', title=username, user=username,
-                           data=rows, sort="stars", columns=columns)
+                           data=rows, sort="stars", columns=columns, error=error)
 
 
 
