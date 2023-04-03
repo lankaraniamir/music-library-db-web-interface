@@ -9,14 +9,15 @@
 {% macro display_all_as_table(entity, columns) %}
 <table>
     <tr>
-    {% for col in columns %}
+        {% for col in columns %}
         <th>col</th>
+        {% endfor %}
     </tr>
     {% for row in entity %}
         <tr>
-        {% for col in columns %}
-            <td>{{ display_val(row[col]) }}</td>
-        {% endfor %}
+            {% for col in columns %}
+                <td>{{ display_val(row[col]) }}</td>
+            {% endfor %}
         </tr>
     {% endfor %}
 {% endmacro %}
