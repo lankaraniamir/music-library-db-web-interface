@@ -15,11 +15,11 @@
     </tr>
     {% for song in songs|sort(attribute="stars")%}
         <tr>
-        {% for field in obj.__table__.columns._data.keys() %}
-            {% if song[field] == None %}
+        {% for value in song.values() %}
+            {% if value == None %}
             	<td></td>
             {% else %}
-                 <td>{{song[field]}}</td>
+                 <td>{{value}}</td>
             {% endif %}
         {% endfor %}
         </tr>
