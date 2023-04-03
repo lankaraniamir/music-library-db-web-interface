@@ -217,7 +217,7 @@ def register():
             error = 'Password is more than 15 characters.'
 
         if error is None:
-            select_query=(f'SELECT * FROM app_user WHERE username = {username}')
+            select_query=f"SELECT * FROM app_user WHERE username = '{username}'"
             if not g.conn.execute(text(select_query)) and not name:
                 g.conn.execute(
                     "INSERT INTO app_user (username, password) VALUES (?, ?)",
