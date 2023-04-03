@@ -11,7 +11,9 @@
 
 {% block content %}
 <h3>{{user}}'s Music</h3>
-<h5>{{user}}'s Music</h5>
+{{ macros.display_all_as_table(songs, columns) }}
+
+<body>Which of your music would you like to see?</body>
 <form action="/user_select" method="POST">
     <input type="radio" id="songs" name="selection" value="songs">
     <label for="songs">Songs</label><br>
@@ -19,5 +21,4 @@
     <label for="blue">Blue</label><br>
     <input type="submit">
 </form>
-{{ macros.display_all_as_table(songs, columns) }}
 {% endblock content %}
