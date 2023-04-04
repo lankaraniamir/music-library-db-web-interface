@@ -81,8 +81,8 @@ def songs():
     WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
     GROUP BY S.song_id, S.title;
     """)
-    columns = ["song", "main_artists"]
-    references = ["song","artist"]
+    columns = ["song", "main_artists", "featured_artists"]
+    references = ["song","artist", "artist"]
     extra_text = [" by "," featuring "]
     # columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
     # NULLIF(ARRAY_REMOVE(
