@@ -11,7 +11,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro reference(page, var=None, combo=True text=None, caps=False)%}
+{% macro reference(page, var=None, combo=True, text=None, caps=False)%}
     {% if combo == True %}
         {% SET var = page['var'] %}
     {% endif %}
