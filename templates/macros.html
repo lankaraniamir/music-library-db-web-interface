@@ -13,9 +13,9 @@
 
 {% macro reference(page, param=None, combo=True, text=None, caps=False)%}
     {% if param != None and combo == True %}
-        {% set v = page['var'] %}
+        {% set v = page['param'] %}
     {% elif param != None %}
-        {% set v = var %}
+        {% set v = param %}
     {% endif %}
 
     {% if param == None and text == None %}
