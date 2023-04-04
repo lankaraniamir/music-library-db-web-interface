@@ -19,11 +19,11 @@
 genre is {{title}}? </b></body>
 <form action="{{ url_for('genre', var=title) }}" method=post>
     <input type="radio" id="primary" name="genre_type" value="primary">
-    <label for="Primary Genre">Songs</label><br>
+    <label for="primary">Primary</label><br>
     <input type="radio" id="secondary" name="genre_type" value="secondary">
-    <label for="Secondary Genre">Songs</label><br>
+    <label for="secondary">Secondary</label><br>
     <input type="radio" id="either" name="genre_type" value="either">
-    <label for="Either Primary or Secondary Genre">Songs</label><br>
+    <label for="either">Either Primary or Secondary</label><br>
 </form>
 </div>
 
