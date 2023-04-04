@@ -32,9 +32,9 @@
     {%- endif %}
 {%- endmacro -%}
 
-{% macro label_column(col) %}
+{% macro label_column(col) -%}
     {{ col|replace("_", " ")|capitalize }}
-{% endmacro %}
+{%- endmacro %}
 
 {% macro reference(page, param=None, text=None, caps=False)%}
     {%- if param == None and text == None %}
@@ -44,7 +44,7 @@
     {%- elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {%- else %}
-<a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
+        <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {%- endif %}
 {%- endmacro %}
 
