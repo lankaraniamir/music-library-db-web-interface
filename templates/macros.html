@@ -5,9 +5,9 @@
 
 {% macro f_capitalize(text, caps=True) %}
     {% if caps %}
-        {{- capitalize(text) -}}
+        {{ capitalize(text) }}
     {% else %}
-        {{- text -}}
+        {{ text }}
     {% endif %}
 {% endmacro %}
 
@@ -36,7 +36,7 @@
     {% if param == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% elif param != None and text == None %}
-        <a href="{{- url_for(page, var=param) -}}">{{param}}</a>
+        <a href="{{ url_for(page, var=param) }}" >{{ f_capitalize(param, caps=caps) }}</a>
     {% elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
@@ -54,7 +54,7 @@
             {% if attribute %}
                 <li>{{ reference(page, param=val[attribute]) }}</li>
             {% else %}
-                <li>{{- reference(page, param=val) -}}</li>
+                <li>{{ reference(page, param=val) }}</li>
             {% endif %}
         {% endfor %}
     {% elif null_text != None %}
@@ -80,7 +80,9 @@
             {% if references[loop.index0] == None or row[col] == None %}
                 {{ display_val(row[col]) }}
             {% elif row[col] is iterable and row[col] is not string %}
-                {% for parameter in row[col] %}{{- reference(references[loop.index0], param=parameter) -}},{% endfor %}
+                {% for parameter in row[col] %}
+                    {{ reference(references[loop.index0], param=parameter) -}},
+                {% endfor %}
             {% else %}
                 {{ reference(references[loop.index0], param=row[col]) }}
             {% endif %}
