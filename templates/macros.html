@@ -61,7 +61,7 @@ attribute=None, extra_text=None) %}
             {% else %}
                 <li>{{ reference(page, param=val) }}</li>
             {% endif %}
-            {{ extra_text }}
+            {% if extra_text %}{{ extra_text }}{% endif %}
         {% endfor %}
     {% elif null_text != None %}
         <b>{{null_text}}</b>
