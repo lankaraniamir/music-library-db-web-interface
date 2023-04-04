@@ -78,7 +78,8 @@
             {% if references[i] == None %}
                 {{ display_val(row[col]) }}
             {% else %}
-                {{ reference(references[loop.index0], param=row[col]) }}
+                {% SET group = {{references[loop.index0]}} %}
+                {{ reference(group, param=row[col]) }}
             {% endif %}
         </td>{% endfor %}
         </tr>
