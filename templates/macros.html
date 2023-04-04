@@ -20,7 +20,7 @@
         var={{page['var']}}
     {% endif %}
 
-    print("{{ url_for(page, 'attr'=var) }}")
+    print("{{ url_for(page, attr=var) }}")
     {% if var == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% elif var != None and text == None %}
