@@ -5,7 +5,9 @@
 <ul>
     {% for genre in genres|sort(attribute="name")%}
     <li>
-        <a href="{{ url_for('genre', var=genre.name) }}">{{genre.name}}</a>
+        <!-- <a href="{{ url_for('genre', var=genre.name) }}">{{genre.name}}</a>
+        -->
+        macros.reference('genre', param=genre.name)
     </li>
     {% endfor %}
 </ul>
