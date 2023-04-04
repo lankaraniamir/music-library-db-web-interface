@@ -94,6 +94,7 @@ def songs():
     cursor = g.conn.execute(text(query))
     songs = []
     for row in cursor:
+        print(row)
         songs.append(row)
 
     cursor.close()
