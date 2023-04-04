@@ -6,9 +6,9 @@
 {% macro capitalize(text) %}{{ text[0]|upper }}{{ text[1:] }}{% endmacro %}
 
 {% macro f_capitalize(text, caps=True) %}
-    {% if caps -%}
+    {% if caps %}
         {{ capitalize(text) }}
-    {%- else -%}
+    {%- else %}
         {{ text }}
     {%- endif %}
 {% endmacro %}
@@ -17,9 +17,9 @@
     {% if value is iterable and value is not string %}
         {% set value = value | join(", ") %}
     {% endif %}
-    {% if value == None %}
+    {% if value == None -%}
         -
-    {% elif value == True %}
+    {%- elif value == True %}
         ❤️
     {% elif value == False %}
         ♡️
@@ -42,7 +42,7 @@
     {%- elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {%- else %}
-        <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
+<a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {%- endif %}
 {%- endmacro %}
 
