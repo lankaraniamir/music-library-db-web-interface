@@ -282,7 +282,7 @@ def profile(username):
         f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
-        columns = ["album","main_artists","other_artists","year","genres","release_type","love","stars"]
+        columns = ["release","main_artists","other_artists","year","genres","release_type","love","stars"]
 
     elif selection == 'playlists':
         query = (
