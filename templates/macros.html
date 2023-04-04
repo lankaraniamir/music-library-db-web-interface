@@ -15,20 +15,22 @@
     {%- endif %}
 {% endmacro %}
 
-{% macro display_val(value, caps=False) %}
+{% macro display_val(value) %}
     {% if value is iterable and value is not string %}
         {% set value = value | join(", ") %}
-    {%- endif %}
-    {%- if value == None -%}-{%- elif value == True %}
+    {% endif %}
+    {% if value == None %}
+        -
+    {% elif value == True %}
         ❤️
-    {%- elif value == False %}
+    {% elif value == False %}
         ♡️
-    {%- elif value is string %}
-        {{f_capitalize(value, caps=caps)}}
-    {%- else %}
+    {% elif value is string %}
+        {{capitalize(value)}}
+    {% else %}
         {{value}}
-    {%- endif -%}
-{%- endmacro -%}
+    {% endif %}
+{% endmacro %}
 
 {% macro label_column(col) %}
     {{ col|replace("_", " ")|capitalize }}
@@ -79,11 +81,13 @@
     {% for row in entity %}
         <tr>
         {% for col in columns %}<td>
-            {% if references[loop.index0] == None or row[col] == None -%}{{- display_val(row[col]) -}}{%- elif row[col] is iterable and row[col] is not string %}
+            {% if references[loop.index0] == None or row[col] == None %}
+                {{ display_val(row[col]) }}
+            {% elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
                     {{ reference(references[loop.index0], param=parameter) }}
                     {%- if not loop.last %},{% endif %}
-                {%- endfor %}
+                {% endfor %}
             {% else %}
                 {{ reference(references[loop.index0], param=row[col]) }}
             {% endif %}
