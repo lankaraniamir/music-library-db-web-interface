@@ -83,7 +83,7 @@ null_text=None, extra_text=[]) %}
                 {% if row[col] != None and extra_text|length > i %}{{extra_text[i]}}{% endif %}
                 {% if row[col] == None or references[i] == None %}
                     {{ display_val(row[col]) }} -->
-                elif row[col] is iterable and row[col] is not string %}
+                {elif row[col] is iterable and row[col] is not string %}
                     {% for parameter in row[col] %}
                         {{ reference(references[i], param=parameter) }}
                         {%- if not loop.last %},{% endif %}
