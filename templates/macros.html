@@ -80,9 +80,8 @@
     </tr>
     {% for row in entity %}
         <tr>
-        {% for col in columns %}<td>
-            {% if references[loop.index0] == None or row[col] == None -%}
-amir
+        {% for col in columns -%}<td>
+            {%- if references[loop.index0] == None or row[col] == None -%}amir
             {%- elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
                     {{ reference(references[loop.index0], param=parameter) }}
@@ -90,8 +89,8 @@ amir
                 {% endfor %}
             {% else %}
                 {{ reference(references[loop.index0], param=row[col]) }}
-            {% endif %}
-        </td>{% endfor %}
+            {%- endif -%}
+        </td>{%- endfor -%}
         </tr>
     {% endfor %}
 </table>
