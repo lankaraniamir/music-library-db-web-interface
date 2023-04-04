@@ -14,7 +14,7 @@
 
 <div>
 <body><br><b>Which of {{macros.capitalize(user)}}'s' music would you like to see?</b></body>
-<form action="{{ url_for('user', username=user) }}" method=post>
+<form action="{{ url_for('user', var=user) }}" method=post>
     <input type="radio" id="songs" name="selection" value="songs">
     <label for="songs">Songs</label><br>
     <input type="radio" id="albums" name="selection" value="albums">
