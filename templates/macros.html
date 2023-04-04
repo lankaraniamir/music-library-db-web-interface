@@ -47,9 +47,9 @@
         <b>{{title}}</b>
         {% for val in values %}
             {% if attribute %}
-                <li>{{ macros.reference(page, param=val[attribute]) }}</li>
+                <li>{{ reference(page, param=val[attribute]) }}</li>
             {% else %}
-                <li>{{ macros.reference(page, param=val) }}</li>
+                <li>{{ reference(page, param=val) }}</li>
             {% endif %}
         {% endfor %}
     {% elif null_text != None %}
