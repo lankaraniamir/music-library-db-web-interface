@@ -6,11 +6,11 @@
     <h4>{{description}}</h4>
 {% endif %}
 
-<!-- <ul> -->
+<ul>
     {{ macros.list_references(children, 'genre', 'Child Genres', 'No Child Genres') }}
     {{ macros.list_references(parents, 'genre', 'Parent Genres', 'No Parent Genres') }}
     {{ macros.list_references(subgenres, 'genre', 'All Subgenres', 'No Subgenres') }}
     {{ macros.list_references(songs, 'song', 'Songs', 'No Songs in Genre') }}
     {{ macros.list_references(releases, 'release', 'Releases', 'No Releases in Genre') }}
-<!-- </ul> -->
+</ul>
 {% endblock content %}
