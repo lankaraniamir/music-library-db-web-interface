@@ -56,7 +56,7 @@
     {% for row in entity %}
         <tr>
             {% for col in columns %}<td>
-                <a href="{{ url_for('song', title=row[col] }}">
+                <a href="{{ url_for('song', title=row[col]) }}">
                     {{ display_val(row[col]) }}</a>
             </td>{% endfor %}
         </tr>
