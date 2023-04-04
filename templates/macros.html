@@ -11,19 +11,6 @@
     {% endif %}
 {% endmacro %}
 
-{% macro reference(page, param=None, text=None, caps=False)%}
-    {% if param == None and text == None %}
-        <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
-    {% elif param != None and text == None %}
-        <a href="{{ url_for(page, var=param) }}" >{{ f_capitalize(param, caps=caps) }}</a>
-    {% elif param == None %}
-        <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
-    {% else %}
-        <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
-    {% endif %}
-{% endmacro %}
-
-
 {% macro display_val(value) %}
     {% if value == None %}
         -
@@ -38,9 +25,38 @@
     {% endif %}
 {% endmacro %}
 
-
 {% macro label_column(col) %}
     {{ col|replace("_", " ")|capitalize }}
+{% endmacro %}
+
+{% macro reference(page, param=None, text=None, caps=False)%}
+    {% if param == None and text == None %}
+        <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
+    {% elif param != None and text == None %}
+        <a href="{{ url_for(page, var=param) }}" >{{ f_capitalize(param, caps=caps) }}</a>
+    {% elif param == None %}
+        <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
+    {% else %}
+        <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro list_references(values, page, title=parameter, null_text=None, attribute=None) %}
+    <section>
+    {% if values %}
+        <b>{{title}}</b>
+        {% for val in values %}
+            {% if attribute %}
+                <li>{{ macros.reference(page, param=val[attribute]) }}</li>
+            {% else %}
+                <li>{{ macros.reference(page, param=val) }}</li>
+            {% endif %
+        {% endfor %}
+    {% elif null_text != None %}
+        <b>{{null_text}}</b>
+    {% endif %}
+    </section>
+    &nbsp
 {% endmacro %}
 
 {% macro display_all_as_table(entity, columns) %}
