@@ -240,7 +240,7 @@ def user(var):
             # "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
             #  "NULL) AS featured_artists, "
             # "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL) AS other_artists, "
+            # "NULL) AS other_artists, "
             "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
             "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
             "STRING_AGG(DISTINCT genre, ', ') AS genres, S.year as year, "
