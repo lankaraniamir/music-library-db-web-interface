@@ -13,7 +13,7 @@
 
 {% macro reference(page, param=None, combo=True, text=None, caps=False)%}
     {% if param != None and combo == True %}
-        {% set v = page['param'] %}
+        {% set v = page[param] %}
     {% elif param != None %}
         {% set v = param %}
     {% endif %}
@@ -21,7 +21,7 @@
     {% if param == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% elif param != None and text == None %}
-        <a href="{{ url_for('page', var=v) }}" >{{ f_capitalize(v, caps=caps) }}</a>
+        <a href="{{ url_for(page, var=v) }}" >{{ f_capitalize(v, caps=caps) }}</a>
     {% elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
