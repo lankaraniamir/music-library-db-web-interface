@@ -75,7 +75,7 @@ def home():
 
 @app.route('/genres')
 def genres():
-	genres = get_query("SELECT * FROM genre")
+	genres = get_query("SELECT * FROM genre ORDER BY name")
 	context = dict(genres = genres)
 	return render_template("genres.html", title="All Genres", **context)
 
@@ -195,15 +195,7 @@ def release(var):
 
 @app.route('/users')
 def users():
-    # select_query = "SELECT * FROM app_user"
-    # cursor = g.conn.execute(text(select_query))
-
-    # users = []
-    # for result in cursor:
-    # 	users.append(result)
-    # cursor.close()
-
-    users = get_query("SELECT * FROM app_user")
+    users = get_query("SELECT * FROM app_user ORDER BY username")
     context = dict(users = users)
     return render_template("users.html", title="All Users", **context)
 
