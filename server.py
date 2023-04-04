@@ -74,16 +74,17 @@ def songs():
     ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
         NULL) AS main_artists
+    NULLIF(ARRAY_REMOVE(
+        ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
+        NULL), '{}') AS featured_artists,
     FROM song S, artist A, song_credit C
     WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
     GROUP BY S.song_id, S.title;
     """)
-    columns = ["song", "main_artists"]
+    columns = ["song", "main_artists", "featured_artists"]
     references = ["song","artist"]
+    extra_text = [" by "," featuring ", ""]
     # columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
-    # NULLIF(ARRAY_REMOVE(
-    #     ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
-    #     NULL), '{}') AS featured_artists,
     # NULLIF(ARRAY_REMOVE(
     #     ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END),
     #     NULL), '{}') AS other_artists,
@@ -102,7 +103,7 @@ def songs():
     #     WHERE S.song_id = C.song_id AND C.primary_artist = True AND C.artist_id = A.artist_id
     #     ORDER BY title, artist, year
     # """)
-    context = dict(data=rows, columns=columns, references=references)
+    context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
     return render_template("songs.html", title="All Songs", **context)
 
 @app.route('/song/<var>')
