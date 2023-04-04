@@ -70,7 +70,7 @@ def get_query(query, single=False, deref=False):
 @app.route('/songs')
 def songs():
 	songs = get_query("""
-        SELECT S.title as title, A.nrimary_name as artist, S.year as year
+        SELECT S.title as title, A.primary_name as artist, S.year as year
 	    FROM song S, song_credit C, artist A
 	    WHERE S.song_id = C.song_id AND C.primary_artist = True AND C.artist_id = A.artist_id
 	    ORDER BY title, artist, year
