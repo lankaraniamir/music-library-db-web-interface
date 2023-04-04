@@ -100,7 +100,7 @@
         {{ reference('user', param=session['username'], caps=True) }}
     {% else %}
         {{ reference(menu_item, caps=True) }}
-    {%- endif %}
+    {%- endif -%}
 
     {% if request.endpoint == menu_item %}
         ←
