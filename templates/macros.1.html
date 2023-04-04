@@ -1,0 +1,79 @@
+{# templates/macros.html #}
+
+<!-- https://shubhamjain.co/2018/09/17/capitalizing-first-letter-in-jinja/ -->
+{% macro capitalize(text) %}{{ text[0]|upper }}{{ text[1:] }}{% endmacro %}
+
+{% macro f_capitalize(text, caps=True) %}
+    {% if caps %}
+        {{ capitalize(text) }}
+    {% else %}
+        {{ text }}
+    {% endif %}
+{% endmacro %}
+
+{% macro reference(page, var=None, text=None, caps=False) %}
+    {% if var == None and text == None %}
+        <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
+    {% elif var != None and text == None %}
+        <a href="{{ url_for(page, var=page[var]) }}">{{ f_capitalize(page.var, caps=caps) }}</a>
+    {% elif var == None %}
+        <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
+    {% else %}
+        <a href="{{ url_for(page, var=page[var]) }}">{{ f_capitalize(text, caps=caps) }}</a>
+    {% endif %}
+{% endmacro %}
+
+
+{% macro display_val(value) %}
+    {% if value == None %}
+        -
+    {% elif value == True %}
+        ❤️
+    {% elif value == False %}
+        ♡️
+    {% elif value is string %}
+        {{capitalize(value)}}
+    {% else %}
+        {{value}}
+    {% endif %}
+{% endmacro %}
+
+
+{% macro label_column(col) %}
+    {{ col|replace("_", " ")|capitalize }}
+{% endmacro %}
+
+{% macro display_all_as_table(entity, columns) %}
+{% if not entity %}
+    <p>No data to display.</p>
+{% else %}
+<table>
+    <tr>
+        {% for col in columns %}
+            <th>{{ label_column(col) }}</th>
+        {% endfor %}
+    </tr>
+    {% for row in entity %}
+        <tr>
+            {% for col in columns %}<td>
+                <a href="{{ url_for('song', title=row[col] }}">
+                    {{ display_val(row[col]) }}</a>
+            </td>{% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endmacro %}
+
+{% macro nav_link(menu_item) %}
+    {% if menu_item == "profile" %}
+        <a href="{{ url_for('profile', username=session['username']) }}">{{
+        capitalize(session['username'])}}</a>
+    {% else %}
+        <a href="{{ url_for(menu_item) }}">{{ capitalize(menu_item) }}</a>
+    {% endif %}
+
+    {% if request.endpoint == menu_item %}
+        ←
+    {% endif %}
+{% endmacro %}
