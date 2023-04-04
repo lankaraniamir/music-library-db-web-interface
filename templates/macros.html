@@ -53,13 +53,13 @@
             <th>{{ label_column(col) }}</th>
         {% endfor %}
     </tr>
-    <tr>
-        {% for row in entity %}
+    {% for row in entity %}
+        <tr>
             {% for col in columns %}
                 <td>{{ display_val(row[col]) }}</td>
             {% endfor %}
-        {% endfor %}
-    </tr>
+        </tr>
+    {% endfor %}
 </table>
 {% endif %}
 {% endmacro %}
