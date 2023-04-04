@@ -16,7 +16,9 @@
 {% endmacro %}
 
 {% macro display_val(value, caps=False) %}
-    {% if value is iterable and value is not string %}{% set value = value | join(", ") %}{% endif %}
+    {% if value is iterable and value is not string %}
+        {% set value = value | join(", ") %}
+    {% endif %}
     {% if value == None %}
         -
     {%- elif value == True %}
@@ -79,7 +81,7 @@
     {% for row in entity %}
         <tr>
         {% for col in columns %}<td>
-            {% if references[loop.index0] == None or row[col] == None %}{{ display_val(row[col]) }}{% elif row[col] is iterable and row[col] is not string %}
+            {% if references[loop.index0] == None or row[col] == None %}{{ display_val(row[col]) -}}{%- elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
                     {{ reference(references[loop.index0], param=parameter) }}
                     {%- if not loop.last %},{% endif %}
