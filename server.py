@@ -85,6 +85,7 @@ def genres():
 @app.route('/genres/<var>', methods=('GET', 'POST'))
 def genre(var):
     error = None
+    print(request.method)
     if request.method == 'POST' and len(request.form) > 0:
         genre_type = request.form['selection']
     elif request.method == 'POST' and len(request.form) == 0:
