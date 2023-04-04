@@ -212,9 +212,23 @@ def user(var):
         selection = 'songs'
 
     if selection == 'songs':
+        # query = (
+        # "SELECT S.title AS song, "
+        #     "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
+        #     "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
+        #     "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
+        #     "STRING_AGG(DISTINCT genre, ', ') AS genres, S.year as year, "
+        #     "O.love as love, ROUND(O.stars/2, 1) as stars "
+        # "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
+        # "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
+        # "AND S.song_id = G.song_id AND S.song_id = O.song_id "
+        # f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
+        # "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
+        # )
         query = (
         "SELECT S.title AS song, "
-            "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
+            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL) AS main_artists, "
             "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
             "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
             "STRING_AGG(DISTINCT genre, ', ') AS genres, S.year as year, "
@@ -229,8 +243,8 @@ def user(var):
         columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
         print(rows[0][1])
         print(rows[1][1][1])
-
         references = ["song",None,None,None,None,None,None,None]
+        # list = ["song",columns[0].split(", "),None,None,None,None,None,None]
 
 
 
