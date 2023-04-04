@@ -70,7 +70,7 @@ attr=None) %}
 {% endmacro %}
 
 {% macro list_multiple_references(values, columns, references, title=parameter,
-null_text=None, extra_text=None) %}
+null_text=None, extra_text=[]) %}
     <section>
     {% if values %}
         {% if title %}
@@ -80,9 +80,11 @@ null_text=None, extra_text=None) %}
         <li>
             {% for col in columns %}
                 {% set i = loop.index0 %}
+                {% if row[col] != None and extra_text|length > i %}{{extra_text[i]}}{% endif %}
+
                 {% if references[i] == None or row[col] == None %}
-                    {{ display_val(row[col]) }} -->
-                elif row[col] is iterable and row[col] is not string %}
+                    {{ display_val(row[col]) }}
+                {% elif row[col] is iterable and row[col] is not string %}
                     {% for parameter in row[col] %}
                         {{ reference(references[i], param=parameter) }}
                         {%- if not loop.last %},{% endif %}
@@ -90,9 +92,6 @@ null_text=None, extra_text=None) %}
                 {% else %}
                     {{ reference(references[i], param=row[col]) }}
                 {% endif -%}
-                {% if i == 0 and extra_text[0] %}{{extra_text}}{% endif %}
-                {% if i == 0 and extra_text[1] %}{{extra_text}}{% endif %}
-
             {% endfor %}<td>
         </li>
         {% endfor %}
