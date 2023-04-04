@@ -48,23 +48,26 @@
     {%- endif %}
 {%- endmacro %}
 
-{% macro list_references(values, page, title=parameter, null_text=None, attribute=None) -%}<section>
-{%- if values %}
-    {% if title %}
-        <b>{{title}}</b>
-    {% endif %}
-    {% for val in values %}
-        {% if attribute %}
-            <li>{{ reference(page, param=val[attribute]) }}</li>
-        {% else %}
-            <li>{{ reference(page, param=val) }}</li>
+{% macro list_references(values, page, title=parameter, null_text=None,
+attribute=None, extra_text=None) %}
+    <section>
+    {% if values %}
+        {% if title %}
+            <b>{{title}}</b>
         {% endif %}
-    {% endfor %}
-{% elif null_text != None %}
-    <b>{{null_text}}</b>
-{% endif %}
-</section>
-&nbsp
+        {% for val in values %}
+            {% if attribute %}
+                <li>{{ reference(page, param=val[attribute]) }}</li>
+            {% else %}
+                <li>{{ reference(page, param=val) }}</li>
+            {% endif %}
+            {{ extra_text }}
+        {% endfor %}
+    {% elif null_text != None %}
+        <b>{{null_text}}</b>
+    {% endif %}
+    </section>
+    &nbsp
 {% endmacro %}
 
 {% macro display_all_as_table(entity, columns, references) %}
