@@ -72,7 +72,6 @@
     {% if menu_item == "user" %}
         <a href="{{ url_for('user', var=session['username']) }}">{{
         capitalize(session['username'])}}</a>
-        <!-- {{ reference('user', var=session['username'], combo=True, caps=True) }} -->
     {% else %}
         {{reference(menu_item, caps=True)}}
     {% endif %}
