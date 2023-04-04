@@ -83,7 +83,7 @@ def genre(name):
         f"SELECT descriptor FROM genre WHERE name = '{name}'",
         single=True
     )
-    description = description[2:-2]
+    description = description[1:]
     print(description)
 
     children = get_query(
