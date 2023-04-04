@@ -3,7 +3,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{ list_references(users, 'user', 'username', title, None, 'username') }}
+{{ macros.list_references(users, 'user', 'username', title, None, 'username') }}
 
 
 <h2>x{{ title }}</h2>
