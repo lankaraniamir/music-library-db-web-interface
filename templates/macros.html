@@ -56,7 +56,7 @@ attr=None) %}
             <b>{{title}}</b>
         {% endif %}
         {% for val in values %}
-            {% if attribute %}
+            {% if attr %}
                 <li>{{ reference(page, param=val[attr]) }}</li>
             {% else %}
                 <li>{{ reference(page, param=val) }}</li>
