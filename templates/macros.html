@@ -73,11 +73,11 @@
     </tr>
     {% for row in entity %}
         <tr>
-        {% for col, ref in zip(columns, references) %}<td>
-            {% if ref == None %}
+        {% for i, col in enumerate(columns) %}<td>
+            {% if references[i] == None %}
                 {{ display_val(row[col]) }}
             {% else %}
-                {{ reference(ref, param=ref[row[col]]) }}
+                {{ reference(references[i], param=row[col]) }}
             {% endif %}
         </td>{% endfor %}
         </tr>
