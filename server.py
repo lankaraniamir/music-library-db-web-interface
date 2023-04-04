@@ -73,7 +73,7 @@ def songs():
     SELECT S.title AS song,
     ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
-        NULL) AS main_artists
+        NULL) AS main_artists,
     NULLIF(ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
         NULL), '{}') AS featured_artists,
