@@ -75,7 +75,7 @@
         <tr>
         {% for col in columns %}<td>
             {{ loop.index0 }}
-            {% if references[i] == None %}
+            {% if references[loop.index0] == None %}
                 {{ display_val(row[col]) }}
             {% else %}
                 {% set group = references[loop.index0] %}
