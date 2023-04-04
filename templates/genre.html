@@ -8,7 +8,7 @@
 
 {% macro list_references(values, page, parameter, title=parameter, null_text=None) %}
     <section>
-    {% if array %}
+    {% if values %}
         <b>{{title}}</b>
         {% for val in values %}
             <li>{{ macros.reference(page, param=parameter) }}</li>
