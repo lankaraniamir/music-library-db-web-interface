@@ -173,7 +173,7 @@ def genre(name):
 
     all_releases = get_query(
     "SELECT DISTINCT title "
-    "FROM release S, release_in_genre G, ( "
+    "FROM release R, release_in_genre G, ( "
         "WITH RECURSIVE "
         "   subgenres(sub_genre, parent_genre) AS ( "
         "       SELECT sub_genre, parent_genre "
@@ -187,7 +187,7 @@ def genre(name):
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{name}') "
     ") AS SG "
-    "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True; ",
+    "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True; ",
     single=True
     )
 
