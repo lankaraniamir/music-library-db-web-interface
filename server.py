@@ -283,6 +283,7 @@ def profile(username):
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
         columns = ["album","main_artists","other_artists","year","genres","release_type","love","stars"]
+        references = ["release","artist","artist",None,"genre",None,None,None]
 
     elif selection == 'playlists':
         query = (
