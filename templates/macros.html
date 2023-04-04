@@ -25,7 +25,7 @@
         {{capitalize(value)}}
     {% else %}
         {{value}}
-    {%- endif %}
+    {% endif %}
 {% endmacro %}
 
 {% macro label_column(col) %}
@@ -36,12 +36,12 @@
     {% if param == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% elif param != None and text == None %}
-        <a href="{{ url_for(page, var=param) }}" >{{ f_capitalize(param, caps=caps) }}</a>
+        <a href="{{ url_for(page, var=param) }}" >f_capitalize(param, caps=caps)</a>
     {% elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
         <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
-    {%- endif %}
+    {% endif %}
 {% endmacro %}
 
 {% macro list_references(values, page, title=parameter, null_text=None, attribute=None) %}
