@@ -165,11 +165,14 @@ def genre(name):
         "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
         "   ) "
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
+        "UNION SELECT DISTINCT parent_genre AS genre FROM subgenres "
         "UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{name}') "
     ") AS SG "
     "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True; ",
     single=True
     )
+
+    print(all_songs)
 
     subgenres = get_query(
     "WITH RECURSIVE "
