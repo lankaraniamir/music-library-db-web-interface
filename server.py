@@ -50,15 +50,12 @@ def teardown_request(exception):
 
 
 
-def get_query(query, single=False, deref=False):
+def get_query(query, single=False):
     cursor = g.conn.execute(text(query))
     result = []
     for row in cursor:
         if single:
-            if deref:
-                result.append(*(row[0]))
-            else:
-                result.append(row[0])
+            result.append(row[0])
         else:
             result.append(row)
     cursor.close()
@@ -83,8 +80,9 @@ def genres():
 @app.route('/genres/<name>')
 def genre(name):
     description = get_query(
-        f"SELECT DISTINCT descriptor FROM genre WHERE name = '{name}'",single=True,deref=True
+        f"SELECT DISTINCT descriptor FROM genre WHERE name = '{name}'",single=True
     )
+    description = g.sql_to_data(description)
 
     print(description)
 
@@ -101,6 +99,7 @@ def genre(name):
         f"WHERE sub_genre = '{name}' ",
         single = True
     )
+
 
     # query = (
     # "SELECT DISTINCT sub_genre "
