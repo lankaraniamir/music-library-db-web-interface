@@ -70,7 +70,9 @@
 
 {% macro nav_link(menu_item) %}
     {% if menu_item == "user" %}
-        {{ reference('user', var=session['username'], combo=True, caps=True) }}
+        <a href="{{ url_for('profile', username=session['username']) }}">{{
+        capitalize(session['username'])}}</a>
+        <!-- {{ reference('user', var=session['username'], combo=True, caps=True) }} -->
     {% else %}
         {{reference(menu_item, caps=True)}}
     {% endif %}
