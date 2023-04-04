@@ -50,7 +50,7 @@
                 <li>{{ macros.reference(page, param=val[attribute]) }}</li>
             {% else %}
                 <li>{{ macros.reference(page, param=val) }}</li>
-            {% endif %
+            {% endif %}
         {% endfor %}
     {% elif null_text != None %}
         <b>{{null_text}}</b>
