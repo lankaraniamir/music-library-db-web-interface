@@ -50,7 +50,7 @@ def teardown_request(exception):
 
 
 
-def get_query(query, single=False deref=False):
+def get_query(query, single=False, deref=False):
     cursor = g.conn.execute(text(query))
     result = []
     for row in cursor:
