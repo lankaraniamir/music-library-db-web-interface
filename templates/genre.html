@@ -6,12 +6,12 @@
     <h4>{{description}}</h4>
 {% endif %}
 
-{% macro list_references(values, page, parameter, title=parameter, null_text=None) %}
+{% macro list_references(values, page, title=parameter, null_text=None) %}
     <section>
     {% if values %}
         <b>{{title}}</b>
         {% for val in values %}
-            <li>{{ macros.reference(page, param=parameter) }}</li>
+            <li>{{ macros.reference(page, param=val) }}</li>
         {% endfor %}
     {% elif null_text != None %}
         <b>{{null_text}}</b>
@@ -25,11 +25,11 @@
 
 
 <ul>
-    {{ list_references(children, 'genre', genre, 'Child Genres', 'No Child Genres') }}
-    {{ list_references(parents, 'genre', genre, 'Parent Genres', 'No Parent Genres') }}
-    {{ list_references(subgenres, 'genre', genre, 'All Subgenres', 'No Subgenres') }}
-    {{ list_references(songs, 'song', song, 'Songs', 'No Songs in Genre') }}
-    {{ list_references(releases, 'release', release, 'Releases', 'No Releases in Genre') }}
+    {{ list_references(children, 'genre', 'Child Genres', 'No Child Genres') }}
+    {{ list_references(parents, 'genre', 'Parent Genres', 'No Parent Genres') }}
+    {{ list_references(subgenres, 'genre', 'All Subgenres', 'No Subgenres') }}
+    {{ list_references(songs, 'song', 'Songs', 'No Songs in Genre') }}
+    {{ list_references(releases, 'release', 'Releases', 'No Releases in Genre') }}
 
     <section>
     {% if children %}
