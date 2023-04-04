@@ -237,6 +237,10 @@ def user(var):
         "SELECT S.title AS song, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
             "NULL) AS main_artists, "
+            # "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
+            #  "NULL) AS featured_artists, "
+            # "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL) AS other_artists, "
             "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
             "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
             "STRING_AGG(DISTINCT genre, ', ') AS genres, S.year as year, "
@@ -251,10 +255,10 @@ def user(var):
         columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
         # print(rows[0][1])
         # print(rows[1][1][1])
-        references = ["song","artist",None,None,None,None,None,None]
+        references = ["song","artist",None,None,"genre",None,None,None]
 
-        # for position in rows[0]:
-            #  print(type(position))
+        for position in rows[0]:
+             print(type(position))
         # list = ["song",columns[0].split(", "),None,None,None,None,None,None]
 
 
