@@ -98,6 +98,10 @@ def genre(name):
     # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; ",
     # single=True
     # )
+    main_genre = get_query(
+        f"SELECT DISTINCT genre FROM genre WHERE genre = {name};"
+    )
+
 
     children = get_query(
         "SELECT DISTINCT sub_genre "
@@ -206,7 +210,7 @@ def genre(name):
     single=True
     )
 
-    context = dict(children=children, parents=parents, songs=all_songs,
+    context = dict(main_genre=main_genre, children=children, parents=parents, songs=all_songs,
                    subgenres=subgenres, releases=all_releases)
     return render_template("genre.html", title=name, **context)
 
