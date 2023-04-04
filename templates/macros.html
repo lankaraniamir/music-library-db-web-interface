@@ -79,7 +79,7 @@
                 {{ display_val(row[col]) }}
             {% else %}
                 {% set group = references[loop.index0] %}
-                {{ reference(song, param=row[col]) }}
+                {{ reference('song', param=row[col]) }}
             {% endif %}
         </td>{% endfor %}
         </tr>
