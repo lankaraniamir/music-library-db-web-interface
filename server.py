@@ -83,6 +83,8 @@ def genre(name):
         f"SELECT * FROM genre WHERE name = '{name}'"
     )
 
+    print(main_genre)
+
     children = get_query(
         "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
