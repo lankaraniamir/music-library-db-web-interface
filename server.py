@@ -80,7 +80,7 @@ def genres():
 @app.route('/genres/<name>')
 def genre(name):
     description = get_query(
-        f"SELECT DISTINCT descriptor FROM genre WHERE name = '{name}'", single=True
+        f"SELECT DISTINCT descriptor FROM genre WHERE name = '{name}'"
     )
 
     print(description)
