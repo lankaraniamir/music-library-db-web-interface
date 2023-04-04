@@ -19,11 +19,11 @@
     {% if var == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% elif var != None and text == None %}
-        <a href="{{ url_for(page, var[0]=var) }}" >{{ f_capitalize(var, caps=caps) }}</a>
+        <a href="{{ url_for(page, 'var'=var) }}" >{{ f_capitalize(var, caps=caps) }}</a>
     {% elif var == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
-        <a href="{{ url_for(page, var=var) }}">{{ f_capitalize(text, caps=caps) }}</a>
+        <a href="{{ url_for(page, 'var'=var) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% endif %}
 {% endmacro %}
 
