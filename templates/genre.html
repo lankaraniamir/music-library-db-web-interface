@@ -23,7 +23,7 @@
     {% if parents %}
         <b>Parent Genres</b>
         {% for genre in parents %}
-            <li><a href="{{ url_for('genre', var=genre) }}">{{genre}}</a></li>
+            <li>{{ macros.reference('genre', param=genre)}}</li>
         {% endfor %}
     {% else %}
         <b>No Parent Genres</b>
@@ -35,7 +35,7 @@
     {% if subgenres %}
         <b>All Subgenres</b>
         {% for genre in subgenres %}
-            <li><a href="{{ url_for('genre', var=genre) }}">{{genre}}</a></li>
+            <li>{{ macros.reference('genre', param=genre)}}</li>
         {% endfor %}
     {% else %}
         <b>No Subgenres</b>
@@ -47,7 +47,7 @@
     {% if songs %}
         <b>Songs</b>
         {% for song in songs %}
-            <li><a href="{{ url_for('song', var=song) }}">{{song}}</a></li>
+            <li>{{ macros.reference('song', param=song)}}</li>
         {% endfor %}
     {% else %}
         <b>No Songs in Genre</b>
@@ -59,23 +59,12 @@
     {% if releases %}
         <b>Releases</b>
         {% for release in releases %}
-            <li><a href="{{ url_for('release', var=release) }}">{{release}}</a></li>
+            <li>{{ macros.reference('release', param=release)}}</li>
         {% endfor %}
     {% else %}
         <b>No Releases in Genre</b>
     {% endif %}
     </section>
-
-    <!-- <section> -->
-    <!-- {% if albums %} -->
-        <!-- <b>Songs</b> -->
-        <!-- {% for song in songs %} -->
-            <!-- <li><a href="{{ url_for('song', title=song) }}">{{song}}</a></li> -->
-        <!-- {% endfor %} -->
-    <!-- {% else %} -->
-        <!-- <b>No albums in genre</b> -->
-    <!-- {% endif %} -->
-    <!-- </section> -->
 
 </ul>
 {% endblock content %}
