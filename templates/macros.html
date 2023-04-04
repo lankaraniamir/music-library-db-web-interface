@@ -23,14 +23,14 @@
         -
     {%- elif value == True %}
         ❤️
-    {% elif value == False %}
+    {%- elif value == False %}
         ♡️
-    {% elif value is string %}
+    {%- elif value is string %}
         {{f_capitalize(value, caps=caps)}}
-    {% else %}
+    {%- else %}
         {{value}}
-    {% endif %}
-{% endmacro %}
+    {%- endif %}
+{%- endmacro %}
 
 {% macro label_column(col) %}
     {{ col|replace("_", " ")|capitalize }}
@@ -39,7 +39,7 @@
 {% macro reference(page, param=None, text=None, caps=False)%}
     {%- if param == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
-    {%- elif param != None and text == None -%}
+    {%- elif param != None and text == None %}
         <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(param, caps=caps) }}</a>
     {%- elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
