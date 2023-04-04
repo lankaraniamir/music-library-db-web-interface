@@ -81,7 +81,7 @@
                 {% for parameter in row[col] %}
                     {{ display_val(parameter) }}
                 {% endfor %}
-            {% if references[loop.index0] == None or row[col] == None %}
+            {% elif references[loop.index0] == None or row[col] == None %}
                 {{ display_val(row[col]) }}
             {% elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
