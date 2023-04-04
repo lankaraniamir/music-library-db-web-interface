@@ -11,7 +11,7 @@
     {% else %}
         {{ text }}
     {% endif %}
-{% endmacro %}
+{%- endmacro %}
 
 {% macro display_val(value) %}
     {% if value is iterable and value is not string %}
