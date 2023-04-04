@@ -19,7 +19,7 @@
     {% if value is iterable and value is not string %}
         {% set value = value | join(", ") %}
     {%- endif %}
-    {% if value == None %}-{%- elif value == True %}
+    {% if value == None --%}-{%- elif value == True %}
         ❤️
     {%- elif value == False %}
         ♡️
@@ -27,7 +27,7 @@
         {{f_capitalize(value, caps=caps)}}
     {%- else %}
         {{value}}
-    {%- endif %}
+    {%- endif -%}
 {%- endmacro %}
 
 {% macro label_column(col) %}
