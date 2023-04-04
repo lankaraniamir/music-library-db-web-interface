@@ -21,15 +21,15 @@
     {%- endif %}
     {% if value == None %}
         -
-    {% elif value == True %}
+    {%- elif value == True %}
         ❤️
-    {% elif value == False %}
+    {%- elif value == False %}
         ♡️
-    {% elif value is string %}
+    {%- elif value is string %}
         {{capitalize(value)}}
-    {% else %}
+    {%- else %}
         {{value}}
-    {% endif %}
+    {%- endif %}
 {%- endmacro %}
 
 {% macro label_column(col) %}
