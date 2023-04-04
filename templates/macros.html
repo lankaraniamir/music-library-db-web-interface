@@ -74,7 +74,6 @@
     {% for row in entity %}
         <tr>
         {% for col in columns %}<td>
-            {{ loop.index0 }}
             {% if references[loop.index0] == None %}
                 {{ display_val(row[col]) }}
             {% else %}
