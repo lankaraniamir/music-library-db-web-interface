@@ -13,11 +13,11 @@
 
 {% macro reference(page, attr=None, var=None, combo=True, text=None, caps=False) %}
     {% if attr == None %}
-        attr=var
+        attr={{var}}
     {% endif %}
 
     {% if combo == True %}
-        var=page['var']
+        var={{page['var']}}
     {% endif %}
 
     {% if var == None and text == None %}
