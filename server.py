@@ -171,7 +171,25 @@ def genre(name):
     single=True
     )
 
-    print(all_songs)
+    all_releases = get_query(
+    "SELECT DISTINCT title "
+    "FROM release S, release_in_genre G, ( "
+        "WITH RECURSIVE "
+        "   subgenres(sub_genre, parent_genre) AS ( "
+        "       SELECT sub_genre, parent_genre "
+        "       FROM genre_inheritance "
+        f"       WHERE parent_genre = '{name}' "
+        "       UNION "
+        "           SELECT A.sub_genre, A.parent_genre "
+        "           FROM genre_inheritance A "
+        "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+        "   ) "
+        "SELECT DISTINCT sub_genre AS genre FROM subgenres "
+        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{name}') "
+    ") AS SG "
+    "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True; ",
+    single=True
+    )
 
     subgenres = get_query(
     "WITH RECURSIVE "
@@ -189,7 +207,7 @@ def genre(name):
     )
 
     context = dict(children=children, parents=parents, songs=all_songs,
-                   subgenres=subgenres)
+                   subgenres=subgenres, releases=all_releases)
     return render_template("genre.html", title=name, **context)
 
 
@@ -208,6 +226,10 @@ def genre(name):
 
 @app.route('/song/<title>')
 def song(title):
+    return redirect(url_for('profile', username=session['username']))
+
+@app.route('/release/<title>')
+def release(title):
     return redirect(url_for('profile', username=session['username']))
 
 

@@ -11,7 +11,7 @@
             <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
         {% endfor %}
     {% else %}
-        <b>No child genres</b>
+        <b>No Child Genres</b>
     {% endif %}
     </section>
     &nbsp
@@ -23,7 +23,7 @@
             <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
         {% endfor %}
     {% else %}
-        <b>No parent genres</b>
+        <b>No Parent Genres</b>
     {% endif %}
     </section>
     &nbsp
@@ -35,7 +35,7 @@
             <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
         {% endfor %}
     {% else %}
-        <b>No subgenres</b>
+        <b>No Subgenres</b>
     {% endif %}
     </section>
     &nbsp
@@ -47,7 +47,18 @@
             <li><a href="{{ url_for('song', title=song) }}">{{song}}</a></li>
         {% endfor %}
     {% else %}
-        <b>No songs in genre</b>
+        <b>No Songs in Genre</b>
+    {% endif %}
+    </section>
+
+    <section>
+    {% if releases %}
+        <b>Releases</b>
+        {% for release in releases %}
+            <li><a href="{{ url_for('release', title=release) }}">{{release}}</a></li>
+        {% endfor %}
+    {% else %}
+        <b>No Releases in Genre</b>
     {% endif %}
     </section>
 
