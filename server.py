@@ -68,10 +68,10 @@ def get_query(query, single=False, deref=False):
 
 
 @app.route('/songs')
-def genres():
-	genres = get_query("SELECT * FROM song ORDER BY name")
+def songs():
+	genres = get_query("SELECT * FROM song ORDER BY title")
 	context = dict(genres = genres)
-	return render_template("genres.html", title="All Genres", **context)
+	return render_template("songs.html", title="All Genres", **context)
 
 @app.route('/song/<var>')
 def song(var):
