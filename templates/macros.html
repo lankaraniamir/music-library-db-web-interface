@@ -6,12 +6,12 @@
 {% macro capitalize(text) %}{{ text[0]|upper }}{{ text[1:] }}{% endmacro %}
 
 {% macro f_capitalize(text, caps=True) %}
-    {% if caps %}
+    {%- if caps -%}
         {{ capitalize(text) }}
-    {% else %}
+    {%- else -%}
         {{ text }}
-    {% endif %}
-{%- endmacro %}
+    {%- endif -%}
+{%- endmacro -%}
 
 {% macro display_val(value) %}
     {% if value is iterable and value is not string %}
