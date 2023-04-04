@@ -243,7 +243,10 @@ def user(var):
         columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
         print(rows[0][1])
         print(rows[1][1][1])
-        references = ["song",None,None,None,None,None,None,None]
+        references = ["song","artist",None,None,None,None,None,None]
+
+        for position in rows[0]:
+             print(type(position))
         # list = ["song",columns[0].split(", "),None,None,None,None,None,None]
 
 
