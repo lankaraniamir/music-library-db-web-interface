@@ -89,8 +89,8 @@
                 {% endfor %}
             {% else %}
                 {{ reference(references[loop.index0], param=row[col]) }}
-            {%- endif -%}
-        </td>{%- endfor -%}
+            {%- endif %}
+        </td>{% endfor %}
         </tr>
     {% endfor %}
 </table>
