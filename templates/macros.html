@@ -13,7 +13,7 @@
 
 {% macro reference(page, var=None, combo=True, text=None, caps=False)%}
     {% if combo == True %}
-        {% SET var = page['var'] %}
+        {% set var = page['var'] %}
     {% endif %}
 
     {% if var == None and text == None %}
