@@ -250,7 +250,8 @@ def profile(username):
         error = "Please select a category."
         selection = None
     else:
-        selection = request.form['selection']
+        # selection = None
+        selection = 'songs'
 
     if selection == 'songs':
         query = (
