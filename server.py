@@ -220,19 +220,6 @@ def user(var):
         selection = 'songs'
 
     if selection == 'songs':
-        # query = (
-        # "SELECT S.title AS song, "
-        #     "STRING_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS main_artists, "
-        #     "STRING_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END, ', ') AS featured_artists, "
-        #     "STRING_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END, ', ') AS other_artists, "
-        #     "STRING_AGG(DISTINCT genre, ', ') AS genres, S.year as year, "
-        #     "O.love as love, ROUND(O.stars/2, 1) as stars "
-        # "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
-        # "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
-        # "AND S.song_id = G.song_id AND S.song_id = O.song_id "
-        # f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
-        # "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
-        # )
         query = (
         "SELECT S.title AS song, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
@@ -249,28 +236,17 @@ def user(var):
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
         )
-        rows = get_query(query)
         columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
-        # print(rows[0][1])
-        # print(rows[1][1][1])
         references = ["song","artist","artist","artist","genre",None,None,None]
-
-        for position in rows[0]:
-             print(position)
-        # list = ["song",columns[0].split(", "),None,None,None,None,None,None]
-
-
-
-        # references = ["song","artist","artist",None,"genre",None,None,None]
-        # references = ["song",None,None,None,None,"genres",None,None]
-        # traits = ["title","name","name",None,"name",None,None,None]
 
     elif selection == 'albums':
         query = (
         "SELECT R.title AS album, R.release_date as release_date, "
-            "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
-            "STRING_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END, ', ') AS other_artists, "
-            "STRING_AGG(DISTINCT genre, ', ') AS genres, "
+            # "STRING_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END, ', ') AS main_artists, "
+            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END), NULL) AS main_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
+            "R.release_date as release_date, "
             "O.love as love, ROUND(O.stars/2, 1) as stars, R.release_type AS release_type "
         "FROM release R, artist A, release_credit C, release_in_genre G, release_opinion O "
         "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id "
@@ -278,9 +254,8 @@ def user(var):
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
-        columns = ["album","main_artists","other_artists","year","genres","release_type","love","stars"]
-        # references = ["release","artist","artist",None,"genre",None,None,None]
-        references = ["release", None,None,None,"genre",None,None,None]
+        columns = ["album","main_artists","other_artists","genres","year","release_date","release_type","love","stars"]
+        references = ["release","artist","artist","genre",None,None,None,None]
 
     elif selection == 'playlists':
         query = (
