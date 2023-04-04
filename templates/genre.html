@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>{{ test_name }} {{ title }}</h2>
+<h2>{{ test_name }} {{ title }}
+    <section>
+    {% if description %}
+        <b>Description:</b>  {{description}}
+        &nbsp
+    {% endif %}
+    </section>
+    &nbsp
+</h2>
 <ul>
 
     <section>
