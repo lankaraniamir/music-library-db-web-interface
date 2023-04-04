@@ -86,8 +86,6 @@
                 {{ display_val(row[col]) }}
             {%- elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
-                    {{references[i]}}
-                    {{parameter}}
                     {{ reference(references[i], param=parameter) }}
                     {%- if not loop.last %},{% endif %}
                 {% endfor %}
