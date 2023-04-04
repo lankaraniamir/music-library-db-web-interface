@@ -11,7 +11,7 @@
     {% if children %}
         <b>Child Genres</b>
         {% for genre in children %}
-            {{ macros.reference('genre', param=genre)}}
+            <li>{{ macros.reference('genre', param=genre)}}</li>
         {% endfor %}
     {% else %}
         <b>No Child Genres</b>
