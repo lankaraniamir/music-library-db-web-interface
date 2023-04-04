@@ -38,6 +38,11 @@
     {% endif %}
 {% endmacro %}
 
+
+{% macro label_column(col) %}
+    {{ col|replace("_", " ")|capitalize }}
+{% endmacro %}
+
 {% macro display_all_as_table(entity, columns) %}
 {% if not entity %}
     <p>No data to display.</p>
@@ -45,7 +50,8 @@
 <table>
     <tr>
         {% for col in columns %}
-            <th>{{col}}</th>
+            <!-- <th>{{col}}</th> -->
+            <th>{{ label_column(col) }}</th>
         {% endfor %}
     </tr>
     {% for row in entity %}
