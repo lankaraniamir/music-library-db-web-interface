@@ -90,7 +90,7 @@ null_text=None, extra_text=[]) %}
                 {% else %}
                     {{ reference(references[i], param=row[col]) }}
                 {% endif -%}
-                {% if references[i] != None and extra_text[i]|length > i %}{{extra_text[i]}}{% endif %}
+                {% if references[i] != None and references[i]!=[] and extra_text[i]|length > i %}{{extra_text[i]}}{% endif %}
 
             {% endfor %}<td>
         </li>
