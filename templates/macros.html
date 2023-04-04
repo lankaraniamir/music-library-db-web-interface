@@ -49,7 +49,7 @@
 {%- endmacro %}
 
 {% macro list_references(values, page, title=parameter, null_text=None,
-attribute=None, extra_text=None) %}
+attr=None) %}
     <section>
     {% if values %}
         {% if title %}
@@ -57,11 +57,33 @@ attribute=None, extra_text=None) %}
         {% endif %}
         {% for val in values %}
             {% if attribute %}
-                <li>{{ reference(page, param=val[attribute]) }}</li>
+                <li>{{ reference(page, param=val[attr]) }}</li>
             {% else %}
                 <li>{{ reference(page, param=val) }}</li>
             {% endif %}
-            {% if extra_text %}{{ extra_text }}{% endif %}
+        {% endfor %}
+    {% elif null_text != None %}
+        <b>{{null_text}}</b>
+    {% endif %}
+    </section>
+    &nbsp
+{% endmacro %}
+
+{% macro list_multiple_references(values, page, title=parameter, null_text=None,
+attr1=None, attr2=None, attr3=None, text1=None, text2=None, text3=None) %}
+    <section>
+    {% if values %}
+        {% if title %}
+            <b>{{title}}</b>
+        {% endif %}
+        {% for val in values %}
+            {% if attribute1 %}
+                <li>{{ reference(page, param=val[attr1]) }}</li>
+            {% if attribute2 %}
+                <li>{{ reference(page, param=val[attr2]) }}</li>
+            {% if attribute3 %}
+                <li>{{ reference(page, param=val[attr3]) }}</li>
+            {% endif %}
         {% endfor %}
     {% elif null_text != None %}
         <b>{{null_text}}</b>
