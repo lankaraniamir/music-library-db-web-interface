@@ -253,7 +253,7 @@ def user(var):
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
-        columns = ["album","main_artists","other_artists","genres","year","release_date","release_type","love","stars"]
+        columns = ["album","main_artists","other_artists","genres","release_date","release_type","love","stars"]
         references = ["release","artist","artist","genre",None,None,None,None]
 
     elif selection == 'playlists':
