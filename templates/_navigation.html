@@ -3,7 +3,7 @@
 
 {% if session['username'] %}
     {% set links = ["charts","genres", "contribute",
-                    "users", "profile", "logout"] %}
+                    "users", "user", "logout"] %}
 {% else %}
     {% set links = ["charts","genres", "login", "register"] %}
 {% endif %}

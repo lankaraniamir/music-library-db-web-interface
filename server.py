@@ -68,7 +68,7 @@ def get_query(query, single=False, deref=False):
 @app.route('/')
 def home():
     if 'username' in session:
-        return redirect(url_for('profile', username=session['username']))
+        return redirect(url_for('user', username=session['username']))
     else:
         return render_template('login.html')
     # return render_template("base.html", title="Homepage")
@@ -214,11 +214,11 @@ def genre(name):
 
 @app.route('/song/<title>')
 def song(title):
-    return redirect(url_for('profile', username=session['username']))
+    return redirect(url_for('user', username=session['username']))
 
 @app.route('/release/<title>')
 def release(title):
-    return redirect(url_for('profile', username=session['username']))
+    return redirect(url_for('user', username=session['username']))
 
 
 
@@ -242,7 +242,7 @@ def users():
     return render_template("users.html", title="All Users", **context)
 
 @app.route('/users/<username>', methods=('GET', 'POST'))
-def profile(username):
+def user(username):
     error = None
     if request.method == 'POST' and len(request.form) > 0:
         selection = request.form['selection']
@@ -268,6 +268,8 @@ def profile(username):
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
         )
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
+        references = ["song","artist","artist",None,"genre",None,None,None]
+        traits = ["title","name","name",None,"name",None,None,None]
 
     elif selection == 'albums':
         query = (
@@ -295,13 +297,13 @@ def profile(username):
         columns = ["playlist", "date_created", "date_modified", "track_count"]
 
     else:
-        return render_template('profile.html', title=username, user=username,
+        return render_template('user.html', title=username, user=username,
                                data=None, sort=None, columns=None, error=error, selection=selection)
 
     rows = get_query(query)
-    return render_template('profile.html', title=username, user=username,
+    return render_template('user.html', title=username, user=username,
                            data=rows, sort="stars", columns=columns, error=error,
-                           selection=selection)
+                           selection=selection, references=references)
 
 
 
@@ -328,7 +330,7 @@ def login():
         if error is None:
             session.clear()
             session['username'] = username
-            return redirect(url_for('profile', username=username))
+            return redirect(url_for('user', username=username))
 
     return render_template('login.html', error=error)
 
@@ -358,7 +360,7 @@ def register():
                 else:
                     g.conn.execute(text(f"INSERT INTO app_user (username, password) VALUES {username, password}"))
                 g.conn.commit()
-                return redirect(url_for('profile', username=username))
+                return redirect(url_for('user', username=username))
 
     return render_template('register.html', error=error)
 
