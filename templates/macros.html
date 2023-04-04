@@ -15,11 +15,11 @@
     {%- endif %}
 {% endmacro %}
 
-{% macro display_val(value, caps=False) %}
+{% macro display_val(value, caps=False, dash=True) %}
     {% if value is iterable and value is not string %}
         {% set value = value | join(", ") %}
     {% endif %}
-    {% if value == None %}
+    {% if value == None and dash == True %}
         -
     {%- elif value == True %}
         ❤️
@@ -27,7 +27,7 @@
         ♡️
     {%- elif value is string -%}
         {{f_capitalize(value, caps=caps)}}
-    {%- else %}
+    {%- elif value != None %}
         {{value}}
     {%- endif %}
 {%- endmacro -%}
@@ -70,7 +70,7 @@ attr=None) %}
 {% endmacro %}
 
 {% macro list_multiple_references(values, columns, references, title=parameter,
-null_text=None, extra_text=[]) %}
+null_text=None, extra_text=[], dash=False) %}
     <section>
     {% if values %}
         {% if title %}
@@ -83,7 +83,7 @@ null_text=None, extra_text=[]) %}
                 {% if row[col] != None and extra_text|length > i %}{{extra_text[i]}}{% endif %}
 
                 {% if references[i] == None or row[col] == None %}
-                    {{ display_val(row[col]) }}
+                    {{ display_val(row[col], dash=dash) }}
                 {% elif row[col] is iterable and row[col] is not string %}
                     {% for parameter in row[col] %}
                         {{ reference(references[i], param=parameter) }}
@@ -102,7 +102,7 @@ null_text=None, extra_text=[]) %}
     &nbsp
 {% endmacro %}
 
-{% macro display_all_as_table(entity, columns, references) %}
+{% macro display_all_as_table(entity, columns, references, dash=True) %}
 {% if not entity %}
     <p>No data to display.</p>
 {% else %}
@@ -117,7 +117,7 @@ null_text=None, extra_text=[]) %}
         {% for col in columns %}<td>
             {% set i = loop.index0 %}
             {% if references[i] == None or row[col] == None %}
-                {{ display_val(row[col]) }}
+                {{ display_val(row[col], dash=dash) }}
             {%- elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
                     {{ reference(references[i], param=parameter) }}
