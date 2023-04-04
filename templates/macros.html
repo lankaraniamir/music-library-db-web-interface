@@ -30,7 +30,7 @@
     {% else %}
         {{value}}
     {% endif %}
-{% endmacro %}
+{%- endmacro %}
 
 {% macro label_column(col) %}
     {{ col|replace("_", " ")|capitalize }}
@@ -81,7 +81,7 @@
     {% for row in entity %}
         <tr>
         {% for col in columns %}<td>
-            {% if references[loop.index0] == None or row[col] == None%}
+            {% if references[loop.index0] == None or row[col] == None %}
                 {{ display_val(row[col]) -}}
             {%- elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
