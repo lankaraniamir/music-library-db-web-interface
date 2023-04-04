@@ -83,7 +83,7 @@ def songs():
     """)
     columns = ["song", "main_artists", "featured_artists"]
     references = ["song","artist", "artist"]
-    extra_text = [" by "," featuring "]
+    extra_text = ["", " by "," featuring "]
     # columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
     # NULLIF(ARRAY_REMOVE(
     #     ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END),
