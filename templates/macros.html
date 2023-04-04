@@ -81,7 +81,7 @@
     {% for row in entity %}
         <tr>
         {% for col in columns %}<td>
-            [loop.index0]
+            {{loop.index0}}
             {% if references[loop.index0] == None or row[col] == None %}
                 {{ display_val(row[col]) }}
             {%- elif row[col] is iterable and row[col] is not string %}
