@@ -13,7 +13,7 @@
 
 {% macro display_val(value) %}
     {% if value is iterable and value is not string %}
-        {{% value | join(", ") %}}
+        {{ value | join(", ") }}
     {% endif %}
 
     {% if value == None %}
