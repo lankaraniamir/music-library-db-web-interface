@@ -83,7 +83,7 @@ def genre(name):
         f"SELECT descriptor FROM genre WHERE name = '{name}'"
     )
 
-    print(main_genre)
+    print(description)
 
     children = get_query(
         "SELECT DISTINCT sub_genre "
