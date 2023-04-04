@@ -80,7 +80,7 @@ def genres():
 @app.route('/genres/<name>')
 def genre(name):
     main_genre = get_query(
-        f"SELECT * FROM genre WHERE genre = '{name}'"
+        f"SELECT * FROM genre WHERE name = '{name}'"
     )
 
     children = get_query(
