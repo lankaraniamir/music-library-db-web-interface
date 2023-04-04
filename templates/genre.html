@@ -13,4 +13,19 @@
     {{ macros.list_references(songs, 'song', 'Songs', 'No Songs in Genre') }}
     {{ macros.list_references(releases, 'release', 'Releases', 'No Releases in Genre') }}
 </ul>
+
+<div>
+<body><br><b>Include songs & releases who have as primary, secondary, or either
+genre of {{title}}? </b></body>
+<form action="{{ url_for('user', var=user) }}" method=post>
+    <input type="radio" id="primary" name="genre_type" value="primary">
+    <label for="Primary Genre">Songs</label><br>
+    <input type="radio" id="secondary" name="genre_type" value="secondary">
+    <label for="Secondary Genre">Songs</label><br>
+    <input type="radio" id="either" name="genre_type" value="either">
+    <label for="Either Primary or Secondary Genre">Songs</label><br>
+</form>
+</div>
+
+{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
 {% endblock content %}

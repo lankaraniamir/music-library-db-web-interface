@@ -84,6 +84,24 @@ def genres():
 
 @app.route('/genres/<var>')
 def genre(var):
+    error = None
+    if request.method == 'POST' and len(request.form) > 0:
+        genre_type = request.form['selection']
+    elif request.method == 'POST' and len(request.form) == 0:
+        error = "Please select a category."
+        genre_type = None
+    else:
+        # selection = None
+        genre_type = 'primary'
+
+    if genre_type == 'primary':
+        type_string = "and primary_genre = True"
+    elif genre_type == 'secondary':
+        type_string = "and primary_genre = False"
+    else:
+        type_string = ""
+
+
     description = get_query(
         f"SELECT descriptor FROM genre WHERE name = '{var}'",
         single=True, deref=True
@@ -137,7 +155,7 @@ def genre(var):
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
     ") AS SG "
-    "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True "
+    f"WHERE G.genre = SG.genre and S.song_id = G.song_id {type_string} "
     "ORDER BY title ",
     single=True
     )
@@ -158,7 +176,8 @@ def genre(var):
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
     ") AS SG "
-    "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True "
+    f"WHERE G.genre = SG.genre and R.release_id = G.release_id {type_string} "
+    # "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True "
     "ORDER BY title ",
     single=True
     )
