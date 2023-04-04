@@ -50,11 +50,11 @@ def teardown_request(exception):
 
 
 
-def get_query(query, single=False):
+def get_query(query, deref=0):
     cursor = g.conn.execute(text(query))
     result = []
     for row in cursor:
-        if single:
+        if single == 1:
             result.append(row[0])
         else:
             result.append(row)
@@ -89,14 +89,14 @@ def genre(name):
         "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
         f"WHERE parent_genre = '{name}' ",
-        single=True
+        deref=1
     )
 
     parents = get_query(
         "SELECT DISTINCT parent_genre "
         "FROM genre_inheritance "
         f"WHERE sub_genre = '{name}' ",
-        single = True
+        deref=1
     )
 
     # query = (
@@ -154,7 +154,7 @@ def genre(name):
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{name}') "
     ") AS SG "
     "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True; ",
-    single=True
+    deref=1
     )
 
     all_releases = get_query(
@@ -174,7 +174,7 @@ def genre(name):
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{name}') "
     ") AS SG "
     "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True; ",
-    single=True
+    deref=1
     )
 
     subgenres = get_query(
@@ -189,7 +189,7 @@ def genre(name):
     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
     "   ) "
     "SELECT DISTINCT sub_genre FROM subgenres ",
-    single=True
+    deref=1
     )
 
     context = dict(description=description, children=children, parents=parents, songs=all_songs,
