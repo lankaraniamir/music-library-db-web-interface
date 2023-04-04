@@ -4,10 +4,5 @@
 <h2> {{ title }} </h2>
 <ul>
 {{ macros.list_references(genres, 'genre', None, None, 'name') }}
-    {% for genre in genres|sort(attribute="name")%}
-    <li>
-        {{macros.reference('genre', param=genre.name)}}
-    </li>
-    {% endfor %}
 </ul>
 {% endblock content %}
