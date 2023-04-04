@@ -19,7 +19,7 @@
     {% if value is iterable and value is not string %}
         {% set value = value | join(", ") %}
     {% endif %}
-    {% if value == None and dash=True %}
+    {% if value == None and dash == True %}
         -
     {%- elif value == True %}
         ❤️
