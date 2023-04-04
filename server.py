@@ -70,11 +70,32 @@ def get_query(query, single=False, deref=False):
 @app.route('/songs')
 def songs():
 	songs = get_query("""
-        SELECT S.title as title, A.primary_name as artist, S.year as year
-	    FROM song S, song_credit C, artist A
-	    WHERE S.song_id = C.song_id AND C.primary_artist = True AND C.artist_id = A.artist_id
-	    ORDER BY title, artist, year
-	""")
+    SELECT S.title AS song,
+    ARRAY_REMOVE(
+        ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
+        NULL) AS main_artists,
+    NULLIF(ARRAY_REMOVE(
+        ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
+        NULL), '{}') AS featured_artists,
+    NULLIF(ARRAY_REMOVE(
+        ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END),
+        NULL), '{}') AS other_artists,
+    NULLIF(ARRAY_REMOVE(
+        ARRAY_AGG(DISTINCT CASE WHEN primary_genre THEN genre END),
+        Null), '{}') AS primary_genres,
+    NULLIF(ARRAY_REMOVE(
+        ARRAY_AGG(DISTINCT CASE WHEN not primary_genre THEN genre END),
+        Null), '{}') AS secondary_genre
+    FROM song S, artist A, song_credit C, song_in_genre G
+    WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id AND S.song_id = G.song_id
+    GROUP BY S.song_id, S.title;
+    """)
+    #          """
+    #     SELECT S.title as title, A.primary_name as artist, S.year as year
+	#     FROM song S, song_credit C, artist A
+	#     WHERE S.song_id = C.song_id AND C.primary_artist = True AND C.artist_id = A.artist_id
+	#     ORDER BY title, artist, year
+	# """)
 	context = dict(songs = songs)
 	return render_template("songs.html", title="All Songs", **context)
 
