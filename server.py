@@ -226,9 +226,10 @@ def user(var):
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
         )
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
+        print(query)
         # references = ["song","artist","artist",None,"genre",None,None,None]
-        # references = ["song",None,None,None,None,None,None,None]
-        references = ["song",None,None,None,"genre",None,None,None]
+        references = ["song",None,None,None,None,None,None,None]
+        # references = ["song",None,None,None,None,"genres",None,None]
         # traits = ["title","name","name",None,"name",None,None,None]
 
     elif selection == 'albums':
