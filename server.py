@@ -86,6 +86,7 @@ def genres():
 def genre(var):
     error = None
     print(request.method)
+    print(request.form)
     if request.method == 'POST' and len(request.form) > 0:
         genre_type = request.form['selection']
     elif request.method == 'POST' and len(request.form) == 0:
@@ -230,6 +231,8 @@ def users():
 @app.route('/users/<var>', methods=('GET', 'POST'))
 def user(var):
     error = None
+    print(request.method)
+    print(request.form)
     if request.method == 'POST' and len(request.form) > 0:
         selection = request.form['selection']
     elif request.method == 'POST' and len(request.form) == 0:
