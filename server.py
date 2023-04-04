@@ -50,7 +50,7 @@ def teardown_request(exception):
 		pass
 
 
-app.jinja_options = {'Environment': [Environment.trim_blocks]}
+app.jinja_env.trim_blocks = True
 
 def get_query(query, single=False, deref=False):
     cursor = g.conn.execute(text(query))
