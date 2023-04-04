@@ -83,6 +83,7 @@ def genre(name):
         f"SELECT descriptor FROM genre WHERE name = '{name}'",
         single=True
     )
+    print(description)
     description = description[0]
     print(description)
 
