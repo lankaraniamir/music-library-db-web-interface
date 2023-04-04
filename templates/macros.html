@@ -16,9 +16,7 @@
 {% endmacro %}
 
 {% macro display_val(value, caps=False) %}
-    {% if value is iterable and value is not string %}
-        {% set value = value | join(", ") %}
-    {% endif %}
+    {% if value is iterable and value is not string %}{% set value = value | join(", ") %}{% endif %}
     {% if value == None %}
         -
     {%- elif value == True %}
