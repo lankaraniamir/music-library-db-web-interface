@@ -83,7 +83,7 @@
         {% for col in columns %}<td>
             {% if references[loop.index0] == None or row[col] == None -%}
                 {{ display_val(row[col]) }}
-            {%- elif row[col] is iterable and row[col] is not string %}
+            {% elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
                     {{ reference(references[loop.index0], param=parameter) }}
                     {%- if not loop.last %},{% endif %}
