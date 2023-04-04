@@ -56,10 +56,8 @@
     {% for row in entity %}
         <tr>
             {% for col in columns %}<td>
-                <a href="{{ url_for('song', title=row[col] }}">
-                    {{display_val(row[col]) }}</a>
-                <!-- <a href="{{ url_for('references[i]', username=session['username']) }}">{{ -->
-                <!-- <td>{{ display_val(row[col]) }}</td> -->
+                <a href="{{ url_for('song', title=row[col]) }}">
+                    {{ display_val(row[col]) }}</a>
             </td>{% endfor %}
         </tr>
     {% endfor %}
