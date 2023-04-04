@@ -77,7 +77,7 @@
             {% if references[loop.index0] == None %}
                 {{ display_val(row[col]) }}
             {% else %}
-                {{ reference(references[loop.index0], param='Teehee') }}
+                {{ reference(references[loop.index0], param=row[col]) }}
             {% endif %}
         </td>{% endfor %}
         </tr>
