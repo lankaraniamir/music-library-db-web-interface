@@ -6,6 +6,7 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, flash, session, url_for
+from jinja2 import Environment
 
 
 """ Pre-made Server Code """
@@ -49,7 +50,7 @@ def teardown_request(exception):
 		pass
 
 
-
+app.jinja_options["trim_blocks"] = Environment.trim_blocks
 def get_query(query, single=False, deref=False):
     cursor = g.conn.execute(text(query))
     result = []
@@ -188,6 +189,7 @@ def release(var):
 
 @app.route('/artist/<var>')
 def artist(var):
+    songs = get_query("SELECT * FROM app_user ORDER BY username")
     return redirect(url_for('user', var=session['username']))
 
 
