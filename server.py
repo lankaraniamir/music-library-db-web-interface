@@ -89,7 +89,7 @@ def genre(var):
     children = get_query(
         "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
-        f"WHERE parent_genre = '{var}' ",
+        f"WHERE parent_genre = '{var}' "
         "ORDER BY sub_genre ",
         single=True
     )
@@ -97,7 +97,7 @@ def genre(var):
     parents = get_query(
         "SELECT DISTINCT parent_genre "
         "FROM genre_inheritance "
-        f"WHERE sub_genre = '{var}' ",
+        f"WHERE sub_genre = '{var}' "
         "ORDER BY parent_genre ",
         single = True
     )
@@ -113,7 +113,8 @@ def genre(var):
     "           FROM genre_inheritance A "
     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
     "   ) "
-    "SELECT DISTINCT sub_genre FROM subgenres ",
+    "SELECT DISTINCT sub_genre FROM subgenres "
+    "ORDER BY sub_genre ",
     single=True
     )
 
@@ -133,7 +134,7 @@ def genre(var):
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
     ") AS SG "
-    "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True ",
+    "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True "
     "ORDER BY title ",
     single=True
     )
@@ -154,7 +155,7 @@ def genre(var):
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
     ") AS SG "
-    "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True ",
+    "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True "
     "ORDER BY title ",
     single=True
     )
