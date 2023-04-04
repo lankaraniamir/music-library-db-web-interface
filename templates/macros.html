@@ -79,8 +79,10 @@ attr1=None, attr2=None, attr3=None, text1=None, text2=None, text3=None) %}
         {% for val in values %}
             {% if attribute1 %}
                 <li>{{ reference(page, param=val[attr1]) }}</li>
+            {% endif %}
             {% if attribute2 %}
                 <li>{{ reference(page, param=val[attr2]) }}</li>
+            {% endif %}
             {% if attribute3 %}
                 <li>{{ reference(page, param=val[attr3]) }}</li>
             {% endif %}
