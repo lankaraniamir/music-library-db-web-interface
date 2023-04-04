@@ -186,6 +186,10 @@ def song(var):
 def release(var):
     return redirect(url_for('user', var=session['username']))
 
+@app.route('/artist/<var>')
+def release(var):
+    return redirect(url_for('user', var=session['username']))
+
 
 
 
