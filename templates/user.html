@@ -2,12 +2,11 @@
 
 {% block title %}{{macros.capitalize(user)}}'s Music{% endblock title %}
 
-
 {% block content %}
 
 {% if columns %}
     <h3>{{macros.capitalize(user)}}'s {{macros.capitalize(selection)}}</h3>
-    {{ macros.display_all_as_table(data, columns) }}
+    {{ macros.display_all_as_table(data, columns, references) }}
 {% else %}
     <h3>{{macros.capitalize(user)}}'s Music</h3>
 {% endif %}

@@ -226,8 +226,9 @@ def user(var):
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
         )
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
-        references = ["song","artist","artist",None,"genre",None,None,None]
-        traits = ["title","name","name",None,"name",None,None,None]
+        # references = ["song","artist","artist",None,"genre",None,None,None]
+        references = ["song",None,None,None,"genre",None,None,None]
+        # traits = ["title","name","name",None,"name",None,None,None]
 
     elif selection == 'albums':
         query = (
@@ -243,7 +244,8 @@ def user(var):
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
         columns = ["album","main_artists","other_artists","year","genres","release_type","love","stars"]
-        references = ["release","artist","artist",None,"genre",None,None,None]
+        # references = ["release","artist","artist",None,"genre",None,None,None]
+        references = ["release", None,None,None,"genre",None,None,None]
 
     elif selection == 'playlists':
         query = (

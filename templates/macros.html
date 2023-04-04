@@ -61,7 +61,7 @@
     &nbsp
 {% endmacro %}
 
-{% macro display_all_as_table(entity, columns) %}
+{% macro display_all_as_table(entity, columns, references) %}
 {% if not entity %}
     <p>No data to display.</p>
 {% else %}
@@ -73,8 +73,12 @@
     </tr>
     {% for row in entity %}
         <tr>
-            {% for col in columns %}<td>
-                {{ display_val(row[col]) }}
+            {% for col, ref in zip(columns, references) %}<td>
+                {% if ref == None}
+                    {{ display_val(row[col]) }}
+                {% else}
+                    {{ reference(ref, param=ref[row[col]]) }}
+                {% endif %}
             </td>{% endfor %}
         </tr>
     {% endfor %}
