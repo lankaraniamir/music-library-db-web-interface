@@ -19,9 +19,7 @@
     {% if value is iterable and value is not string %}
         {% set value = value | join(", ") %}
     {%- endif %}
-    {% if value == None %}
--
-    {%- elif value == True %}
+    {% if value == None %}-{%- elif value == True %}
         ❤️
     {%- elif value == False %}
         ♡️
