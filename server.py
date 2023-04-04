@@ -76,7 +76,7 @@ def songs():
         NULL) AS main_artists,
     NULLIF(ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
-        NULL), '{}') AS featured_artists,
+        NULL), '{}') AS featured_artists
     FROM song S, artist A, song_credit C
     WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
     GROUP BY S.song_id, S.title;
