@@ -79,29 +79,9 @@ def genres():
 
 @app.route('/genres/<name>')
 def genre(name):
-    # genres = get_query(
-    # "SELECT DISTINCT genre "
-    # "FROM ( "
-    #     "WITH RECURSIVE "
-    #     "   subgenres(sub_genre, parent_genre) AS ( "
-    #     "       SELECT sub_genre, parent_genre "
-    #     "       FROM genre_inheritance "
-    #     f"       WHERE parent_genre = '{name}' "
-    #     "       UNION "
-    #     "           SELECT A.sub_genre, A.parent_genre "
-    #     "           FROM genre_inheritance A "
-    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
-    #     "   ) "
-    #     "SELECT DISTINCT sub_genre FROM subgenres "
-    #     "UNION SELECT DISTINCT parent_genre FROM subgenres "
-    # ") AS SG "
-    # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; ",
-    # single=True
-    # )
     main_genre = get_query(
-        f"SELECT DISTINCT genre FROM genre WHERE genre = {name};"
+        f"SELECT genre FROM genre WHERE genre = '{name}';"
     )
-
 
     children = get_query(
         "SELECT DISTINCT sub_genre "
