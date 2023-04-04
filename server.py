@@ -69,35 +69,32 @@ def get_query(query, single=False, deref=False):
 
 @app.route('/songs')
 def songs():
-    query = """
+    query = get_query("""
     SELECT S.title AS song,
     ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
         NULL) AS main_artists,
-    NULLIF(ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
-        NULL), '{}') AS featured_artists,
-    NULLIF(ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END),
-        NULL), '{}') AS other_artists,
-    NULLIF(ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN primary_genre THEN genre END),
-        Null), '{}') AS primary_genres,
-    NULLIF(ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN not primary_genre THEN genre END),
-        Null), '{}') AS secondary_genre
-    FROM song S, artist A, song_credit C, song_in_genre G
-    WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id AND S.song_id = G.song_id
+    FROM song S, artist A, song_credit C
+    WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
     GROUP BY S.song_id, S.title;
-    """
-
-    cursor = g.conn.execute(text(query))
-    songs = []
-    for row in cursor:
-        print(row)
-        songs.append(row)
-
-    cursor.close()
+    """)
+    columns = ["song", "main_artists"]
+    references = ["song","artist"]
+    # columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
+    # NULLIF(ARRAY_REMOVE(
+    #     ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
+    #     NULL), '{}') AS featured_artists,
+    # NULLIF(ARRAY_REMOVE(
+    #     ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END),
+    #     NULL), '{}') AS other_artists,
+    # NULLIF(ARRAY_REMOVE(
+    #     ARRAY_AGG(DISTINCT CASE WHEN primary_genre THEN genre END),
+    #     Null), '{}') AS primary_genres,
+    # NULLIF(ARRAY_REMOVE(
+    #     ARRAY_AGG(DISTINCT CASE WHEN not primary_genre THEN genre END),
+    #     Null), '{}') AS secondary_genre
+    # columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
+    # references = ["release","artist","artist","genre",None,None,None,None]
 
     #          """
     #     SELECT S.title as title, A.primary_name as artist, S.year as year

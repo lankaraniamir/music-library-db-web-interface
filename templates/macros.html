@@ -69,23 +69,28 @@ attr=None) %}
     &nbsp
 {% endmacro %}
 
-{% macro list_multiple_references(values, page, title=parameter, null_text=None,
-attr1=None, attr2=None, attr3=None, text1=None, text2=None, text3=None) %}
+{% macro list_multiple_references(values, columns, references, title=parameter, null_text=None) %}
     <section>
     {% if values %}
         {% if title %}
             <b>{{title}}</b>
         {% endif %}
-        {% for val in values %}
-            {% if attribute1 %}
-                <li>{{ reference(page, param=val[attr1]) }}</li>
-            {% endif %}
-            {% if attribute2 %}
-                <li>{{ reference(page, param=val[attr2]) }}</li>
-            {% endif %}
-            {% if attribute3 %}
-                <li>{{ reference(page, param=val[attr3]) }}</li>
-            {% endif %}
+        {% for row in values %}
+        <li>
+            {% for col in columns %}
+                {% set i = loop.index0 %}
+                {% if references[i] == None or row[col] == None %}
+                    {{ display_val(row[col]) }}
+                {%- elif row[col] is iterable and row[col] is not string %}
+                    {% for parameter in row[col] %}
+                        {{ reference(references[i], param=parameter) }}
+                        {%- if not loop.last %},{% endif %}
+                    {% endfor %}
+                {% else %}
+                    {{ reference(references[i], param=row[col]) }}
+                {% endif -%}
+            {% endfor %}<td>
+        </li>
         {% endfor %}
     {% elif null_text != None %}
         <b>{{null_text}}</b>
@@ -108,7 +113,7 @@ attr1=None, attr2=None, attr3=None, text1=None, text2=None, text3=None) %}
         <tr>
         {% for col in columns %}<td>
             {% set i = loop.index0 %}
-            {% if references[loop.index0] == None or row[col] == None %}
+            {% if references[i] == None or row[col] == None %}
                 {{ display_val(row[col]) }}
             {%- elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
@@ -116,7 +121,7 @@ attr1=None, attr2=None, attr3=None, text1=None, text2=None, text3=None) %}
                     {%- if not loop.last %},{% endif %}
                 {% endfor %}
             {% else %}
-                {{ reference(references[loop.index0], param=row[col]) }}
+                {{ reference(references[i], param=row[col]) }}
             {% endif -%}
         </td>{% endfor %}
         </tr>
