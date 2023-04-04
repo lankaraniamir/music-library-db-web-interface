@@ -13,11 +13,11 @@
 
 {% macro reference(page, attr=None, var=None, text=None, caps=False)
 %}
-    { % SET input = "page, username=var' %}""
     {% if attr == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% elif attr != None and text == None %}
-        <a href="{{ url_for(input) }}">{{ f_capitalize(var, caps=caps) }}</a>
+        <a href="{{ url_for(page, username=var) }}" % (attr)
+        >{{ f_capitalize(var, caps=caps) }}</a>
     {% elif attr == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
