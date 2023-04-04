@@ -7,21 +7,9 @@
     <section>
     {% if main_genre.descriptor %}
         <b>Description:</b>main_children.descriptro
+        &nbsp
     {% endif %}
     </section>
-    &nbsp
-
-    <section>
-    {% if children %}
-        <b>Child Genres</b>
-        {% for genre in children %}
-            <li><a href="{{ url_for('genre', name=genre) }}">{{genre}}</a></li>
-        {% endfor %}
-    {% else %}
-        <b>No Child Genres</b>
-    {% endif %}
-    </section>
-    &nbsp
 
     <section>
     {% if children %}
