@@ -12,7 +12,7 @@
 {% endmacro %}
 
 {% macro reference(page, var=None, combo=True, text=None, caps=False)%}
-    {% if combo == True %}
+    {% if var != None and combo == True %}
         {% set var = page['var'] %}
     {% endif %}
 
