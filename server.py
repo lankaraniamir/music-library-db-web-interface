@@ -79,8 +79,8 @@ def genres():
 
 @app.route('/genres/<name>')
 def genre(name):
-    main_genre = get_query(
-        f"SELECT * FROM genre WHERE name = '{name}'"
+    description = get_query(
+        f"SELECT descriptor FROM genre WHERE name = '{name}'"
     )
 
     print(main_genre)
@@ -192,7 +192,7 @@ def genre(name):
     single=True
     )
 
-    context = dict(main_genre=main_genre, children=children, parents=parents, songs=all_songs,
+    context = dict(description=description, children=children, parents=parents, songs=all_songs,
                    subgenres=subgenres, releases=all_releases)
     return render_template("genre.html", title=name, **context)
 
