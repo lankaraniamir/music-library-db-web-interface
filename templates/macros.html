@@ -82,7 +82,7 @@ null_text=None, extra_text=[]) %}
                 {% set i = loop.index0 %}
                 {% if row[col] != None and extra_text|length > i %}{{extra_text[i]}}{% endif %}
 
-                {% row[col] == None %}
+                {% if row[col] == None %}
                     {{ display_val(row[col]) }}
                 {% elif row[col] is iterable and row[col] is not string %}
                     {% for parameter in row[col] %}
