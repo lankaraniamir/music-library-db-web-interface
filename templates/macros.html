@@ -15,7 +15,7 @@
     {%- endif %}
 {% endmacro %}
 
-{% macro display_val(value) %}
+{% macro display_val(value, caps=False) %}
     {% if value is iterable and value is not string %}
         {% set value = value | join(", ") %}
     {%- endif %}
@@ -26,7 +26,7 @@
     {%- elif value == False %}
         ♡️
     {%- elif value is string %}
-        {{capitalize(value)}}
+        {{f_capitalize(value, caps=caps)}}
     {%- else %}
         {{value}}
     {%- endif %}
