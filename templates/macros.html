@@ -41,7 +41,7 @@
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
         <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
-    {% endif %}
+    {%- endif %}
 {% endmacro %}
 
 {% macro list_references(values, page, title=parameter, null_text=None, attribute=None) %}
