@@ -225,9 +225,15 @@ def user(var):
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
         )
+        rows = get_query(query)
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
-        # references = ["song","artist","artist",None,"genre",None,None,None]
+        print(rows[1])
+
         references = ["song",None,None,None,None,None,None,None]
+
+
+
+        # references = ["song","artist","artist",None,"genre",None,None,None]
         # references = ["song",None,None,None,None,"genres",None,None]
         # traits = ["title","name","name",None,"name",None,None,None]
 
