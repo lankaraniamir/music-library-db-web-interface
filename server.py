@@ -55,12 +55,12 @@ def get_query(query, single=False, deref=False):
     result = []
     for row in cursor:
         if single:
-            result.append(row[0])
-        else:
             if deref:
-                result.append(*row)
+                result.append(*(row[0]))
             else:
-                result.append(row)
+                result.append(row[0])
+        else:
+            result.append(row)
     cursor.close()
     return result
 
