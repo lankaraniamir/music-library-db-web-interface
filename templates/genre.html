@@ -6,89 +6,11 @@
     <h4>{{description}}</h4>
 {% endif %}
 
-{% macro list_references(values, page, title=parameter, null_text=None) %}
-    <section>
-    {% if values %}
-        <b>{{title}}</b>
-        {% for val in values %}
-            <li>{{ macros.reference(page, param=val) }}</li>
-        {% endfor %}
-    {% elif null_text != None %}
-        <b>{{null_text}}</b>
-    {% endif %}
-    </section>
-    &nbsp
-{% endmacro %}
-
-
-
-
-
 <ul>
-    {{ list_references(children, 'genre', 'Child Genres', 'No Child Genres') }}
-    {{ list_references(parents, 'genre', 'Parent Genres', 'No Parent Genres') }}
-    {{ list_references(subgenres, 'genre', 'All Subgenres', 'No Subgenres') }}
-    {{ list_references(songs, 'song', 'Songs', 'No Songs in Genre') }}
-    {{ list_references(releases, 'release', 'Releases', 'No Releases in Genre') }}
-
-    <section>
-    {% if children %}
-        <b>Child Genres</b>
-        {% for genre in children %}
-            <li>{{ macros.reference('genre', param=genre)}}</li>
-        {% endfor %}
-    {% else %}
-        <b>No Child Genres</b>
-    {% endif %}
-    </section>
-    &nbsp
-
-    <section>
-    {% if parents %}
-        <b>Parent Genres</b>
-        {% for genre in parents %}
-            <li>{{ macros.reference('genre', param=genre)}}</li>
-        {% endfor %}
-    {% else %}
-        <b>No Parent Genres</b>
-    {% endif %}
-    </section>
-    &nbsp
-
-    <section>
-    {% if subgenres %}
-        <b>All Subgenres</b>
-        {% for genre in subgenres %}
-            <li>{{ macros.reference('genre', param=genre)}}</li>
-        {% endfor %}
-    {% else %}
-        <b>No Subgenres</b>
-    {% endif %}
-    </section>
-    &nbsp
-
-    <section>
-    {% if songs %}
-        <b>Songs</b>
-        {% for song in songs %}
-            <li>{{ macros.reference('song', param=song)}}</li>
-        {% endfor %}
-    {% else %}
-        <b>No Songs in Genre</b>
-    {% endif %}
-    </section>
-    &nbsp
-
-    <section>
-    {% if releases %}
-        <b>Releases</b>
-        {% for release in releases %}
-            <li>{{ macros.reference('release', param=release)}}</li>
-        {% endfor %}
-    {% else %}
-        <b>No Releases in Genre</b>
-    {% endif %}
-    </section>
-
+    {{ macros.list_references(children, 'genre', 'Child Genres', 'No Child Genres') }}
+    {{ macros.list_references(parents, 'genre', 'Parent Genres', 'No Parent Genres') }}
+    {{ macros.list_references(subgenres, 'genre', 'All Subgenres', 'No Subgenres') }}
+    {{ macros.list_references(songs, 'song', 'Songs', 'No Songs in Genre') }}
+    {{ macros.list_references(releases, 'release', 'Releases', 'No Releases in Genre') }}
 </ul>
 {% endblock content %}
