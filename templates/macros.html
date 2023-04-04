@@ -69,7 +69,8 @@ attr=None) %}
     &nbsp
 {% endmacro %}
 
-{% macro list_multiple_references(values, columns, references, title=parameter, null_text=None) %}
+{% macro list_multiple_references(values, columns, references, title=parameter,
+null_text=None, extra_text=None) %}
     <section>
     {% if values %}
         {% if title %}
@@ -89,6 +90,8 @@ attr=None) %}
                 {% else %}
                     {{ reference(references[i], param=row[col]) }}
                 {% endif -%}
+                {% if extra_text %}{{extra_text}}{% endif %}
+
             {% endfor %}<td>
         </li>
         {% endfor %}
