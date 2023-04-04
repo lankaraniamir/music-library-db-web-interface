@@ -8,7 +8,6 @@
 {% for user in users|sort(attribute="username")%}
     <li>
         {{ macros.reference('user', user[username], combo=False) }}
-        <a href="{{ url_for('user', var=user['username']) }}" >{{ f_capitalize(param, caps=caps) }}</a>
     </li>
 {% endfor %}
 </ul>
