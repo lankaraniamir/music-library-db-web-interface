@@ -79,7 +79,7 @@
         {% for col in columns %}<td>
             {% if row[col] is iterable and (references[loop.index0] == None or row[col] == None) %}
                 {% for parameter in row[col] %}
-                    {{ display_val(parameter]) }}
+                    {{ display_val(parameter) }}
                 {% endfor %}
             {% if references[loop.index0] == None or row[col] == None %}
                 {{ display_val(row[col]) }}
