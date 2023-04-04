@@ -16,7 +16,6 @@ tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-app.jinja_env.ocks = True
 
 # Creates database connecting to the given URI
 DATABASE_USERNAME = "al3625"
