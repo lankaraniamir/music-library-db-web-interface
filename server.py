@@ -69,7 +69,7 @@ def get_query(query, single=False, deref=False):
 
 @app.route('/songs')
 def songs():
-    songs = query("""
+    query = """
     SELECT S.title AS song,
     ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
@@ -89,13 +89,14 @@ def songs():
     FROM song S, artist A, song_credit C, song_in_genre G
     WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id AND S.song_id = G.song_id
     GROUP BY S.song_id, S.title;
-    """)
+    """
 
     cursor = g.conn.execute(text(query))
-    result = []
+    songs = []
     for row in cursor:
-        print(row)
+        songs.append(row)
 
+    cursor.close()
 
     #          """
     #     SELECT S.title as title, A.primary_name as artist, S.year as year
