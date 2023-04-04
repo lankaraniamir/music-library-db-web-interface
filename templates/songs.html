@@ -3,8 +3,7 @@
 {% block content %}
 <h2> {{ title }} </h2>
 <ul>
-{{ macros.list_multiple_references(data, columns, references, None, None, 'song') }}
-'year', ' by ', '(', ')') }}
+{{ macros.list_multiple_references(data, columns, references, None, None) }}
 </ul>
 
 {% endblock content %}
