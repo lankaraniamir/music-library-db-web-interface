@@ -11,19 +11,19 @@
     {% endif %}
 {% endmacro %}
 
-{% macro reference(page, var=None, combo=True, text=None, caps=False)%}
-    {% if var != None and combo == True %}
-        {% set var = page['var'] %}
+{% macro reference(page, param=None, combo=True, text=None, caps=False)%}
+    {% if param != None and combo == True %}
+        {% set param = page['var'] %}
     {% endif %}
 
-    {% if var == None and text == None %}
+    {% if param == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
-    {% elif var != None and text == None %}
-        <a href="{{ url_for(page, 'var'=var) }}" >{{ f_capitalize(var, caps=caps) }}</a>
-    {% elif var == None %}
+    {% elif param != None and text == None %}
+        <a href="{{ url_for(page, var=param) }}" >{{ f_capitalize(param, caps=caps) }}</a>
+    {% elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
-        <a href="{{ url_for(page, 'var'=var) }}">{{ f_capitalize(text, caps=caps) }}</a>
+        <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% endif %}
 {% endmacro %}
 
