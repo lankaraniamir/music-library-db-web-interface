@@ -54,10 +54,12 @@ def get_query(query, deref=0):
     cursor = g.conn.execute(text(query))
     result = []
     for row in cursor:
-        if single == 1:
+        if deref==0:
+            result.append(row)
+        elif deref==1:
             result.append(row[0])
         else:
-            result.append(row)
+            result.append(row[0][0])
     cursor.close()
     return result
 
@@ -80,7 +82,7 @@ def genres():
 @app.route('/genres/<name>')
 def genre(name):
     description = get_query(
-        f"SELECT DISTINCT descriptor FROM genre WHERE name = '{name}'"
+        f"SELECT DISTINCT descriptor FROM genre WHERE name = '{name}'", deref=2
     )
 
     print(description)
