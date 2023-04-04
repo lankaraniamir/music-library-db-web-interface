@@ -68,7 +68,7 @@ def get_query(query, single=False, deref=False):
 @app.route('/')
 def home():
     if 'username' in session:
-        return redirect(url_for('profile', username=session['username']))
+        return redirect(url_for('user', username=session['username']))
     else:
         return render_template('login.html')
     # return render_template("base.html", title="Homepage")
@@ -79,27 +79,66 @@ def genres():
 	context = dict(genres = genres)
 	return render_template("genres.html", title="All Genres", **context)
 
-@app.route('/genres/<var>')
-def genre(var):
+@app.route('/genres/<name>')
+def genre(name):
     description = get_query(
-        f"SELECT descriptor FROM genre WHERE name = '{var}'",
+        f"SELECT descriptor FROM genre WHERE name = '{name}'",
         single=True, deref=True
     )
 
     children = get_query(
         "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
-        f"WHERE parent_genre = '{var}' ",
+        f"WHERE parent_genre = '{name}' ",
         single=True
     )
 
     parents = get_query(
         "SELECT DISTINCT parent_genre "
         "FROM genre_inheritance "
-        f"WHERE sub_genre = '{var}' ",
+        f"WHERE sub_genre = '{name}' ",
         single = True
     )
 
+
+    # query = (
+    # "SELECT DISTINCT sub_genre "
+    # "FROM ( "
+    #     "WITH RECURSIVE "
+    #     "   subgenres(sub_genre, parent_genre) AS ( "
+    #     "       FROM genre_inheritance "
+    #     f"       WHERE parent_genre = '{name}' "
+    #     "       UNION "
+    #     "           SELECT A.sub_genre, A.parent_genre "
+    #     "           FROM genre_inheritance A "
+    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+    #     "   ) "
+    #     "SELECT DISTINCT sub_genre FROM subgenres "
+    #     "UNION SELECT DISTINCT parent_genre FROM subgenres "
+    # ") AS SG "
+    # # f"WHERE SG.primary_genre != {name}; "
+    # )
+    # descendants = get_query(query)
+
+    # all_songs = get_query(
+    # "SELECT DISTINCT title "
+    # "FROM song S, song_in_genre G, ( "
+    #     "WITH RECURSIVE "
+    #     "   subgenres(sub_genre, parent_genre) AS ( "
+    #     "       SELECT sub_genre, parent_genre "
+    #     "       FROM genre_inheritance "
+    #     f"       WHERE parent_genre = '{name}' "
+    #     "       UNION "
+    #     "           SELECT A.sub_genre, A.parent_genre "
+    #     "           FROM genre_inheritance A "
+    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+    #     "   ) "
+    #     "SELECT DISTINCT sub_genre FROM subgenres "
+    #     "UNION SELECT DISTINCT parent_genre FROM subgenres "
+    # ") AS SG "
+    # "WHERE G.genre = SG.sub_genre and S.song_id = G.song_id and G.primary_genre = True; ",
+    # single=True
+    # )
     all_songs = get_query(
     "SELECT DISTINCT title "
     "FROM song S, song_in_genre G, ( "
@@ -107,14 +146,14 @@ def genre(var):
         "   subgenres(sub_genre, parent_genre) AS ( "
         "       SELECT sub_genre, parent_genre "
         "       FROM genre_inheritance "
-        f"       WHERE parent_genre = '{var}' "
+        f"       WHERE parent_genre = '{name}' "
         "       UNION "
         "           SELECT A.sub_genre, A.parent_genre "
         "           FROM genre_inheritance A "
         "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
         "   ) "
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
-        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
+        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{name}') "
     ") AS SG "
     "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True; ",
     single=True
@@ -127,14 +166,14 @@ def genre(var):
         "   subgenres(sub_genre, parent_genre) AS ( "
         "       SELECT sub_genre, parent_genre "
         "       FROM genre_inheritance "
-        f"       WHERE parent_genre = '{var}' "
+        f"       WHERE parent_genre = '{name}' "
         "       UNION "
         "           SELECT A.sub_genre, A.parent_genre "
         "           FROM genre_inheritance A "
         "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
         "   ) "
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
-        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
+        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{name}') "
     ") AS SG "
     "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True; ",
     single=True
@@ -145,7 +184,7 @@ def genre(var):
     "   subgenres(sub_genre, parent_genre) AS ( "
     "       SELECT sub_genre, parent_genre "
     "       FROM genre_inheritance "
-    f"       WHERE parent_genre = '{var}'"
+    f"       WHERE parent_genre = '{name}'"
     "       UNION "
     "           SELECT A.sub_genre, A.parent_genre "
     "           FROM genre_inheritance A "
@@ -157,7 +196,7 @@ def genre(var):
 
     context = dict(description=description, children=children, parents=parents, songs=all_songs,
                    subgenres=subgenres, releases=all_releases)
-    return render_template("genre.html", title=var, **context)
+    return render_template("genre.html", title=name, **context)
 
 
 # add radio button for primary, secondary, or both
@@ -173,13 +212,13 @@ def genre(var):
 
 
 
-@app.route('/song/<var>')
-def song(var):
-    return redirect(url_for('profile', username=session['username']))
+@app.route('/song/<title>')
+def song(title):
+    return redirect(url_for('user', username=session['username']))
 
-@app.route('/release/<var>')
-def release(var):
-    return redirect(url_for('profile', username=session['username']))
+@app.route('/release/<title>')
+def release(title):
+    return redirect(url_for('user', username=session['username']))
 
 
 
@@ -202,8 +241,8 @@ def users():
     context = dict(users = users)
     return render_template("users.html", title="All Users", **context)
 
-@app.route('/users/<var>', methods=('GET', 'POST'))
-def profile(var):
+@app.route('/users/<username>', methods=('GET', 'POST'))
+def user(username):
     error = None
     if request.method == 'POST' and len(request.form) > 0:
         selection = request.form['selection']
@@ -225,7 +264,7 @@ def profile(var):
         "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
         "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
         "AND S.song_id = G.song_id AND S.song_id = O.song_id "
-        f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
+        f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
         )
         columns = ["song","main_artists","featured_artists","other_artists","year","genres","love","stars"]
@@ -242,7 +281,7 @@ def profile(var):
         "FROM release R, artist A, release_credit C, release_in_genre G, release_opinion O "
         "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id "
         "AND R.release_id = G.release_id AND R.release_id = O.release_id "
-        f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
+        f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
         columns = ["album","main_artists","other_artists","year","genres","release_type","love","stars"]
@@ -253,16 +292,16 @@ def profile(var):
         "SELECT Distinct P.title as playlist, date_created, date_modified, track_count "
         "FROM playlist P, other_playlist_creator O "
         "WHERE P.playlist_id = O.playlist_id "
-        f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
+        f"AND (P.original_creator = '{username}' OR O.username = '{username}') "
         )
         columns = ["playlist", "date_created", "date_modified", "track_count"]
 
     else:
-        return render_template('profile.html', title=var, user=var,
+        return render_template('user.html', title=username, user=username,
                                data=None, sort=None, columns=None, error=error, selection=selection)
 
     rows = get_query(query)
-    return render_template('profile.html', title=var, user=var
+    return render_template('user.html', title=username, user=username,
                            data=rows, sort="stars", columns=columns, error=error,
                            selection=selection, references=references)
 
@@ -291,7 +330,7 @@ def login():
         if error is None:
             session.clear()
             session['username'] = username
-            return redirect(url_for('profile', username=username))
+            return redirect(url_for('user', username=username))
 
     return render_template('login.html', error=error)
 
@@ -321,7 +360,7 @@ def register():
                 else:
                     g.conn.execute(text(f"INSERT INTO app_user (username, password) VALUES {username, password}"))
                 g.conn.commit()
-                return redirect(url_for('profile', username=username))
+                return redirect(url_for('user', username=username))
 
     return render_template('register.html', error=error)
 
