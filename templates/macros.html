@@ -11,15 +11,20 @@
     {% endif %}
 {% endmacro %}
 
-{% macro reference(page, attr=None, var=None, combo=True, text=None, caps=False) %}
-    {% if var == None and text == None %}
+{% macro reference(page, attr=None, var=None, text=None, caps=False)
+%}
+    {% attr != None and var == None %}
+        var=page['attr']
+    {% endif %}
+
+    {% if attr == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
-    {% elif var != None and text == None %}
-        <a href="{{ url_for(page, username=var) }}">{{ f_capitalize(var, caps=caps) }}</a>
-    {% elif var == None %}
+    {% elif attr != None and text == None %}
+        <a href="{{ url_for(page, attr=var) }}">{{ f_capitalize(var, caps=caps) }}</a>
+    {% elif attr == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
-        <a href="{{ url_for(page, username=var) }}">{{ f_capitalize(text, caps=caps) }}</a>
+        <a href="{{ url_for(page, attr=var) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% endif %}
 {% endmacro %}
 
