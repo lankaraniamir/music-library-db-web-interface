@@ -13,7 +13,7 @@
 
 {% macro reference(page, attr=None, var=None, text=None, caps=False)
 %}
-    {% attr != None and var == None %}
+    {% if attr != None and var == None %}
         var=page['attr']
     {% endif %}
 
