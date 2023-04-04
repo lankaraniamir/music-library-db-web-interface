@@ -68,7 +68,7 @@ def get_query(query, single=False, deref=False):
 @app.route('/')
 def home():
     if 'username' in session:
-        return redirect(url_for('profile', username=session['username']))
+        return redirect(url_for('user', var=session['username']))
     else:
         return render_template('login.html')
     # return render_template("base.html", title="Homepage")
@@ -175,11 +175,11 @@ def genre(var):
 
 @app.route('/song/<var>')
 def song(var):
-    return redirect(url_for('profile', username=session['username']))
+    return redirect(url_for('user', var=session['username']))
 
 @app.route('/release/<var>')
 def release(var):
-    return redirect(url_for('profile', username=session['username']))
+    return redirect(url_for('user', var=session['username']))
 
 
 
@@ -203,7 +203,7 @@ def users():
     return render_template("users.html", title="All Users", **context)
 
 @app.route('/users/<var>', methods=('GET', 'POST'))
-def profile(var):
+def user(var):
     error = None
     if request.method == 'POST' and len(request.form) > 0:
         selection = request.form['selection']
@@ -258,11 +258,11 @@ def profile(var):
         columns = ["playlist", "date_created", "date_modified", "track_count"]
 
     else:
-        return render_template('profile.html', title=var, user=var,
+        return render_template('user.html', title=var, user=var,
                                data=None, sort=None, columns=None, error=error, selection=selection)
 
     rows = get_query(query)
-    return render_template('profile.html', title=var, user=var,
+    return render_template('user.html', title=var, user=var,
                            data=rows, sort="stars", columns=columns, error=error,
                            selection=selection, references=references)
 
@@ -291,7 +291,7 @@ def login():
         if error is None:
             session.clear()
             session['username'] = username
-            return redirect(url_for('profile', username=username))
+            return redirect(url_for('user', var=username))
 
     return render_template('login.html', error=error)
 
@@ -321,7 +321,7 @@ def register():
                 else:
                     g.conn.execute(text(f"INSERT INTO app_user (username, password) VALUES {username, password}"))
                 g.conn.commit()
-                return redirect(url_for('profile', username=username))
+                return redirect(url_for('user', var=username))
 
     return render_template('register.html', error=error)
 
