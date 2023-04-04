@@ -69,11 +69,11 @@ def get_query(query, single=False, deref=False):
 
 @app.route('/songs')
 def songs():
-    query = get_query("""
+    rows = get_query("""
     SELECT S.title AS song,
     ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
-        NULL) AS main_artists,
+        NULL) AS main_artists
     FROM song S, artist A, song_credit C
     WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
     GROUP BY S.song_id, S.title;
@@ -102,7 +102,7 @@ def songs():
     #     WHERE S.song_id = C.song_id AND C.primary_artist = True AND C.artist_id = A.artist_id
     #     ORDER BY title, artist, year
     # """)
-    context = dict(songs = songs)
+    context = dict(data=rows, columns=columns, references=references)
     return render_template("songs.html", title="All Songs", **context)
 
 @app.route('/song/<var>')
