@@ -8,7 +8,7 @@
 {% macro f_capitalize(text, caps=True) %}
     {% if caps -%}
         {{ capitalize(text) }}
-    {%- else %}
+    {% else %}
         {{ text }}
     {%- endif %}
 {% endmacro %}
