@@ -1,5 +1,6 @@
 {# templates/macros.html #}
 #jinja2: trim_blocks:True
+#jinja2: lstrip_blocks:True
 
 <!-- https://shubhamjain.co/2018/09/17/capitalizing-first-letter-in-jinja/ -->
 {% macro capitalize(text) %}{{ text[0]|upper }}{{ text[1:] }}{% endmacro %}
