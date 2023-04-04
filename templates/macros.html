@@ -70,7 +70,7 @@ attr=None) %}
 {% endmacro %}
 
 {% macro list_multiple_references(values, columns, references, title=parameter,
-null_text=None, extra_text=None) %}
+null_text=None, extra_text=[]) %}
     <section>
     {% if values %}
         {% if title %}
@@ -90,7 +90,7 @@ null_text=None, extra_text=None) %}
                 {% else %}
                     {{ reference(references[i], param=row[col]) }}
                 {% endif -%}
-                {% if extra_text %}{{extra_text}}{% endif %}
+                {% if i == 0 and len(extra_text)>i] %}{{extra_text[i]}}{% endif %}
 
             {% endfor %}<td>
         </li>
