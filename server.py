@@ -262,7 +262,7 @@ def profile(var):
                                data=None, sort=None, columns=None, error=error, selection=selection)
 
     rows = get_query(query)
-    return render_template('profile.html', title=var, user=var
+    return render_template('profile.html', title=var, user=var,
                            data=rows, sort="stars", columns=columns, error=error,
                            selection=selection, references=references)
 
