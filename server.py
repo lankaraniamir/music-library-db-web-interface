@@ -269,7 +269,7 @@ def user(var):
                                data=None, sort=None, columns=None, error=error, selection=selection)
 
     rows = get_query(query)
-    print(rows)
+    # print(rows)
     return render_template('user.html', title=var, user=var,
                            data=rows, sort="stars", columns=columns, error=error,
                            selection=selection, references=references)
