@@ -80,7 +80,7 @@ null_text=None, extra_text=[]) %}
         <li>
             {% for col in columns %}
                 {% set i = loop.index0 %}
-                {% if references[i] == None or row[col] == None %}
+                {% if row[col] == None %}
                     {{ display_val(row[col]) }}
                 {%- elif row[col] is iterable and row[col] is not string %}
                     {% for parameter in row[col] %}
