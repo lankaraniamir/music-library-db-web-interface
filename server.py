@@ -50,7 +50,7 @@ def teardown_request(exception):
 
 
 
-def get_query(query, single=False):
+def get_query(query, single=False, deref=False):
     cursor = g.conn.execute(text(query))
     result = []
     for row in cursor:
@@ -59,6 +59,8 @@ def get_query(query, single=False):
         else:
             result.append(row)
     cursor.close()
+    if deref:
+        return result[0]
     return result
 
 
@@ -83,9 +85,6 @@ def genre(name):
         f"SELECT descriptor FROM genre WHERE name = '{name}'",
         single=True
     )
-    print(description)
-    description = description[0]
-    print(description)
 
     children = get_query(
         "SELECT DISTINCT sub_genre "
