@@ -82,7 +82,7 @@ def genres():
 	context = dict(genres = genres)
 	return render_template("genres.html", title="All Genres", **context)
 
-@app.route('/genres/<var>')
+@app.route('/genres/<var>', methods=['POST'])
 def genre(var):
     error = None
     if request.method == 'POST' and len(request.form) > 0:
