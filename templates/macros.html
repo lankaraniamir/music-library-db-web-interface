@@ -77,16 +77,10 @@
     {% for row in entity %}
         <tr>
         {% for col in columns %}<td>
-            {% if row[col] is iterable and (references[loop.index0] == None or row[col] == None) %}
-                {% for parameter in row[col] %}
-                    {{ display_val(parameter) }}
-                {% endfor %}
-            {% elif references[loop.index0] == None or row[col] == None %}
+            {% if references[loop.index0] == None or row[col] == None %}
                 {{ display_val(row[col]) }}
             {% elif row[col] is iterable and row[col] is not string %}
-                {% for parameter in row[col] %}
-                    {{- reference(references[loop.index0], param=parameter) }},
-                {% endfor %}
+                {% for parameter in row[col] %}{{- reference(references[loop.index0], param=parameter) }},{% endfor %}
             {% else %}
                 {{ reference(references[loop.index0], param=row[col]) }}
             {% endif %}
