@@ -17,7 +17,7 @@
 <div>
 <body><br><b>Include songs & releases whose primary, secondary, or either
 genre is {{title}}? </b></body>
-<form action="{{ url_for('genre', var={{title}})}}" method=post>
+<form action="{{ url_for('genre', var=title) }}" method=post>
     <input type="radio" id="primary" name="genre_type" value="primary">
     <label for="Primary Genre">Songs</label><br>
     <input type="radio" id="secondary" name="genre_type" value="secondary">
