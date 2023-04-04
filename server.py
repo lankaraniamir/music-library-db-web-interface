@@ -256,7 +256,7 @@ def user(var):
         references = ["song","artist","artist","artist","genre",None,None,None]
 
         for position in rows[0]:
-             print(type(position))
+             print(position)
         # list = ["song",columns[0].split(", "),None,None,None,None,None,None]
 
 
