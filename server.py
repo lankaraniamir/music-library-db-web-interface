@@ -79,7 +79,8 @@ def songs():
         NULL), '{}') AS featured_artists
     FROM song S, artist A, song_credit C
     WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
-    GROUP BY S.song_id, S.title;
+    GROUP BY S.song_id, S.title
+    ORDER BY song, main_artists
     """)
     columns = ["song", "main_artists", "featured_artists"]
     references = ["song","artist", "artist"]
