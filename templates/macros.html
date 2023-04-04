@@ -50,17 +50,16 @@
 <table>
     <tr>
         {% for col in columns %}
-            <!-- <th>{{col}}</th> -->
             <th>{{ label_column(col) }}</th>
         {% endfor %}
     </tr>
-    {% for row in entity %}
-        <tr>
+    <tr>
+        {% for row in entity %}
             {% for col in columns %}
                 <td>{{ display_val(row[col]) }}</td>
             {% endfor %}
-        </tr>
-    {% endfor %}
+        {% endfor %}
+    </tr>
 </table>
 {% endif %}
 {% endmacro %}
