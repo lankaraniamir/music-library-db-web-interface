@@ -183,7 +183,7 @@ def genre(var):
     )
 
     context = dict(description=description, children=children, parents=parents, songs=all_songs,
-                   subgenres=subgenres, releases=all_releases)
+                   subgenres=subgenres, releases=all_releases, main_genre=var)
     return render_template("genre.html", title=var, **context)
 
 
