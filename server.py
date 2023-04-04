@@ -52,7 +52,6 @@ def teardown_request(exception):
 		pass
 
 
-
 def get_query(query, single=False, deref=False):
     cursor = g.conn.execute(text(query))
     result = []
@@ -65,6 +64,20 @@ def get_query(query, single=False, deref=False):
     if deref:
         return result[0]
     return result
+
+
+
+@app.route('/songs')
+def genres():
+	genres = get_query("SELECT * FROM song ORDER BY name")
+	context = dict(genres = genres)
+	return render_template("genres.html", title="All Genres", **context)
+
+@app.route('/song/<var>')
+def song(var):
+    return redirect(url_for('user', var=session['username']))
+
+
 
 
 
@@ -199,10 +212,6 @@ def genre(var):
 
 
 
-
-@app.route('/song/<var>')
-def song(var):
-    return redirect(url_for('user', var=session['username']))
 
 @app.route('/release/<var>')
 def release(var):
