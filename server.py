@@ -228,7 +228,7 @@ def user(var):
         rows = get_query(query)
         columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
         print(rows[0][1])
-        print(rows[1][1])
+        print(rows[1][1][1])
 
         references = ["song",None,None,None,None,None,None,None]
 
