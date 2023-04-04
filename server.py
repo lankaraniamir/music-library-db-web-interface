@@ -282,17 +282,16 @@ def profile(username):
         f"AND O.username = '{username}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
         )
-        columns = ["releases","main_artists","other_artists","year","genres","release_type","love","stars"]
+        columns = ["album","main_artists","other_artists","year","genres","release_type","love","stars"]
 
     elif selection == 'playlists':
         query = (
         "SELECT Distinct P.title as playlists, date_created, date_modified, track_count "
-            # "STRING_AGG( DISTINCT JO.playlist_creator ) "
         "FROM playlist P, other_playlist_creator O "
         "WHERE P.playlist_id = O.playlist_id "
         f"AND (P.original_creator = '{username}' OR O.username = '{username}') "
         )
-        columns = ["playlists", "date_created", "date_modified", "track_count"]
+        columns = ["playlist", "date_created", "date_modified", "track_count"]
 
     else:
         return render_template('profile.html', title=username, user=username,
