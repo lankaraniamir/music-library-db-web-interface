@@ -15,22 +15,22 @@
     {%- endif %}
 {% endmacro %}
 
-{% macro display_val(value) %}
+{% macro display_val(value, caps=False) %}
     {% if value is iterable and value is not string %}
         {% set value = value | join(", ") %}
     {% endif %}
     {% if value == None %}
         -
-    {% elif value == True %}
+    {%- elif value == True %}
         ❤️
     {% elif value == False %}
         ♡️
-    {% elif value is string %}
-        {{capitalize(value)}}
-    {% else %}
+    {%- elif value is string -%}
+        {{f_capitalize(value, caps=caps)}}
+    {%- else %}
         {{value}}
-    {% endif %}
-{% endmacro %}
+    {%- endif -%}
+{%- endmacro -%}
 
 {% macro label_column(col) %}
     {{ col|replace("_", " ")|capitalize }}
