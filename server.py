@@ -90,6 +90,7 @@ def genre(var):
         "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
         f"WHERE parent_genre = '{var}' ",
+        "ORDER BY sub_genre ",
         single=True
     )
 
@@ -97,7 +98,23 @@ def genre(var):
         "SELECT DISTINCT parent_genre "
         "FROM genre_inheritance "
         f"WHERE sub_genre = '{var}' ",
+        "ORDER BY parent_genre ",
         single = True
+    )
+
+    subgenres = get_query(
+    "WITH RECURSIVE "
+    "   subgenres(sub_genre, parent_genre) AS ( "
+    "       SELECT sub_genre, parent_genre "
+    "       FROM genre_inheritance "
+    f"       WHERE parent_genre = '{var}'"
+    "       UNION "
+    "           SELECT A.sub_genre, A.parent_genre "
+    "           FROM genre_inheritance A "
+    "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+    "   ) "
+    "SELECT DISTINCT sub_genre FROM subgenres ",
+    single=True
     )
 
     all_songs = get_query(
@@ -116,7 +133,8 @@ def genre(var):
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
     ") AS SG "
-    "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True; ",
+    "WHERE G.genre = SG.genre and S.song_id = G.song_id and G.primary_genre = True ",
+    "ORDER BY title ",
     single=True
     )
 
@@ -136,22 +154,8 @@ def genre(var):
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
     ") AS SG "
-    "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True; ",
-    single=True
-    )
-
-    subgenres = get_query(
-    "WITH RECURSIVE "
-    "   subgenres(sub_genre, parent_genre) AS ( "
-    "       SELECT sub_genre, parent_genre "
-    "       FROM genre_inheritance "
-    f"       WHERE parent_genre = '{var}'"
-    "       UNION "
-    "           SELECT A.sub_genre, A.parent_genre "
-    "           FROM genre_inheritance A "
-    "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
-    "   ) "
-    "SELECT DISTINCT sub_genre FROM subgenres ",
+    "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True ",
+    "ORDER BY title ",
     single=True
     )
 
