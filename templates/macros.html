@@ -44,7 +44,9 @@
 {% macro list_references(values, page, title=parameter, null_text=None, attribute=None) %}
     <section>
     {% if values %}
-        <b>{{title}}</b>
+        {% if title %}
+            <b>{{title}}</b>
+        {% endif %}
         {% for val in values %}
             {% if attribute %}
                 <li>{{ reference(page, param=val[attribute]) }}</li>
