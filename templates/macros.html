@@ -3,7 +3,13 @@
 <!-- https://shubhamjain.co/2018/09/17/capitalizing-first-letter-in-jinja/ -->
 {% macro capitalize(text) %}{{ text[0]|upper }}{{ text[1:] }}{% endmacro %}
 
-{% macro f_capitalize(text, caps=True) %}{% if caps %}{{ capitalize(text) }}{% else %}{{ text }}{% endif %}{% endmacro %}
+{% macro f_capitalize(text, caps=True) %}
+    {% if caps %}
+        {{- capitalize(text) -}}
+    {% else %}
+        {{- text -}}
+    {% endif %}
+{% endmacro %}
 
 {% macro display_val(value) %}
     {% if value is iterable and value is not string %}
@@ -29,7 +35,8 @@
 {% macro reference(page, param=None, text=None, caps=False)%}
     {% if param == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
-    {% elif param != None and text == None %}<a href="{{ url_for(page, var=param) }}">{{ f_capitalize(param, caps=caps) }}</a>
+    {% elif param != None and text == None %}
+        <a href="{{- url_for(page, var=param) -}}">{{- f_capitalize(param, caps=caps) -}}</a>
     {% elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
