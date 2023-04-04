@@ -253,6 +253,7 @@ def user(var):
         f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
         )
         columns = ["playlist", "date_created", "date_modified", "track_count"]
+        references = ["release", None, None, None]
 
     else:
         return render_template('user.html', title=var, user=var,
