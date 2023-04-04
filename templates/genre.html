@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>{{ test_name }} {{ title }}</h2>
+<h2>{{ title }}</h2>
 {% if description %}
     <h4>{{description}}</h4>
 {% endif %}
@@ -15,9 +15,9 @@
 </ul>
 
 <div>
-<body><br><b>Include songs & releases who have as primary, secondary, or either
-genre of {{title}}? </b></body>
-<form action="{{ url_for('user', var=user) }}" method=post>
+<body><br><b>Include songs & releases whose primary, secondary, or either
+genre is {{title}}? </b></body>
+<form action="{{ url_for('genre', var=title}}" method=post>
     <input type="radio" id="primary" name="genre_type" value="primary">
     <label for="Primary Genre">Songs</label><br>
     <input type="radio" id="secondary" name="genre_type" value="secondary">
