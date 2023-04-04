@@ -11,8 +11,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro reference(page, attr=None, var=None, text=None, caps=False)
-%}
+{% macro reference(page, attr=None, var=None, text=None, caps=False)%}
     {% if attr == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% elif attr != None and text == None %}
