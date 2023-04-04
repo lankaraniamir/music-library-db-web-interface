@@ -36,7 +36,7 @@
     {% if param == None and text == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
     {% elif param != None and text == None %}
-        <a href="{{- url_for(page, var=param) -}}">{{- f_capitalize(param, caps=caps) -}}</a>
+        <a href="{{- url_for(page, var=param) -}}">{{param}}</a>
     {% elif param == None %}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
     {% else %}
