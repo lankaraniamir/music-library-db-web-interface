@@ -64,9 +64,7 @@
     {% for row in entity %}
         <tr>
             {% for col in columns %}<td>
-                <!-- <a href="{{ url_for('song', title=row['col']) }}"> -->
                 {{ display_val(row[col]) }}
-                <!-- </a> -->
             </td>{% endfor %}
         </tr>
     {% endfor %}
@@ -76,8 +74,6 @@
 
 {% macro nav_link(menu_item) %}
     {% if menu_item == "user" %}
-        <!-- <a href="{{ url_for('user', username=session['username']) }}">{{ -->
-        <!-- capitalize(session['username'])}}</a> -->
         {{ reference(user, attr=username, var=session['username'], combine=False, caps=True) }}
     {% else %}
         {{reference(menu_item, caps=True)}}
