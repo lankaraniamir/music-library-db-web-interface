@@ -80,7 +80,7 @@ null_text=None, extra_text=[], dash=False) %}
         {%- for row in values -%}
         <li>
             {%- for col in columns -%}
-                {%- set i = loop.index0 %}
+                {%- set i = loop.index0 -%}
             {%- if row[col] != None and extra_text|length > i -%}{{-
             extra_text[i] -}}{%- endif -%}
                 {%- if references[i] == None or row[col] == None -%}
