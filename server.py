@@ -446,7 +446,7 @@ def artist(var):
             "ARRAY_REMOVE(ARRAY_AGG(credit_type), NULL) AS credits "
         "FROM song_credit C, artist A, song S "
         f"WHERE A.artist_id = C.artist_id AND S.song_id = C.song_id AND A.primary_name = '{sql_string(var)}' "
-        "GROUP BY artist_id, song_id, song "
+        "GROUP BY A.artist_id, S.song_id, song "
     )
     song_columns = ["song", "primary_artist", "secondary_artist", "credits"]
     song_references = ["song", "user", None, None]
