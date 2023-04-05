@@ -109,7 +109,7 @@ def songs():
 
 @app.route('/songs/<var>')
 def song(var):
-    temp_var = var.replace("'", "''")
+    temp_var = var.replace("'", "'''")
     info = get_query(
     "(SELECT "
         "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
