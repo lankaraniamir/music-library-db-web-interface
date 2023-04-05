@@ -448,7 +448,7 @@ def artist(var):
         f"WHERE A.artist_id = C.artist_id AND S.song_id = C.song_id AND A.primary_name = '{sql_string(var)}' "
         "GROUP BY A.artist_id, S.song_id, song "
     )
-    song_columns = ["song", "primary_artist", "secondary_artist", "credits"]
+    song_columns = ["song", "primary_artist", "featured_artist", "credits"]
     song_references = ["song", "user", None, None]
 
     return render_template('artist.html', title=var, user=var,
