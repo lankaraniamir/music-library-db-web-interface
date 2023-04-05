@@ -5,27 +5,27 @@
 
 <h4>
 {{artist}}
-{% if artist.relevant_city or artist.relevant_state or artist.relevant_country %}
+{% if artist[2] or artist[3] or artist[4] %}
     Location:
 {% endif %}
-{% if artist.relevant_city %}
-    {{artist.relevant_city}}
+{% if artist[2] %}
+    {{artist[2]}}
 {% endif %}
-{% if artist.relevant_state %}
-    {{artist.relevant_state}}
+{% if artist[3]}
+    {{artist[3]}}
 {% endif %}
-{% if artist.relevant_country %}
-    {{artist.relevant_country}}
-{% endif %}
-</h4>
-<h4>
-{% if artist.date_of_birth %}
-    Date of Birth: {{artist.date_of_birth}}
+{% if artist[4]}
+    {{artist[4]}}
 {% endif %}
 </h4>
 <h4>
-{% if artist.date_of_death %}
-    Date of Death: {{artist.date_of_death}}
+{% if artist[5]}
+    Date of Birth: {{artist[5]}}
+{% endif %}
+</h4>
+<h4>
+{% if artist[6]}
+    Date of Death: {{artist[6]}}
 {% endif %}
 </h4>
 
