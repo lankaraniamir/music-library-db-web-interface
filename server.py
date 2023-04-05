@@ -400,10 +400,19 @@ def playlist(var):
     )
     info_columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified"]
     info_references = ["playlist", "user", "user", None, None]
+    tracks = get_query(
+        "SELECT SP.track_number as track_num, S.title as song "
+        "FROM playlist P, song_in_playlist SP, song S "
+        f"WHERE P.title = '{sql_string(var)}' "
+        "AND S.song_id = SP.song_id AND P.playlist = SP.playlist_id; "
+    )
+    track_columns = ["track_num","song"]
+    track_references = [None,"song"]
+
     return render_template("playlist.html", title=var, info=info, info_columns=info_columns,
-                            info_references=info_references)
-                            # , tracks=tracks, track_columns=track_columns, track_references=track_references, tracks_needed=tracks_needed)
-    return redirect(url_for('user', var=session['username']))
+                            info_references=info_references,
+                            tracks=tracks, track_columns=track_columns, track_references=track_references)
+
 
 
 """"""
