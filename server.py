@@ -538,7 +538,7 @@ def user(var):
         "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN creator != '{var}' THEN creator END), NULL) AS other_creators "
 
-        "FROM ( "
+        "FROM (( "
             "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, original_creator as creator "
             "FROM playlist P "
             "WHERE P.playlist_id in ( "
@@ -557,7 +557,7 @@ def user(var):
                 "WHERE P2.playlist_id = O2.playlist_id "
                 f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
             ") "
-        ") AS F "
+        ")) AS F "
         "GROUP BY title, date_created, date_modified, track_count "
         )
         # new_query = (
