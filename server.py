@@ -440,11 +440,10 @@ def artist(var):
     # )
 
     songs = get_query(
-        "SELECT s.title as song "
+        "SELECT s.title as song, "
             "MAX(CASE WHEN primary_artist THEN 1 ELSE 0 END) AS primary_artist, "
             "Max(CASE WHEN featured_artist = True Then 1 Else 0 END) AS featured_artist, "
-            "ARRAY_REMOVE(ARRAY_AGG(credit_type), NULL) AS other_creators"
-        "COUNT(credit_type) AS num_credits "
+            "ARRAY_REMOVE(ARRAY_AGG(credit_type), NULL) AS credits "
         "FROM song_credit C, artist A, song S "
         f"WHERE A.artist_id = C.artist_id AND S.song_id = C.song_id AND A.primary_name = '{sql_string(var)}' "
         "GROUP BY artist_id, song_id, song "
