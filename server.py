@@ -535,9 +535,9 @@ def user(var):
         # ") AS U2 "
 
         query = (
-        "SELECT DISTINCT playlist, date_created, date_modified, track_count, "
-            f"ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN creator != '{var}' THEN creator END), NULL) AS other_creators "
-
+        "SELECT DISTINCT playlist, "
+            f"ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN creator != '{var}' THEN creator END), NULL) AS other_creators, "
+            "date_created, date_modified, track_count "
         "FROM (( "
             "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, original_creator as creator "
             "FROM playlist P "
@@ -570,8 +570,8 @@ def user(var):
         #     "WHERE P.playlist_id = O.playlist_id "
         #     f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
         # )
-        columns = ["playlist", "date_created", "date_modified", "track_count", "other_creators"]
-        references = ["release", None, None, None, "user"]
+        columns = ["playlist", "other_creators", "date_created", "date_modified", "track_count"]
+        references = ["release", "user", None, None, None]
 
     else:
         return render_template('user.html', title=var, user=var,
