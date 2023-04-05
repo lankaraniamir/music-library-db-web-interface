@@ -375,8 +375,7 @@ def release(var):
 def playlists():
     rows = get_query("""
         SELECT P.title AS playlist, original_creator as original_creator,
-            ARRAY_REMOVE(ARRAY_AGG(username), NULL) AS other_creators,
-            "date_created, date_modified
+            ARRAY_REMOVE(ARRAY_AGG(username), NULL) AS other_creators
         FROM playlist P, other_playlist_creator O
         WHERE P.playlist_id = O.playlist_id
     """)
