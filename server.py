@@ -361,7 +361,7 @@ def release(var):
     track_references = ["release","artist","artist","genre",None,None]
 
     tracks_needed = 0
-    if len(tracks) < info.track_count:
+    if len(tracks) < info[-1]:
          tracks_needed = info.track_count - len(tracks)
 
     return render_template("release.html", title=var, info=info, info_columns=info_columns,
