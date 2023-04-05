@@ -110,7 +110,7 @@ def songs():
 @app.route('/song/<var>')
 def song(var):
     info = get_query(
-    "SELECT "
+    "(SELECT "
         "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
         "NULL) AS main_artists, "
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
@@ -121,9 +121,23 @@ def song(var):
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
     "FROM song S, artist A, song_credit C, song_in_genre G "
     f"WHERE S.title = '{var}' AND S.song_id = C.song_id "
-    "AND A.artist_id = C.artist_id AND "
-    "(S.song_id = G.song_id or S.song_id not in (SELECT song_id FROM song_in_genre)) "
-    "GROUP BY S.song_id, S.title, S.year;"
+    "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
+    "GROUP BY S.song_id, S.title, S.year "
+    ") UNION ("
+    "SELECT "
+        "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+        "NULL) AS main_artists, "
+        "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
+        "NULL), '{}') AS featured_artists, "
+        "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+        "NULL), '{}') AS other_artists, "
+        "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
+        "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
+    "FROM song S, artist A, song_credit C "
+    f"WHERE S.title = '{var}' AND S.song_id = C.song_id "
+    "AND A.artist_id = C.artist_id AND S.song_id not in (SELECT song_id from song_in_genre) "
+    "GROUP BY S.song_id, S.title, S.year "
+    ") "
     )
     info_columns = ["main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
     info_references = ["artist","artist","artist","genre",None,None,None]
