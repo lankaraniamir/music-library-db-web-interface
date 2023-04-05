@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>{{title}}</h3>
-<h3>{{alt_names}}</h3>
+<h3>{{title}}
+{% if alt_names %}
+    Alternative Names: {{alt_names}}
+{% endif %}
+</h3>
 {% if artist[2] or artist[3] or artist[4] %}
     <h4>
     Location:
