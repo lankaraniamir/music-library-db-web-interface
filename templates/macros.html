@@ -148,7 +148,9 @@ null_text=None, extra_text=[], dash=False) %}
         {{ reference(menu_item, caps=True) }}
     {% endif %}
 
-    {% if request.endpoint == menu_item %}
+    {% if request.endpoint == menu_item or request.endpoint|dirname == menu_item
+    %}
         ←
     {% endif %}
 {% endmacro %}
+
