@@ -123,7 +123,7 @@ def song(var):
     f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
     "AND SR.song_id = S.song_id AND SR.release_id = R.release_id "
     "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
-    "GROUP BY S.song_id, S.title, S.year "
+    "GROUP BY S.song_id, S.title, S.year, R.title "
     ") UNION ("
     "SELECT R.title as release, "
         "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
@@ -138,7 +138,7 @@ def song(var):
     f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
     "AND SR.song_id = S.song_id AND SR.release_id = R.release_id "
     "AND A.artist_id = C.artist_id AND S.song_id not in (SELECT song_id from song_in_genre) "
-    "GROUP BY S.song_id, S.title, S.year "
+    "GROUP BY S.song_id, S.title, S.year, R.title "
     ") "
     )
     info_columns = ["release","main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
