@@ -401,11 +401,12 @@ def playlist(var):
     )
     info_columns = ["original_creator", "other_creators", "date_created", "date_modified"]
     info_references = ["user", "user", None, None]
+
     tracks = get_query(
         "SELECT SP.track_number as track_num, S.title as song "
         "FROM playlist P, song_in_playlist SP, song S "
         f"WHERE P.title = '{sql_string(var)}' "
-        "AND S.song_id = SP.song_id AND P.playlist_id = SP.playlist_id "
+        "AND S.song_id = SP.song_id AND P.playlist_id = SP.playlist_id; "
         # "ORDER BY SP.track_number; "
     )
     track_columns = ["track_num","song"]
