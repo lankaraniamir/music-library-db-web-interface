@@ -14,7 +14,7 @@
     <h3>Files</h3>
     {{ macros.display_all_as_table(files, file_columns, file_references) }}
 {% else %}
-    <h4>No Files for this Song</h4>
+    <h3>No Files for this Song</h3>
 {% endif %}
 &nbsp
 
@@ -27,7 +27,7 @@
     </h3>
     <p>{{lyrics.lyric_text}}</p>
 {% else %}
-    <h4>No Lyrics for this Song</h4>
+    <h3>Lyrics for this Song</h3>
 {% endif %}
 
 {% endblock content %}
