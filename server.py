@@ -334,7 +334,7 @@ def release(var):
             "FROM release R, artist A, release_credit C, release_in_genre G "
             f"WHERE R.title = '{sql_string(var)}' AND R.release_id = C.release_id "
             "AND A.artist_id = C.artist_id AND R.release_id = G.release_id "
-            "GROUP BY R.release_id, S.title, S.year "
+            "GROUP BY R.release_id, R.title, S.year "
         ") UNION ("
             " SELECT "
                 "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END), "
@@ -345,14 +345,14 @@ def release(var):
             "FROM release R, artist A, release_credit C "
             f"WHERE R.title = '{sql_string(var)}' AND R.release_id = C.release_id "
             "AND A.artist_id = C.artist_id AND R.release_id not in (SELECT release_id from release_in_genre) "
-            "GROUP BY R.release_id, S.title, S.year "
+            "GROUP BY R.release_id, R.title, S.year "
         ") "
     )
     info_columns = ["main_artists","other_artists","genres","release_date","track_count"]
     info_references = ["release","artist","artist","genre",None,None]
 
     tracks = get_query(
-        "SELECT S.track_number as track_number, S.title as title "
+        "SELECT S.track_number as track_number, R.title as title "
         "FROM release R, song_in_release SR, song S "
         f"WHERE R.title = '{sql_string(var)}' "
         "AND S.song_id = SR.song_id AND R.release_id = SR.release_id; "
