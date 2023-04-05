@@ -135,8 +135,10 @@ def song(var):
     file_columns = ["file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin"]
     file_references = [None,None,None,None,None,None,None,None]
 
-    context = dict(info=info, info_columns=info_columns, info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
-    return render_template("song.html", title=var, **context)
+    # context = dict(info=info, info_columns=info_columns, info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
+    # return render_template("song.html", title=var, **context)
+    return render_template("song.html", title=var, info=info, info_columns=info_columns,
+                            info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
 
 
 
