@@ -270,7 +270,7 @@ def genre(var):
 """ *** RELEASES ***"""
 """"""
 @app.route('/releases')
-def release(var):
+def releases(var):
     return redirect(url_for('user', var=session['username']))
 
 @app.route('/releases/<var>')
@@ -282,24 +282,28 @@ def release(var):
 """"""
 """ *** PLAYLISTS ***"""
 """"""
-@app.route('/releases')
-def release(var):
+@app.route('/playlists')
+def paylists(var):
     return redirect(url_for('user', var=session['username']))
 
-@app.route('/albums/<var>')
+@app.route('/playlists/<var>')
 def playlist(var):
     return redirect(url_for('user', var=session['username']))
 
 
 
 """"""
-""" *** RELEASES ***"""
+""" *** ARTISTS ***"""
 """"""
+@app.route('/artists')
+def artists(var):
+    songs = get_query("SELECT * FROM app_user ORDER BY username")
+    return redirect(url_for('user', var=session['username']))
+
 @app.route('/artists/<var>')
 def artist(var):
     songs = get_query("SELECT * FROM app_user ORDER BY username")
     return redirect(url_for('user', var=session['username']))
-
 
 
 
