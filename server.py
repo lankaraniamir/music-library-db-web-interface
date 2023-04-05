@@ -431,7 +431,7 @@ def artists():
 #
 @app.route('/artists/<var>')
 def artist(var):
-    return render_template("artist.html", title="All Scoop")
+    return redirect(url_for('songs', var="holding"))
 
 
 """"""

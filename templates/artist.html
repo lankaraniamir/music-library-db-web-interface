@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>{{macros.capitalize(title)}}</h3>
+{{ macros.display_all_as_table(info, info_columns, info_references) }}
+&nbsp
+
+{% if tracks %}
+    {{ macros.display_all_as_table(tracks, track_columns, track_references) }}
+    <body>
+    &nbsp
+{% else %}
+    <h4>No tracks logged for this playlist</h4>
+    <body>
+{% endif %}
+
+{% endblock content %}
