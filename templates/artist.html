@@ -3,6 +3,34 @@
 {% block content %}
 <h3>{{title}}</h3>
 
+<h4>
+{% if artist.relevant_city or artist.relevant_state or artist.relevant_country %}
+    Location:
+{% endif %}
+{% if artist.relevant_city %}
+    {{artist.relevant_city}}
+{% endif %}
+{% if artist.relevant_state %}
+    {{artist.relevant_state}}
+{% endif %}
+{% if artist.relevant_country %}
+    {{artist.relevant_country}}
+{% endif %}
+</h4>
+<h4>
+{% if artist.date_of_birth %}
+    Date of Birth: {{artist.date_of_birth}}
+{% endif %}
+</h4>
+<h4>
+{% if artist.date_of_death %}
+    Date of Death: {{artist.date_of_death}}
+{% endif %}
+</h4>
+
+
+{% endif %}
+</h4>
 
 {% if release_columns %}
     <b>Releases </b>
