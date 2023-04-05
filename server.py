@@ -440,7 +440,7 @@ def artist(var):
     # )
     artist = get_query(f"SELECT * FROM ARTIST WHERE primary_name = '{sql_string(var)}'")[0]
     alt_names = get_query(
-         "SELECT STRING_AGG(credit_type, ', ') AS alt_names "
+         "SELECT STRING_AGG(alt_name, ', ') AS alt_names "
          "FROM artist A, artist_alt_name B "
          f"WHERE A.artist_id = B.artist_id and primary_name = '{sql_string(var)}' "
          "GROUP BY B.artist_id")
