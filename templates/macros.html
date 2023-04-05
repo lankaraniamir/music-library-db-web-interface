@@ -4,8 +4,8 @@
 
 <!-- https://shubhamjain.co/2018/09/17/capitalizing-first-letter-in-jinja/ -->
 {% macro capitalize(text) -%}
-    {% if text|len > 0 %}{{ text[0]|upper }}{% endif %}
-    {% if text|len > 1 %}{{ text[1:] }}{% endif %}
+    {% if text|length > 0 %}{{ text[0]|upper }}{% endif %}
+    {% if text|length > 1 %}{{ text[1:] }}{% endif %}
 {%- endmacro %}
 
 {% macro f_capitalize(text, caps=True) %}
