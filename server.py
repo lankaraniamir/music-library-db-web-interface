@@ -465,7 +465,7 @@ def artist(var):
     release_columns = ["release", "release_type","primary_artist", "credits"]
     release_references = ["release", None, None, None]
 
-    return render_template('artist.html', title=var, artist=artist,,
+    return render_template('artist.html', title=var, artist=artist,
                            songs=songs, song_columns=song_columns,
                            song_references=song_references,
                            releases=releeases, release_columns=release_columns,
