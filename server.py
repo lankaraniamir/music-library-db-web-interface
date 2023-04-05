@@ -446,6 +446,8 @@ def artist(var):
          "GROUP BY B.artist_id")
     if alt_names:
         alt_names=alt_names[0][0]
+    else:
+        alt_names = None
 
     songs = get_query(
         "SELECT s.title as song, "
