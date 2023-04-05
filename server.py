@@ -431,6 +431,17 @@ def artists():
 #
 @app.route('/artists/<var>')
 def artist(var):
+    error = None
+    if request.method == 'POST' and len(request.form) > 0:
+        selection = request.form['selection']
+    elif request.method == 'POST' and len(request.form) == 0:
+        error = "Please select a category."
+        selection = None
+    else:
+        # selection = None
+        selection = 'songs'
+
+
     return redirect(url_for('songs', var="holding"))
 
 
