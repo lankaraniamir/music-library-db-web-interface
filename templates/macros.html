@@ -77,10 +77,10 @@ null_text=None, extra_text=[], dash=False) %}
         {% if title %}
             <b>{{title}}</b>
         {% endif %}
-        {% for row in values %}
+        {%- for row in values -%}
         <li>
             {%- for col in columns -%}
-                {%- set i = loop.index0 -%}
+                {%- set i = loop.index0 %}
             {%- if row[col] != None and extra_text|length > i -%}{{-
             extra_text[i] -}}{%- endif -%}
                 {%- if references[i] == None or row[col] == None -%}
@@ -95,7 +95,7 @@ null_text=None, extra_text=[], dash=False) %}
                 {%- endif -%}
             {%- endfor -%}<td>
         </li>
-        {% endfor %}
+        {%- endfor -%}
     {% elif null_text != None %}
         <b>{{null_text}}</b>
     {% endif %}
