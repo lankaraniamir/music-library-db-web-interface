@@ -352,16 +352,15 @@ def release(var):
     info_references = ["release","artist","artist","genre",None,None]
 
     tracks = get_query(
-        "SELECT SR.track_number as #, S.title as song "
+        "SELECT SR.track_number as track_num, S.title as song "
         "FROM release R, song_in_release SR, song S "
         f"WHERE R.title = '{sql_string(var)}' "
         "AND S.song_id = SR.song_id AND R.release_id = SR.release_id; "
     )
-    track_columns = ["#","song"]
+    track_columns = ["track_num","song"]
     track_references = [None,"song"]
 
     tracks_needed = 0
-    print(info[0][-1])
     if len(tracks) < info[0][-1]:
          tracks_needed = info[0][-1] - len(tracks)
 
