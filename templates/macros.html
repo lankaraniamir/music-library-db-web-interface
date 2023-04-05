@@ -125,7 +125,7 @@ null_text=None, extra_text=[], dash=False) %}
         {% for col in columns %}<td>
             {% set i = loop.index0 %}
             {% if references[i] == None or row[col] == None %}
-                {% if yes_marker %}
+                {% if yes_marker and row[col] == True %}
                     Yes
                 {% elif yes_marker and row[col] == False %}
                     No
