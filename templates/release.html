@@ -8,12 +8,13 @@
 
 {% if tracks %}
     {{ macros.display_all_as_table(tracks, track_columns, track_references) }}
+    <body>
+    &nbsp
 {% else %}
     <h4>No tracks logged for this release</h4>
+    <body>
 {% endif %}
 
-<body>
-&nbsp
 <div>
 {% if tracks_needed > 0 %}
     Missing {{tracks_needed}} tracks from this release
