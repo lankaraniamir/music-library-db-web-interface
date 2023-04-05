@@ -148,7 +148,7 @@ null_text=None, extra_text=[], dash=False) %}
         {{ reference(menu_item, caps=True) }}
     {% endif %}
 
-    {% if request.endpoint == menu_item or request.endpoint|basename == menu_item
+    {% if request.endpoint == menu_item or request.endpoint.split('/')[:-1] | join('/') == menu_item
     %}
         ←
     {% endif %}
