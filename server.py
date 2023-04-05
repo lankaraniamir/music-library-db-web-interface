@@ -451,7 +451,7 @@ def artist(var):
     song_columns = ["song", "primary_artist", "secondary_artist", "credits"]
     song_references = ["song", "user", None, None]
 
-    return render_template('user.html', title=var, user=var,
+    return render_template('artist.html', title=var, user=var,
                            songs=songs, sort="stars", song_columns=song_columns,
                            song_references=song_references)
 
