@@ -1,18 +1,28 @@
 {% extends "base.html" %}
 
+{% block title %}{{macros.capitalize(user)}}'s Music{% endblock title %}
+
 {% block content %}
 
-<h3>{{macros.capitalize(title)}}</h3>
-{{ macros.display_all_as_table(info, info_columns, info_references) }}
-&nbsp
-
-{% if tracks %}
-    {{ macros.display_all_as_table(tracks, track_columns, track_references) }}
-    <body>
-    &nbsp
+{% if columns %}
+    <h3>{{macros.capitalize(user)}}'s {{macros.capitalize(selection)}}</h3>
+    {{ macros.display_all_as_table(data, columns, references) }}
 {% else %}
-    <h4>No tracks logged for this playlist</h4>
-    <body>
+    <h3>{{macros.capitalize(user)}}'s Music</h3>
 {% endif %}
 
+<div>
+<body><br><b>Which of {{macros.capitalize(user)}}'s music would you like to see?</b></body>
+<form action="{{ url_for('user', var=user) }}" method=post>
+    <input type="radio" id="songs" name="selection" value="songs">
+    <label for="songs">Songs</label><br>
+    <input type="radio" id="releases" name="selection" value="releases">
+    <label for="releases">Releases</label><br>
+    <input type="radio" id="playlists" name="selection" value="playlists">
+    <label for="playlists">Playlists</label><br>
+    <input type="submit">
+</form>
+</div>
+
+{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
 {% endblock content %}
