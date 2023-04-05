@@ -15,7 +15,7 @@
 {% endif %}
 
 {% if lyrics %}
-    {{% if lyrics.lyric_type %}}
+    {% if lyrics.lyric_type %}
         <h3>{{lyrics.lyric_type}}</h3>
     {{% else %}}
         <h3>Lyrics</h3>
