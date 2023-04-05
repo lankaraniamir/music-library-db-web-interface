@@ -126,7 +126,7 @@ def song(var):
     )
     info_columns = ["main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
     info_references = [None,"artist","artist","artist","genre",None,None,None]
-
+    print(info)
     files = get_query(
     "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin "
     "FROM song_file F, song S "
