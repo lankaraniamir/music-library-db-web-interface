@@ -439,6 +439,11 @@ def artist(var):
     # single=True
     # )
     artist = get_query(f"SELECT * FROM ARTIST WHERE primary_name = '{sql_string(var)}'")[0]
+    alt_names = get_query(
+         "SELECT STRING_AGG(credit_type, ', ') AS alt_names "
+         "FROM artist A, artist_alt_names B "
+         f"WHERE A.artist_id = B.artist_id and primary_name = '{sql_string(var)}' "
+         "GROUP BY B.artist_id")
 
     songs = get_query(
         "SELECT s.title as song, "
@@ -469,7 +474,8 @@ def artist(var):
                            songs=songs, song_columns=song_columns,
                            song_references=song_references,
                            releases=releeases, release_columns=release_columns,
-                           release_references=release_references)
+                           release_references=release_references,
+                           alt_names=alt_names)
 
 
 
