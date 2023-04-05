@@ -557,7 +557,7 @@ def user(var):
                 "WHERE P2.playlist_id = O2.playlist_id "
                 f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
         ") "
-        "GROUP BY title, date_created, date_modified, track_count "
+        "GROUP BY title, date_created, date_modified, track_count; "
         )
         # new_query = (
         # "SELECT Distinct P.title as playlist, date_created, date_modified, track_count "
