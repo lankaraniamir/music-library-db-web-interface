@@ -91,7 +91,7 @@ null_text=None, extra_text=[], dash=False) %}
                         {%- if not loop.last %},{%- endif -%}
                     {%- endfor -%}
                 {%- else -%}
-                    gooz
+                    {{- reference(references[i], param=row[col]) -}} -->
                 {%- endif -%}
         {%- endfor -%}
         </li>
