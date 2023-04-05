@@ -376,7 +376,7 @@ def user(var):
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars"
         ") UNION ( "
-        "(SELECT R.title AS album, "
+        "SELECT R.title AS album, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END), NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
             "NULL AS genres, "
