@@ -147,7 +147,7 @@ def song(var):
     files = get_query(
     "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin "
     "FROM song_file F, song S "
-    f"WHERE title = '{var}' and S.song_id = F.song_id;"
+    f"WHERE title = '{temp_var}' and S.song_id = F.song_id;"
     )
     file_columns = ["file_type", "duration", "file_location", "file_name", "file_ext", "size", "bitrate", "origin"]
     file_references = [None,None,None,None,None,None,None,None]
