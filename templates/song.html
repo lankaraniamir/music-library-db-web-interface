@@ -6,12 +6,12 @@
 <h2>{{title}}</h2>
 
 
-<h3>Song Traits</h3>
+<h3>Traits</h3>
 {{ macros.display_all_as_table(info, info_columns, info_references) }}
 &nbsp
 
 {% if files %}
-    <h3>Song Files</h3>
+    <h3>Files</h3>
     {{ macros.display_all_as_table(files, file_columns, file_references) }}
 {% else %}
     <h4>No Files for this Song</h4>
