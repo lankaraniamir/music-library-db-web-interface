@@ -1,13 +1,7 @@
 {% extends "base.html" %}
 
-{% block content %}
-<h2>{{ title }}</h2>
-
-
 <h3>Audio Characteristics</h3>
 {{ macros.display_all_as_table(data, columns, references) }}
-
-<h3>Traits</h3>
 
 {% if files %}
 <h3>Song Files</h3>
@@ -15,3 +9,5 @@
 {% else %}
 <h3>{{macros.capitalize(user)}}'s Music</h3>
 {% endif %}
+
+{% endblock%}
