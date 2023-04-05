@@ -389,7 +389,7 @@ def playlists():
 
 @app.route('/playlists/<var>')
 def playlist(var):
-    rows = get_query(
+    info = get_query(
         "SELECT title AS playlist, original_creator as original_creator, "
             "ARRAY_REMOVE(ARRAY_AGG(username), NULL) AS other_creators, "
             "date_created, date_modified "
@@ -398,8 +398,11 @@ def playlist(var):
         f"AND P.title = '{sql_string(var)}' "
         "GROUP BY P.playlist_id, title, original_creator "
     )
-    columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified"]
-    references = ["playlist", "user", "user", None, None]
+    info_columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified"]
+    info_references = ["playlist", "user", "user", None, None]
+    return render_template("playlist.html", title=var, info=info, info_columns=info_columns,
+                            info_references=info_references)
+                            # , tracks=tracks, track_columns=track_columns, track_references=track_references, tracks_needed=tracks_needed)
     return redirect(url_for('user', var=session['username']))
 
 

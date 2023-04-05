@@ -6,20 +6,5 @@
 {{ macros.display_all_as_table(info, info_columns, info_references) }}
 &nbsp
 
-{% if tracks %}
-    {{ macros.display_all_as_table(tracks, track_columns, track_references) }}
-    <body>
-    &nbsp
-{% else %}
-    <h4>No tracks logged for this release</h4>
-    <body>
-{% endif %}
-
-<div>
-{% if tracks_needed > 0 %}
-    Missing {{tracks_needed}} tracks from this release
-{% endif %}
-</div>
-</body>
 
 {% endblock content %}
