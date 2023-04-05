@@ -24,7 +24,7 @@
         -
     {%- elif value is boolean and value == True %}
         ❤️
-    {%- elif value != 0 and value == False %}
+    {%- elif value is boolean and value == False %}
         ♡️
     {%- elif value is string -%}
         {{f_capitalize(value, caps=caps)}}
