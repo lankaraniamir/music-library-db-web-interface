@@ -80,7 +80,10 @@ null_text=None, extra_text=[], dash=False) %}
         {%- for row in values -%}
         <li>
             {%- for col in columns -%}
-                {%- set i = loop.index0 -%}gooz{%- if references[i] == None or row[col] == None -%}
+                {%- set i = loop.index0 -%}
+            {%- if row[col] != None and extra_text|length > i -%}{{-
+            extra_text[i] -}}{%- endif -%}
+                {%- if references[i] == None or row[col] == None -%}
                     {{- display_val(row[col], dash=dash) -}}
                 {%- elif row[col] is iterable and row[col] is not string -%}
                     {%- for parameter in row[col] -%}
@@ -89,8 +92,9 @@ null_text=None, extra_text=[], dash=False) %}
                     {%- endfor -%}
                 {%- else -%}
                     gooz
-                {%- endif -%}
-            {%- endfor -%}
+                    <!-- {{- reference(references[i], param=row[col]) -}} --> -->
+                endif -%}
+            {%- endfor -%}<td>
         </li>
         {%- endfor -%}
     {% elif null_text != None %}
