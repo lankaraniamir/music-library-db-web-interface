@@ -121,7 +121,8 @@ def song(var):
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
     "FROM song S, artist A, song_credit C, song_in_genre G "
     f"WHERE S.title = '{var}' AND S.song_id = C.song_id "
-    "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
+    "AND A.artist_id = C.artist_id AND "
+    "(S.song_id = G.song_id or S.song_id not in (SELECT song_id FROM song_in_genre)) "
     "GROUP BY S.song_id, S.title, S.year;"
     )
     info_columns = ["main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
