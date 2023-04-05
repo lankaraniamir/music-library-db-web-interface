@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Release Characteristics</h3>
+{{ macros.display_all_as_table(info, info_columns, info_references) }}
+&nbsp
+
+{% if tracks %}
+    <h3>Tracks on Album</h3>
+    {{ macros.display_all_as_table(tracks, track_columns, track_references) }}
+{% else %}
+    <h3>No tracks logged for this Song</h3>
+{% endif %}
+{% if tracks_needed > 0 %}
+    <h3>Missing {{tracks_needed} tracks from the database</h3>
+{% else %}
+    <h3>All tracks logged in database</h3>
+
+{% endblock content %}

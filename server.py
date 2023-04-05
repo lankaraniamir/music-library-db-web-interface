@@ -81,112 +81,6 @@ def home():
         return render_template('login.html')
 
 
-
-""""""
-""" *** SONGS *** """
-""""""
-
-@app.route('/songs')
-def songs():
-    rows = get_query("""
-    SELECT S.title AS song,
-    ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
-        NULL) AS main_artists,
-    NULLIF(ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
-        NULL), '{}') AS featured_artists
-    FROM song S, artist A, song_credit C
-    WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
-    GROUP BY S.song_id, S.title
-    ORDER BY song, main_artists
-    """)
-    columns = ["song", "main_artists", "featured_artists"]
-    references = ["song","artist", "artist"]
-    extra_text = ["", " by "," featuring "]
-    context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
-    return render_template("songs.html", title="All Songs", **context)
-
-@app.route('/songs/<var>')
-def song(var):
-    info = get_query(
-    "( "
-        "(SELECT NULL as release,"
-            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL) AS main_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
-            "NULL), '{}') AS featured_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL), '{}') AS other_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
-            "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
-        "FROM song S, artist A, song_credit C, song_in_genre G "
-        f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
-        "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
-        "AND S.song_id not in (SELECT song_id from song_in_release) "
-        "GROUP BY S.song_id, S.title, S.year "
-        ") UNION ("
-        "SELECT NULL as release,"
-            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL) AS main_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
-            "NULL), '{}') AS featured_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL), '{}') AS other_artists, "
-            "NULL as genres,"
-            "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
-        "FROM song S, artist A, song_credit C "
-        f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
-        "AND A.artist_id = C.artist_id AND S.song_id not in (SELECT song_id from song_in_genre) "
-        "AND S.song_id not in (SELECT song_id from song_in_release) "
-        "GROUP BY S.song_id, S.title, S.year "
-        ") "
-    ") UNION ("
-        "(SELECT R.title as release, "
-            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL) AS main_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
-            "NULL), '{}') AS featured_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL), '{}') AS other_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
-            "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
-        "FROM song S, artist A, song_credit C, song_in_genre G, song_in_release SR, release R "
-        f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
-        "AND SR.song_id = S.song_id AND SR.release_id = R.release_id "
-        "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
-        "GROUP BY S.song_id, S.title, S.year, R.title "
-        ") UNION ("
-        "SELECT R.title as release, "
-            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL) AS main_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
-            "NULL), '{}') AS featured_artists, "
-            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
-            "NULL), '{}') AS other_artists, "
-            "NULL as genres,"
-            "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
-        "FROM song S, artist A, song_credit C, song_in_release SR, release R "
-        f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
-        "AND SR.song_id = S.song_id AND SR.release_id = R.release_id "
-        "AND A.artist_id = C.artist_id AND S.song_id not in (SELECT song_id from song_in_genre) "
-        "GROUP BY S.song_id, S.title, S.year, R.title "
-        ") "
-    ") "
-    )
-    info_columns = ["release","main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
-    info_references = ["release","artist","artist","artist","genre",None,None,None]
-    files = get_query(
-    "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin "
-    "FROM song_file F, song S "
-    f"WHERE title = '{sql_string(var)}' and S.song_id = F.song_id;"
-    )
-    file_columns = ["file_type", "duration", "file_ext", "bitrate", "size", "origin", "file_location","file_name"]
-    file_references = [None,None,None,None,None,None,None,None]
-
-    return render_template("song.html", title=var, info=info, info_columns=info_columns,
-                            info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
-
 """"""
 """ *** GENRES *** """
 """"""
@@ -300,21 +194,126 @@ def genre(var):
     return render_template("genre.html", title=var, **context)
 
 
+
+""""""
+""" *** SONGS *** """
+""""""
+@app.route('/songs')
+def songs():
+    rows = get_query("""
+        SELECT S.title AS song,
+            ARRAY_REMOVE(
+                ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
+                NULL) AS main_artists,
+            NULLIF(ARRAY_REMOVE(
+                ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
+                NULL), '{}') AS featured_artists
+        FROM song S, artist A, song_credit C
+        WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
+        GROUP BY S.song_id, S.title
+        ORDER BY song, main_artists
+    """)
+    columns = ["song", "main_artists", "featured_artists"]
+    references = ["song","artist", "artist"]
+    extra_text = ["", " by "," featuring "]
+    context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
+    return render_template("songs.html", title="All Songs", **context)
+
+@app.route('/songs/<var>')
+def song(var):
+    info = get_query(
+    "( "
+        "(SELECT NULL as release,"
+            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL) AS main_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
+            "NULL), '{}') AS featured_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL), '{}') AS other_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
+            "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
+        "FROM song S, artist A, song_credit C, song_in_genre G "
+        f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
+        "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
+        "AND S.song_id not in (SELECT song_id from song_in_release) "
+        "GROUP BY S.song_id, S.title, S.year "
+        ") UNION ("
+        "SELECT NULL as release,"
+            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL) AS main_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
+            "NULL), '{}') AS featured_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL), '{}') AS other_artists, "
+            "NULL as genres,"
+            "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
+        "FROM song S, artist A, song_credit C "
+        f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
+        "AND A.artist_id = C.artist_id AND S.song_id not in (SELECT song_id from song_in_genre) "
+        "AND S.song_id not in (SELECT song_id from song_in_release) "
+        "GROUP BY S.song_id, S.title, S.year "
+        ") "
+    ") UNION ("
+        "(SELECT R.title as release, "
+            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL) AS main_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
+            "NULL), '{}') AS featured_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL), '{}') AS other_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
+            "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
+        "FROM song S, artist A, song_credit C, song_in_genre G, song_in_release SR, release R "
+        f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
+        "AND SR.song_id = S.song_id AND SR.release_id = R.release_id "
+        "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
+        "GROUP BY S.song_id, S.title, S.year, R.title "
+        ") UNION ("
+        "SELECT R.title as release, "
+            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL) AS main_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
+            "NULL), '{}') AS featured_artists, "
+            "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+            "NULL), '{}') AS other_artists, "
+            "NULL as genres,"
+            "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
+        "FROM song S, artist A, song_credit C, song_in_release SR, release R "
+        f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
+        "AND SR.song_id = S.song_id AND SR.release_id = R.release_id "
+        "AND A.artist_id = C.artist_id AND S.song_id not in (SELECT song_id from song_in_genre) "
+        "GROUP BY S.song_id, S.title, S.year, R.title "
+        ") "
+    ") "
+    )
+    info_columns = ["release","main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
+    info_references = ["release","artist","artist","artist","genre",None,None,None]
+    files = get_query(
+        "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin "
+        "FROM song_file F, song S "
+        f"WHERE title = '{sql_string(var)}' and S.song_id = F.song_id;"
+    )
+    file_columns = ["file_type", "duration", "file_ext", "bitrate", "size", "origin", "file_location","file_name"]
+    file_references = [None,None,None,None,None,None,None,None]
+
+    return render_template("song.html", title=var, info=info, info_columns=info_columns,
+                            info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
+
 """"""
 """ *** RELEASES ***"""
 """"""
 @app.route('/releases')
 def releases():
     rows = get_query("""
-    SELECT R.title AS release,
-    ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END),
-        NULL) AS main_artists,
-        R.release_date as release_date, R.release_type AS release_type
-    FROM release R, artist A, release_credit C
-    WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id
-    GROUP BY R.release_id, R.title
-    ORDER BY release, main_artists
+        SELECT R.title AS release,
+        ARRAY_REMOVE(
+            ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END),
+            NULL) AS main_artists,
+            R.release_date as release_date, R.release_type AS release_type
+        FROM release R, artist A, release_credit C
+        WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id
+        GROUP BY R.release_id, R.title
+        ORDER BY release, main_artists
     """)
     columns = ["release", "main_artists"]
     references = ["release","artist"]
@@ -324,7 +323,49 @@ def releases():
 
 @app.route('/releases/<var>')
 def release(var):
-    return redirect(url_for('user', var=session['username']))
+    info = get_query(
+        "( "
+            "SELECT "
+                "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END), "
+                    "NULL) AS main_artists, "
+                "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
+                "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
+                "release_date as release_date, true_track_count as track_count "
+            "FROM release R, artist A, release_credit C, release_in_genre G "
+            f"WHERE R.title = '{sql_string(var)}' AND R.release_id = C.release_id "
+            "AND A.artist_id = C.artist_id AND R.release_id = G.release_id "
+            "GROUP BY R.release_id, S.title, S.year "
+        ") UNION ("
+            " SELECT "
+                "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END), "
+                    "NULL) AS main_artists, "
+                "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
+                "NULL AS genres, "
+                "release_date as release_date, true_track_count as track_count "
+            "FROM release R, artist A, release_credit C"
+            f"WHERE R.title = '{sql_string(var)}' AND R.release_id = C.release_id "
+            "AND A.artist_id = C.artist_id AND R.release_id not in (SELECT release_id from release_in_genre) "
+            "GROUP BY R.release_id, S.title, S.year "
+        ") "
+    )
+    info_columns = ["main_artists","other_artists","genres","release_date","track_count"]
+    info_references = ["release","artist","artist","genre",None,None]
+
+    tracks = get_query(
+        "SELECT S.track_number as track_number, S.title as title"
+        "FROM release R, song_in_release SR, song S "
+        f"WHERE R.title = '{sql_string(var)}' "
+        "AND S.song_id = SR.song_id AND R.release_id = SR.release_id; "
+    )
+    track_columns = ["main_artists","other_artists","genres","release_date","track_count"]
+    track_references = ["release","artist","artist","genre",None,None]
+
+    tracks_needed = 0
+    if len(tracks) < info.track_count:
+         tracks_needed = info.track_count - len(tracks)
+
+    return render_template("release.html", title=var, info=info, info_columns=info_columns,
+                            info_references=info_references, tracks=tracks, track_columns=track_columns, track_references=track_references, tracks_needed=tracks_needed)
 
 
 """"""
