@@ -453,7 +453,7 @@ def artist(var):
     song_references = ["song", None, None, None]
 
     releeases = get_query(
-        "SELECT R.title as release, "
+        "SELECT R.title as release, release_type, "
             "MAX(CASE WHEN primary_artist THEN 1 ELSE 0 END) AS primary_artist, "
             "ARRAY_REMOVE(ARRAY_AGG(credit_type), NULL) AS credits "
         "FROM release_credit C, artist A, release R "
@@ -461,8 +461,8 @@ def artist(var):
         "GROUP BY A.artist_id, R.release_id, release "
         "ORDER BY release "
     )
-    release_columns = ["song", "primary_artist", "featured_artist", "credits"]
-    release_references = ["song", None, None, None]
+    release_columns = ["release", "release_type","primary_artist", "credits"]
+    release_references = ["release", None, None, None]
 
     return render_template('artist.html', title=var, user=var,
                            songs=songs, song_columns=song_columns,
