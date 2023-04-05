@@ -85,9 +85,6 @@ null_text=None, extra_text=[], dash=False) %}
                 {%- if row[col] != None and extra_text|length > i -%}
                     {{- extra_text[i] -}}
                 {%- endif -%}
-                {%- if loop.last and extra_text|length > i+1 -%}
-                    {{- extra_text[i+1] -}}
-                {%- endif -%}
 
                 {%- if references[i] == None or row[col] == None -%}
                     {{- display_val(row[col], dash=dash) -}}
@@ -98,6 +95,10 @@ null_text=None, extra_text=[], dash=False) %}
                     {%- endfor -%}
                 {%- else -%}
                     {{- reference(references[i], param=row[col]) -}}
+                {%- endif -%}
+
+                {%- if loop.last and extra_text|length > i+1 -%}
+                    {{- extra_text[i+1] -}}
                 {%- endif -%}
             {%- endfor -%}
         </li>
