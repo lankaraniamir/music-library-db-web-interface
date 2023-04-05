@@ -119,7 +119,7 @@ def song(var):
         "NULL), '{}') AS other_artists, "
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
-    "FROM song S, song_file F, artist A, song_credit C, song_in_genre G "
+    "FROM song S, artist A, song_credit C, song_in_genre G "
     f"WHERE S.title = '{var}' AND S.song_id = C.song_id "
     "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
     "GROUP BY S.song_id, S.title, S.year;"
