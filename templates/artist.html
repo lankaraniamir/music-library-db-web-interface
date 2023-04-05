@@ -3,9 +3,10 @@
 {% block content %}
 <h3>{{title}}
 {% if alt_names %}
+    &nbsp <div> </div>
     Alternative Names: {{alt_names}}
-{% endif %}
-</h3>
+{% endif %}</h3>
+
 {% if artist[2] or artist[3] or artist[4] %}
     <h4>
     Location:
