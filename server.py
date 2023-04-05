@@ -362,8 +362,8 @@ def release(var):
 
     tracks_needed = 0
     print(info[0][-1])
-    if len(tracks) < info[0][-1]:
-         tracks_needed = info.track_count - len(tracks)
+    if len(tracks) < info[0][-1]
+         tracks_needed = info[0][-1] - len(tracks)
 
     return render_template("release.html", title=var, info=info, info_columns=info_columns,
                             info_references=info_references, tracks=tracks, track_columns=track_columns, track_references=track_references, tracks_needed=tracks_needed)
