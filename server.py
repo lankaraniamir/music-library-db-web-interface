@@ -124,7 +124,7 @@ def song(var):
         "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
         "GROUP BY S.song_id, S.title, S.year, R.title "
         ") UNION ("
-        "SELECT"
+        "SELECT "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
             "NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
