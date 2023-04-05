@@ -548,7 +548,7 @@ def user(var):
                 f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
         ") UNION ("
             "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, username as creator "
-            "FROM playlist P, other_playlist_creator O"
+            "FROM playlist P, other_playlist_creator O "
             "WHERE P.playlist_id = O.playlist_id "
             # "AND username != '{var}' "
             "AND P.playlist_id in ( "
