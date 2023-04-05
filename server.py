@@ -558,7 +558,7 @@ def user(var):
                 f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
             ") "
         ")) AS F "
-        "GROUP BY title, date_created, date_modified, track_count "
+        "GROUP BY playlist, date_created, date_modified, track_count "
         )
         # new_query = (
         # "SELECT Distinct P.title as playlist, date_created, date_modified, track_count "
