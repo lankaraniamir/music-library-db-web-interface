@@ -146,7 +146,7 @@ def song(var):
     "FROM song_file F, song S "
     f"WHERE title = '{sql_string(var)}' and S.song_id = F.song_id;"
     )
-    file_columns = ["file_type", "duration", "file_ext", "bitrate", "size", "origin",  "file_name", "file_location"]
+    file_columns = ["file_type", "duration", "file_ext", "bitrate", "size", "origin", "file_location","file_name"]
     file_references = [None,None,None,None,None,None,None,None]
 
     return render_template("song.html", title=var, info=info, info_columns=info_columns,
@@ -270,7 +270,7 @@ def genre(var):
 """ *** RELEASES ***"""
 """"""
 @app.route('/releases')
-def albums(var):
+def albums():
     return redirect(url_for('user', var=session['username']))
 
 @app.route('/releases/<var>')
@@ -283,7 +283,7 @@ def album(var):
 """ *** PLAYLISTS ***"""
 """"""
 @app.route('/playlists')
-def playlists(var):
+def playlists():
     return redirect(url_for('user', var=session['username']))
 
 @app.route('/playlists/<var>')
@@ -296,7 +296,7 @@ def playlist(var):
 """ *** ARTISTS ***"""
 """"""
 @app.route('/artists')
-def artists(var):
+def artists():
     songs = get_query("SELECT * FROM app_user ORDER BY username")
     return redirect(url_for('user', var=session['username']))
 
