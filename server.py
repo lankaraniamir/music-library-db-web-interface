@@ -361,7 +361,7 @@ def release(var):
         ") "
     )
     info_columns = ["main_artists","other_artists","genres","release_date","track_count"]
-    info_references = ["release","artist","artist","genre",None,None]
+    info_references = ["artist","artist","genre",None,None]
 
     tracks = get_query(
         "SELECT SR.track_number as track_num, S.title as song "
