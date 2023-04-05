@@ -87,7 +87,9 @@ null_text=None, extra_text=[], dash=False) %}
                         {{- reference(references[i], param=parameter) -}}
                         {%- if not loop.last %},{%- endif -%}
                     {%- endfor -%}
-                {%- else -%}gooz{%- endif -%}
+                {%- else -%}
+                    gooz
+                {%- endif -%}
             {%- endfor -%}
         </li>
         {%- endfor -%}
