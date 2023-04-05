@@ -32,12 +32,20 @@
 </h4>
 
 
-<b>Releases </b>
-{{ macros.display_all_as_table(releases, release_columns, release_references, yes_marker=True) }}
-&nbsp <div> </div>
+{% if release_columns %}
+    <b>Releases </b>
+    {{ macros.display_all_as_table(releases, release_columns, release_references, yes_marker=True) }}
+    &nbsp <div> </div>
+{% else %}
+    <h4>No saved releases by artist</h4>
+{% endif %}
 
-<b>Songs</b>
-{{ macros.display_all_as_table(songs, song_columns, song_references, yes_marker=True) }}
-&nbsp <div> </div>
+{% if song_columns %}
+    <b>Songs</b>
+    {{ macros.display_all_as_table(songs, song_columns, song_references, yes_marker=True) }}
+    &nbsp <div> </div>
+{% else %}
+    <h4>No saved songs by artist</h4>
+{% endif %}
 
 {% endblock content %}
