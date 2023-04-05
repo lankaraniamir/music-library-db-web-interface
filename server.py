@@ -431,7 +431,7 @@ def artists():
 #
 @app.route('/artists/<var>')
 def artist(var):
-    return render_template("artist.html", title="All Artists")
+    return render_template("artist.html", title="All Scoop")
 
 
 """"""
