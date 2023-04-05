@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>{{title}}
-{% if alt_names %}
-    &nbsp <div> </div>
-    <font_size=10>Alternative Names: {{alt_names}}</font_size>
-{% endif %}</h3>
+<h3>{{title}}</h3>
 
+<h4>
+{% if alt_names %}
+    Alternative Names: {{alt_names}}
+{% endif %}
 {% if artist[2] or artist[3] or artist[4] %}
-    <h4>
     Location:
 {% endif %}
 {% if artist.relevant_city %}
