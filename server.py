@@ -383,7 +383,7 @@ def user(var):
             "O.love as love, ROUND(O.stars/2, 1) as stars "
         "FROM release R, artist A, release_credit C, release_opinion O "
         "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id AND R.release_id = O.release_id "
-        " And R.release_id NOT IN (SELECT R.release_id FROM release R, release_in_genre G "
+        "And R.release_id NOT IN (SELECT R.release_id FROM release R, release_in_genre G) "
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars);"
         )
