@@ -92,7 +92,7 @@ null_text=None, extra_text=[], dash=False) %}
                     {%- endfor -%}
                 {%- else -%}
                     {{- reference(references[i], param=row[col])
-                endif -%}
+                {%- endif -%}
             {%- endfor -%}<td>
         </li>
         {%- endfor -%}
