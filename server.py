@@ -288,6 +288,7 @@ def song(var):
     )
     info_columns = ["release","main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
     info_references = ["release","artist","artist","artist","genre",None,None,None]
+
     files = get_query(
         "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin "
         "FROM song_file F, song S "
@@ -296,8 +297,15 @@ def song(var):
     file_columns = ["file_type", "duration", "file_ext", "bitrate", "size", "origin", "file_location","file_name"]
     file_references = [None,None,None,None,None,None,None,None]
 
+    lyrics = get_query(
+        "SELECT lyric_type, lyric_text "
+        "FROM lyrics R, song S "
+        f"WHERE title = '{sql_string(var)}' and S.song_id = L.song_id;"
+    )
+
     return render_template("song.html", title=var, info=info, info_columns=info_columns,
-                            info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
+                            info_references=info_references, files=files, file_columns=file_columns, file_references=file_references,
+                            lyrics=lyrics)
 
 """"""
 """ *** RELEASES ***"""
@@ -431,13 +439,6 @@ def artists():
 #
 @app.route('/artists/<var>')
 def artist(var):
-    # all_songs = get_query(
-    # "SELECT DISTINCT S.title, S.primary_artist, S.featured_artist, S.credit_type"
-    # "FROM song S, song_credit C, artist A "
-    # f"WHERE A.artist_id = C.artist-id and S.song_id = C.song_id "
-    # "ORDER BY S.title ",
-    # single=True
-    # )
     artist = get_query(f"SELECT * FROM ARTIST WHERE primary_name = '{sql_string(var)}'")[0]
     alt_names = get_query(
          "SELECT STRING_AGG(alt_name, ', ') AS alt_names "
@@ -448,11 +449,6 @@ def artist(var):
         alt_names=alt_names[0][0]
     else:
         alt_names = None
-    related_artists = get_query(
-         "SELECT STRING_AGG(alt_name, ', ') AS alt_names "
-         "FROM artist A, artist_alt_name B "
-         f"WHERE A.artist_id = B.artist_id and primary_name = '{sql_string(var)}' "
-         "GROUP BY B.artist_id")
 
     songs = get_query(
         "SELECT s.title as song, "
@@ -487,33 +483,9 @@ def artist(var):
                            alt_names=alt_names)
 
 
-
-    # all_releases = get_query(
-    # "SELECT DISTINCT title "
-    # "FROM release R, release_in_genre G, ( "
-    #     "WITH RECURSIVE "
-    #     "   subgenres(sub_genre, parent_genre) AS ( "
-    #     "       SELECT sub_genre, parent_genre "
-    #     "       FROM genre_inheritance "
-    #     f"       WHERE parent_genre = '{sql_string(var)}' "
-    #     "       UNION "
-    #     "           SELECT A.sub_genre, A.parent_genre "
-    #     "           FROM genre_inheritance A "
-    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
-    #     "   ) "
-    #     "SELECT DISTINCT sub_genre AS genre FROM subgenres "
-    #     f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{sql_string(var)}') "
-    # ") AS SG "
-    # f"WHERE G.genre = SG.genre and R.release_id = G.release_id {type_string} "
-    # "ORDER BY title ",
-    # single=True
-    # )
-
-
 """"""
 """ *** USER INFO ***"""
 """"""
-
 @app.route('/users')
 def users():
     users = get_query("SELECT * FROM app_user ORDER BY username")

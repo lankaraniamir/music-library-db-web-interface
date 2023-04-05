@@ -14,4 +14,11 @@
     <h3>No Files for this Song</h3>
 {% endif %}
 
+{% if lyrics %}
+    <h3>Lyrics</h3>
+    {{ macros.display_all_as_table(files, file_columns, file_references) }}
+{% else %}
+    <h3>No Lyrics for this Song</h3>
+{% endif %}
+
 {% endblock content %}

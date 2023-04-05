@@ -32,7 +32,7 @@
 </h4>
 
 
-{% if release_columns %}
+{% if release_columns != None %}
     <b>Releases </b>
     {{ macros.display_all_as_table(releases, release_columns, release_references, yes_marker=True) }}
     &nbsp <div> </div>
