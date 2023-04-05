@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}{{macros.capitalize(user)}}'s Music{% endblock title %}
-
 {% block content %}
+
+{% block title %}{{macros.capitalize(user)}}'s Music{% endblock title %}
 
 {% if columns %}
     <h3>{{macros.capitalize(user)}}'s {{macros.capitalize(selection)}}</h3>

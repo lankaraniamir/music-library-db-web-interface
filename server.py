@@ -429,9 +429,6 @@ def artists():
     context = dict(users = users)
     return render_template("artist.html", title="All Artists", **context)
 
-    songs = get_query("SELECT * FROM app_user ORDER BY username")
-    return redirect(url_for('user', var=session['username']))
-
 @app.route('/artists/<var>')
 def artist(var):
     songs = get_query("SELECT * FROM app_user ORDER BY username")
