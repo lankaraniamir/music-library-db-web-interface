@@ -316,9 +316,9 @@ def releases():
     GROUP BY R.release_id, R.title
     ORDER BY release, main_artists
     """)
-    columns = ["release", "main_artists", "release_date"]
-    references = ["release","artist", None]
-    extra_text = [""," by "," [", " ]"]
+    columns = ["release", "main_artists"]
+    references = ["release","artist"]
+    extra_text = [""," by "]
     context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
     return render_template("releases.html", title="All Songs", **context)
 
