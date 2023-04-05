@@ -3,10 +3,13 @@
 {% block title %}{{title}}{% endblock title %}
 
 {% block content %}
+
+<h3>{{title}}</h3>
 {% if song_columns %}
-    <b>Songs</b>{{ macros.display_all_as_table(songs, song_columns, song_references, yes_marker=True) }}
+    <b>Songs</b>
+    {{ macros.display_all_as_table(songs, song_columns, song_references, yes_marker=True) }}
 {% else %}
-    <h3>No saved songs by artist</h3>
+    <h4>No saved songs by artist</h4>
 {% endif %}
 
 {% endblock content %}
