@@ -374,10 +374,11 @@ def release(var):
 @app.route('/playlists')
 def playlists():
     rows = get_query("""
-        SELECT P.title AS playlist, original_creator as original_creator,
+        SELECT title AS playlist, original_creator as original_creator,
             ARRAY_REMOVE(ARRAY_AGG(username), NULL) AS other_creators
         FROM playlist P, other_playlist_creator O
         WHERE P.playlist_id = O.playlist_id
+        GROUP BY P.playlist_id, title, original_creator
     """)
     columns = ["playlist", "original_creator", "other_creators"]
     references = ["playlist", "user", "user"]
@@ -389,12 +390,13 @@ def playlists():
 @app.route('/playlists/<var>')
 def playlist(var):
     rows = get_query(
-        "SELECT P.title AS playlist, original_creator as original_creator, "
+        "SELECT title AS playlist, original_creator as original_creator, "
             "ARRAY_REMOVE(ARRAY_AGG(username), NULL) AS other_creators, "
             "date_created, date_modified "
         "FROM playlist P, other_playlist_creator O "
         "WHERE P.playlist_id = O.playlist_id "
         "AND P.title = '{sql_string(var)'} "
+        "GROUP BY P.playlist_id, title, original_creator "
     )
     columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified"]
     references = ["playlist", "user", "user", None, None]
