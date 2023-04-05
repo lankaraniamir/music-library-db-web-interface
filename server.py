@@ -302,6 +302,10 @@ def song(var):
         "FROM lyric L, song S "
         f"WHERE title = '{sql_string(var)}' and S.song_id = L.song_id;"
     )
+    if len(lyrics) == 0:
+        lyrics = None
+    else:
+        lyrics = lyrics[0]
 
     return render_template("song.html", title=var, info=info, info_columns=info_columns,
                             info_references=info_references, files=files, file_columns=file_columns, file_references=file_references,
