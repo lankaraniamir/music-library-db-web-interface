@@ -425,9 +425,9 @@ def playlist(var):
 """"""
 @app.route('/artists')
 def artists():
-    users = get_query("SELECT * FROM artist ORDER BY username")
+    artists = get_query("SELECT * FROM artist ORDER BY name")
     context = dict(users = users)
-    return render_template("users.html", title="All Users", **context)
+    return render_template("artist.html", title="All Artists", **context)
 
     songs = get_query("SELECT * FROM app_user ORDER BY username")
     return redirect(url_for('user', var=session['username']))
