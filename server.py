@@ -312,7 +312,7 @@ def releases():
         NULL) AS main_artists,
         R.release_date as release_date, R.release_type AS release_type
     FROM release R, artist A, release_credit C
-    WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
+    WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id
     GROUP BY R.release_id, S.title
     ORDER BY release, main_artists
     """)
