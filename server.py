@@ -504,7 +504,7 @@ def user(var):
         # f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
         # )
         query = (
-            "SELECT Distinct P.title as playlist, original_creator as original_creator, username as other_creators, date_created, date_modified, track_count "
+            "SELECT Distinct P.title as playlist, P.original_creator as original_creator, username as other_creators, date_created, date_modified, track_count "
             "FROM playlist P, other_playlist_creator O "
             "WHERE P.playlist_id = O.playlist_id "
             f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
@@ -520,7 +520,7 @@ def user(var):
         #     f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
         # )
         # )
-        columns = ["playlist", "original creator", "other creators", "date_created", "date_modified", "track_count"]
+        columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified", "track_count"]
         references = ["release", "user", "user", None, None, None]
 
     else:
