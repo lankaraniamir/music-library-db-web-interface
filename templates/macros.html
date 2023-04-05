@@ -110,7 +110,7 @@ null_text=None, extra_text=[], dash=False) %}
     &nbsp
 {% endmacro %}
 
-{% macro display_all_as_table(entity, columns, references, dash=True) %}
+{% macro display_all_as_table(entity, columns, references, dash=True, yes_marker=False) %}
 {% if not entity %}
     <p>No data to display.</p>
 {% else %}
@@ -132,7 +132,13 @@ null_text=None, extra_text=[], dash=False) %}
                     {%- if not loop.last %},{% endif %}
                 {% endfor %}
             {% else %}
-                {{ reference(references[i], param=row[col]) }}
+                {% if yes_marker and row[col] == True %}
+                    Yes
+                {% elif yes_marker and row[col] == False %}
+                    No
+                {% else %}
+                    {{ reference(references[i], param=row[col]) }}
+                {% endif %}
             {% endif -%}
         </td>{% endfor %}
         </tr>
