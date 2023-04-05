@@ -51,6 +51,8 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
+def sql_string(string):
+    return string.replace("'", "''")
 
 def get_query(query, single=False, deref=False):
     cursor = g.conn.execute(text(query))
@@ -109,7 +111,6 @@ def songs():
 
 @app.route('/songs/<var>')
 def song(var):
-    temp_var = var.replace("'", "''")
     print(temp_var)
     info = get_query(
     "(SELECT "
@@ -122,7 +123,7 @@ def song(var):
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
     "FROM song S, artist A, song_credit C, song_in_genre G "
-    f"WHERE S.title = '{temp_var}' AND S.song_id = C.song_id "
+    f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
     "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
     "GROUP BY S.song_id, S.title, S.year "
     ") UNION ("
@@ -137,7 +138,7 @@ def song(var):
         # "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
     "FROM song S, artist A, song_credit C "
-    f"WHERE S.title = '{temp_var}' AND S.song_id = C.song_id "
+    f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
     "AND A.artist_id = C.artist_id AND S.song_id not in (SELECT song_id from song_in_genre) "
     "GROUP BY S.song_id, S.title, S.year "
     ") "
@@ -203,7 +204,7 @@ def genre(var):
     children = get_query(
         "SELECT DISTINCT sub_genre "
         "FROM genre_inheritance "
-        f"WHERE parent_genre = '{var}' "
+        f"WHERE parent_genre = '{sql_string(var)}' "
         "ORDER BY sub_genre ",
         single=True
     )
@@ -211,7 +212,7 @@ def genre(var):
     parents = get_query(
         "SELECT DISTINCT parent_genre "
         "FROM genre_inheritance "
-        f"WHERE sub_genre = '{var}' "
+        f"WHERE sub_genre = '{sql_string(var)}' "
         "ORDER BY parent_genre ",
         single = True
     )
@@ -221,7 +222,7 @@ def genre(var):
     "   subgenres(sub_genre, parent_genre) AS ( "
     "       SELECT sub_genre, parent_genre "
     "       FROM genre_inheritance "
-    f"       WHERE parent_genre = '{var}'"
+    f"       WHERE parent_genre = '{sql_string(var)}'"
     "       UNION "
     "           SELECT A.sub_genre, A.parent_genre "
     "           FROM genre_inheritance A "
@@ -239,14 +240,14 @@ def genre(var):
         "   subgenres(sub_genre, parent_genre) AS ( "
         "       SELECT sub_genre, parent_genre "
         "       FROM genre_inheritance "
-        f"       WHERE parent_genre = '{var}' "
+        f"       WHERE parent_genre = '{sql_string(var)}' "
         "       UNION "
         "           SELECT A.sub_genre, A.parent_genre "
         "           FROM genre_inheritance A "
         "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
         "   ) "
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
-        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
+        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{sql_string(var)}') "
     ") AS SG "
     f"WHERE G.genre = SG.genre and S.song_id = G.song_id {type_string} "
     "ORDER BY title ",
@@ -260,14 +261,14 @@ def genre(var):
         "   subgenres(sub_genre, parent_genre) AS ( "
         "       SELECT sub_genre, parent_genre "
         "       FROM genre_inheritance "
-        f"       WHERE parent_genre = '{var}' "
+        f"       WHERE parent_genre = '{sql_string(var)}' "
         "       UNION "
         "           SELECT A.sub_genre, A.parent_genre "
         "           FROM genre_inheritance A "
         "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
         "   ) "
         "SELECT DISTINCT sub_genre AS genre FROM subgenres "
-        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{var}') "
+        f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{sql_string(var)}') "
     ") AS SG "
     f"WHERE G.genre = SG.genre and R.release_id = G.release_id {type_string} "
     # "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True "
