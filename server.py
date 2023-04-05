@@ -149,7 +149,7 @@ def song(var):
     "FROM song_file F, song S "
     f"WHERE title = '{sql_string(var)}' and S.song_id = F.song_id;"
     )
-    file_columns = ["file_type", "duration", "file_location", "file_name", "file_ext", "size", "bitrate", "origin"]
+    file_columns = ["file_type", "duration", "size", "bitrate", "origin", "file_location", "file_name", "file_ext"]
     file_references = [None,None,None,None,None,None,None,None]
 
     # context = dict(info=info, info_columns=info_columns, info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
