@@ -426,7 +426,7 @@ def playlist(var):
 @app.route('/artists')
 def artists():
     artists = get_query("SELECT * FROM artist ORDER BY primary_name")
-    context = dict(users = artists)
+    context = dict(artists = artists)
     return render_template("artist.html", title="All Artists", **context)
 
 @app.route('/artists/<var>')
