@@ -8,8 +8,8 @@
 {% if artist[2] or artist[3] or artist[4] %}
     Location:
 {% endif %}
-{% if artist[2] %}
-    {{artist[2]}}
+{% if artist.relevant_city %}
+    {{artist.relevant_city}}
 {% endif %}
 {% if artist[3] %}
     {{artist[3]}}
