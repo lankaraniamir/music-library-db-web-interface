@@ -328,7 +328,7 @@ def user(var):
 
     if selection == 'songs':
         query = (
-        ") SELECT S.title AS song, "
+        "( SELECT S.title AS song, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
             "NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
@@ -343,7 +343,7 @@ def user(var):
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars;"
         ") UNION ("
-        ") SELECT S.title AS song, "
+        "SELECT S.title AS song, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
             "NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
