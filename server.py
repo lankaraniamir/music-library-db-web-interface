@@ -374,7 +374,7 @@ def user(var):
         "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id "
         "AND R.release_id = G.release_id AND R.release_id = O.release_id "
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
-        "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars;"
+        "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars"
         ") UNION ( "
         "(SELECT R.title AS album, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END), NULL) AS main_artists, "
