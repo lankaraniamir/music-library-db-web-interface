@@ -132,7 +132,7 @@ null_text=None, extra_text=[], dash=False) %}
                     {%- if not loop.last %},{% endif %}
                 {% endfor %}
             {% else %}
-                {% if yes_marker and row[col] == True %}
+                {% if yes_marker and row[col] == 1 %}
                     Yes
                 {% elif yes_marker and row[col] == False %}
                     No
