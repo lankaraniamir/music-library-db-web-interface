@@ -361,8 +361,7 @@ def release(var):
     track_references = ["release","artist","artist","genre",None,None]
 
     tracks_needed = 0
-    print(info)
-    print(info[-1])
+    print(info[0][-1])
     if len(tracks) < info[-1]:
          tracks_needed = info.track_count - len(tracks)
 
