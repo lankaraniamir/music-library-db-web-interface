@@ -124,10 +124,10 @@ null_text=None, extra_text=[], dash=False) %}
         <tr>
         {% for col in columns %}<td>
             {% set i = loop.index0 %}
+            {% if references[i] == None or row[col] == None %}
             {% if yes_marker %}
                 Yes
             {% endif %}
-            {% if references[i] == None or row[col] == None %}
                 {{ display_val(row[col], dash=dash) }}
             {%- elif row[col] is iterable and row[col] is not string %}
                 {% for parameter in row[col] %}
