@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>{{ title }}</h2>
+<h2> {{ title }} </h2>
 <ul>
-{{ macros.list_references(artists, 'artist', None, None, 'primary_name') }}
+{{ macros.list_references(artists, 'artist', references, None, None, 'primary_name') }}
 </ul>
+
 {% endblock content %}
