@@ -356,7 +356,7 @@ def release(var):
         "FROM release R, song_in_release SR, song S "
         f"WHERE R.title = '{sql_string(var)}' "
         "AND S.song_id = SR.song_id AND R.release_id = SR.release_id "
-        "ORDER BY track_number"; "
+        "ORDER BY track_num; "
     )
     track_columns = ["track_num","song"]
     track_references = [None,"song"]
