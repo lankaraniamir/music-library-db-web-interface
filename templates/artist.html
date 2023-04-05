@@ -5,11 +5,11 @@
 
 <h4>
 {{artist}}
-{% if artist.relevant_city or artist.relevant_state or artist.relevant_country %}
+{% if artist[2] or artist[3] or artist[4] %}
     Location:
 {% endif %}
 {% if artist.relevant_city %}
-    {{artist.relevant_city[2]}}
+    {{artist[2]}}
 {% endif %}
 {% if artist[3] %}
     {{artist[3]}}
