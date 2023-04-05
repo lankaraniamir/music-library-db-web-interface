@@ -306,7 +306,7 @@ def genre(var):
 @app.route('/releases')
 def releases():
     rows = get_query("""
-    SELECT R.title AS release,
+    SELECT R.title AS release
     ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END),
         NULL) AS main_artists,
