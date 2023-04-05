@@ -5,7 +5,7 @@
 <h1>{% block title %}Register{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}
+{% block access %}
 <h2>Register</h2>
 <form action="{{ url_for('register') }}" method=post>
     <dl>
@@ -19,4 +19,4 @@
     </dl>
 </form>
 {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-{% endblock %}
+{% endblock access %}

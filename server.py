@@ -51,8 +51,11 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
-def sql_string(string):
-    return string.replace("'", "''")
+
+
+""""""
+""" *** GLOBAL *** """
+""""""
 
 def get_query(query, single=False, deref=False):
     cursor = g.conn.execute(text(query))
@@ -67,7 +70,21 @@ def get_query(query, single=False, deref=False):
         return result[0]
     return result
 
+def sql_string(string):
+    return string.replace("'", "''")
 
+@app.route('/')
+def home():
+    if 'username' in session:
+        return redirect(url_for('user', var=session['username']))
+    else:
+        return render_template('login.html')
+
+
+
+""""""
+""" *** SONGS *** """
+""""""
 
 @app.route('/songs')
 def songs():
@@ -87,25 +104,6 @@ def songs():
     columns = ["song", "main_artists", "featured_artists"]
     references = ["song","artist", "artist"]
     extra_text = ["", " by "," featuring "]
-    # columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
-    # NULLIF(ARRAY_REMOVE(
-    #     ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END),
-    #     NULL), '{}') AS other_artists,
-    # NULLIF(ARRAY_REMOVE(
-    #     ARRAY_AGG(DISTINCT CASE WHEN primary_genre THEN genre END),
-    #     Null), '{}') AS primary_genres,
-    # NULLIF(ARRAY_REMOVE(
-    #     ARRAY_AGG(DISTINCT CASE WHEN not primary_genre THEN genre END),
-    #     Null), '{}') AS secondary_genre
-    # columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
-    # references = ["release","artist","artist","genre",None,None,None,None]
-
-    #          """
-    #     SELECT S.title as title, A.primary_name as artist, S.year as year
-    #     FROM song S, song_credit C, artist A
-    #     WHERE S.song_id = C.song_id AND C.primary_artist = True AND C.artist_id = A.artist_id
-    #     ORDER BY title, artist, year
-    # """)
     context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
     return render_template("songs.html", title="All Songs", **context)
 
@@ -134,7 +132,6 @@ def song(var):
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
         "NULL), '{}') AS other_artists, "
         "NULL as genres,"
-        # "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
     "FROM song S, artist A, song_credit C "
     f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
@@ -152,22 +149,12 @@ def song(var):
     file_columns = ["file_type", "duration", "file_ext", "bitrate", "size", "origin",  "file_name", "file_location"]
     file_references = [None,None,None,None,None,None,None,None]
 
-    # context = dict(info=info, info_columns=info_columns, info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
-    # return render_template("song.html", title=var, **context)
     return render_template("song.html", title=var, info=info, info_columns=info_columns,
                             info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
 
-
-
-
-
-@app.route('/')
-def home():
-    if 'username' in session:
-        return redirect(url_for('user', var=session['username']))
-    else:
-        return render_template('login.html')
-    # return render_template("base.html", title="Homepage")
+""""""
+""" *** GENRES *** """
+""""""
 
 @app.route('/genres')
 def genres():
@@ -184,7 +171,6 @@ def genre(var):
         error = "Please select a category."
         genre_type = None
     else:
-        # selection = None
         genre_type = 'primary'
 
     if genre_type == 'primary':
@@ -270,7 +256,6 @@ def genre(var):
         f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{sql_string(var)}') "
     ") AS SG "
     f"WHERE G.genre = SG.genre and R.release_id = G.release_id {type_string} "
-    # "WHERE G.genre = SG.genre and R.release_id = G.release_id and G.primary_genre = True "
     "ORDER BY title ",
     single=True
     )
@@ -280,24 +265,37 @@ def genre(var):
     return render_template("genre.html", title=var, **context)
 
 
-# add radio button for primary, secondary, or both
-# error = None
-# if request.method == 'POST' and len(request.form) > 0:
-#     selection = request.form['selection']
-# elif request.method == 'POST' and len(request.form) == 0:
-#     error = "Please select a category."
-#     selection = None
-# else:
-#     selection = None
 
-
-
-
-@app.route('/release/<var>')
+""""""
+""" *** RELEASES ***"""
+""""""
+@app.route('/releases')
 def release(var):
     return redirect(url_for('user', var=session['username']))
 
-@app.route('/artist/<var>')
+@app.route('/releases/<var>')
+def release(var):
+    return redirect(url_for('user', var=session['username']))
+
+
+
+""""""
+""" *** PLAYLISTS ***"""
+""""""
+@app.route('/releases')
+def release(var):
+    return redirect(url_for('user', var=session['username']))
+
+@app.route('/albums/<var>')
+def playlist(var):
+    return redirect(url_for('user', var=session['username']))
+
+
+
+""""""
+""" *** RELEASES ***"""
+""""""
+@app.route('/artists/<var>')
 def artist(var):
     songs = get_query("SELECT * FROM app_user ORDER BY username")
     return redirect(url_for('user', var=session['username']))

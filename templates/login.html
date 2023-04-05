@@ -5,7 +5,7 @@
 <h1>{% block title %}Login{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}
+{% block access %}
 <h2>Login</h2>
 <form action="{{ url_for('login') }}" method=post>
     <dl>
@@ -17,4 +17,4 @@
     </dl>
 </form>
 {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-{% endblock %}
+{% endblock access %}

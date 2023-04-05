@@ -12,8 +12,14 @@
     <header>
         {% include "_navigation.html" %}
     </header>
-    {% block content %}
-        <h2>Explore using the navigation panel above</h2>
-    {% endblock content %}
+    {% block access %}
+        {% if session['username'] %}
+            {% block content %}
+                <h2>Explore using the navigation panel above</h2>
+            {% endblock content %}
+        {% else %}
+            <h2>Login to Access Information</h2>
+        {% endif %}
+    {% endblock access %}
 </body>
 </html>
