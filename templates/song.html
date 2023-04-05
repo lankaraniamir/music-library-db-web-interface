@@ -5,10 +5,11 @@
 
 <h3>Audio Characteristics</h3>
 {{ macros.display_all_as_table(info, info_columns, info_references) }}
+&nbsp
 
 {% if files %}
     <h3>Song Files</h3>
-    {{ macros.display_all_as_table(files, file_columns, file_references) }}
+    {{- macros.display_all_as_table(files, file_columns, file_references) }}
 {% else %}
     <h3>No Files for this Song</h3>
 {% endif %}
