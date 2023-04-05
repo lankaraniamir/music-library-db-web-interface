@@ -357,7 +357,7 @@ def user(var):
         "AND S.song_id NOT IN (SELECT song_id FROM song_in_genre) "
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars "
-        # "); "
+        "); "
         )
         columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
         references = ["song","artist","artist","artist","genre",None,None,None]
