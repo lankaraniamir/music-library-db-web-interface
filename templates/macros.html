@@ -22,7 +22,7 @@
     {% endif %}
     {% if value == None and dash == True %}
         -
-    {%- elif value != 1 and value == True %}
+    {%- elif value is boolean and value == True %}
         ❤️
     {%- elif value != 0 and value == False %}
         ♡️
