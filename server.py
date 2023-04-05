@@ -380,6 +380,7 @@ def playlists():
         FROM playlist P, other_playlist_creator O
         WHERE P.playlist_id = O.playlist_id
         GROUP BY P.playlist_id, title, original_creator
+        ORDER BY playlist, original_creator, other_creators
     """)
     columns = ["playlist", "original_creator", "other_creators"]
     references = ["playlist", "user", "user"]
