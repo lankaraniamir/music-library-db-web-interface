@@ -373,7 +373,22 @@ def release(var):
 """"""
 @app.route('/playlists')
 def playlists():
-    return redirect(url_for('user', var=session['username']))
+    rows = get_query("""
+        SELECT P.title AS playlist,
+            ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END),
+            NULL) AS main_artists,
+            R.release_date as release_date, R.release_type AS release_type
+        FROM playlist P, artist A, release_credit C
+        WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id
+        GROUP BY R.release_id, R.title
+        ORDER BY release, main_artists
+    """)
+    columns = ["release", "main_artists"]
+    references = ["release","artist"]
+    extra_text = [""," by "]
+    context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
+    return render_template("releases.html", title="All Songs", **context)
+
 
 @app.route('/playlists/<var>')
 def playlist(var):
@@ -482,14 +497,31 @@ def user(var):
         references = ["release","artist","artist","genre",None,None,None,None]
 
     elif selection == 'playlists':
+        # query = (
+        # "SELECT Distinct P.title as playlist, date_created, date_modified, track_count "
+        # "FROM playlist P, other_playlist_creator O "
+        # "WHERE P.playlist_id = O.playlist_id "
+        # f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
+        # )
         query = (
-        "SELECT Distinct P.title as playlist, date_created, date_modified, track_count "
-        "FROM playlist P, other_playlist_creator O "
-        "WHERE P.playlist_id = O.playlist_id "
-        f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
+            "SELECT Distinct P.title as playlist, original_creator as original_creator, username as other_creators, date_created, date_modified, track_count "
+            "FROM playlist P, other_playlist_creator O "
+            "WHERE P.playlist_id = O.playlist_id "
+            f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
         )
-        columns = ["playlist", "date_created", "date_modified", "track_count"]
-        references = ["release", None, None, None]
+        # new_query = (
+        # "SELECT Distinct P.title as playlist, date_created, date_modified, track_count "
+        # "FROM playlist P, other_playlist_creator O "
+        # "WHERE P.playlist_id = O.playlist_id "
+        # "AND P.title in ( "
+        #     "SELECT Distinct P.title as title"
+        #     "FROM playlist P, other_playlist_creator O "
+        #     "WHERE P.playlist_id = O.playlist_id "
+        #     f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
+        # )
+        # )
+        columns = ["playlist", "original creator", "other creators", "date_created", "date_modified", "track_count"]
+        references = ["release", "user", "user", None, None, None]
 
     else:
         return render_template('user.html', title=var, user=var,
