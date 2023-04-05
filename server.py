@@ -535,7 +535,7 @@ def user(var):
         # ") AS U2 "
 
         query = (
-        "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, "
+        "SELECT DISTINCT playlist, date_created, date_modified, track_count, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN creator != '{var}' THEN creator END), NULL) AS other_creators "
 
         "FROM (( "
