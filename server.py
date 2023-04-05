@@ -429,9 +429,9 @@ def artists():
     context = dict(artists = artists)
     return render_template("artist.html", title="All Artists", **context)
 #
-# @app.route('/artists/<var>')
-# def artist(var):
-    # return render_template("artist.html", title="All Artists")
+@app.route('/artists/<var>')
+def artist(var):
+    return render_template("artist.html", title="All Artists")
 
 
 """"""
