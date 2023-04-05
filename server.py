@@ -299,7 +299,7 @@ def song(var):
 
     lyrics = get_query(
         "SELECT lyric_type, lyric_text "
-        "FROM lyrics R, song S "
+        "FROM lyrics L, song S "
         f"WHERE title = '{sql_string(var)}' and S.song_id = L.song_id;"
     )
 
