@@ -120,7 +120,7 @@ def song(var):
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
     "FROM song S, song_file F, artist A, song_credit C, song_in_genre G "
-    f"WHERE S.song_id = {var} AND S.song_id = C.song_id "
+    f"WHERE S.title = '{var}' AND S.song_id = C.song_id "
     "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
     "GROUP BY S.song_id, S.title, S.year;"
     )
@@ -128,8 +128,9 @@ def song(var):
     info_references = [None,"artist","artist","artist","genre",None,None,None]
 
     files = get_query(
-    "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin"
-    f"WHERE song_id = {var} "
+    "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin "
+    "FROM song_file F, song S "
+    f"WHERE title = {var} and S.song_id = F.song_id;"
     )
     file_columns = ["file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin"]
     file_references = [None,None,None,None,None,None,None,None]
