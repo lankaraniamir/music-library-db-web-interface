@@ -3,7 +3,7 @@
 {% block content %}
 <h3>{{title}}</h3>
 <h4>
-{% if artist[2] or artist[3] or artist[4] %}
+{%- if artist[2] or artist[3] or artist[4] %}
     Location:
 {% endif %}
 {% if artist.relevant_city %}
