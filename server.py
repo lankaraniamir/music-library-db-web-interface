@@ -431,18 +431,53 @@ def artists():
 #
 @app.route('/artists/<var>')
 def artist(var):
-    error = None
-    if request.method == 'POST' and len(request.form) > 0:
-        selection = request.form['selection']
-    elif request.method == 'POST' and len(request.form) == 0:
-        error = "Please select a category."
-        selection = None
-    else:
-        # selection = None
-        selection = 'songs'
+    # all_songs = get_query(
+    # "SELECT DISTINCT S.title, S.primary_artist, S.featured_artist, S.credit_type"
+    # "FROM song S, song_credit C, artist A "
+    # f"WHERE A.artist_id = C.artist-id and S.song_id = C.song_id "
+    # "ORDER BY S.title ",
+    # single=True
+    # )
+
+    songs = get_query(
+        "SELECT s.title as song "
+            "MAX(CASE WHEN primary_artist THEN 1 ELSE 0 END) AS primary_artist, "
+            "Max(CASE WHEN featured_artist = True Then 1 Else 0 END) AS featured_artist, "
+            "ARRAY_REMOVE(ARRAY_AGG(credit_type), NULL) AS other_creators"
+        "COUNT(credit_type) AS num_credits "
+        "FROM song_credit C, artist A, song S "
+        f"WHERE A.artist_id = C.artist_id AND S.song_id = C.song_id AND A.primary_name = '{sql_string(var)}' "
+        "GROUP BY artist_id, song_id, song "
+    )
+    song_columns = ["song", "primary_artist", "secondary_artist", "credits"]
+    song_references = ["song", "user", None, None]
+
+    return render_template('user.html', title=var, user=var,
+                           songs=songs, sort="stars", song_columns=song_columns,
+                           song_references=song_references)
 
 
-    return redirect(url_for('songs', var="holding"))
+
+    # all_releases = get_query(
+    # "SELECT DISTINCT title "
+    # "FROM release R, release_in_genre G, ( "
+    #     "WITH RECURSIVE "
+    #     "   subgenres(sub_genre, parent_genre) AS ( "
+    #     "       SELECT sub_genre, parent_genre "
+    #     "       FROM genre_inheritance "
+    #     f"       WHERE parent_genre = '{sql_string(var)}' "
+    #     "       UNION "
+    #     "           SELECT A.sub_genre, A.parent_genre "
+    #     "           FROM genre_inheritance A "
+    #     "           INNER JOIN subgenres S ON S.sub_genre = A.parent_genre "
+    #     "   ) "
+    #     "SELECT DISTINCT sub_genre AS genre FROM subgenres "
+    #     f"UNION (SELECT DISTINCT name AS genre FROM genre WHERE name = '{sql_string(var)}') "
+    # ") AS SG "
+    # f"WHERE G.genre = SG.genre and R.release_id = G.release_id {type_string} "
+    # "ORDER BY title ",
+    # single=True
+    # )
 
 
 """"""
