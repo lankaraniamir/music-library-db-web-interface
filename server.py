@@ -541,7 +541,7 @@ def user(var):
             "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, original_creator as creator "
             "FROM playlist P "
             # "WHERE original_creator != '{var}' "
-            "AND P.playlist_id in ( "
+            "WHERE P.playlist_id in ( "
                 "SELECT Distinct P2.playlist_id as playlist_id "
                 "FROM playlist P2, other_playlist_creator O2 "
                 "WHERE P2.playlist_id = O2.playlist_id "
