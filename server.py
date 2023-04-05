@@ -119,7 +119,7 @@ def song(var):
         "NULL), '{}') AS other_artists, "
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
-    "FROM song S, artist A, song_credit C, song_in_genre G "
+    "FROM song S, artist A, song_credit C, song_in_genre G, song_in_release R "
     f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
     "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
     "GROUP BY S.song_id, S.title, S.year "
@@ -270,11 +270,29 @@ def genre(var):
 """ *** RELEASES ***"""
 """"""
 @app.route('/releases')
-def albums():
+def releases():
+    rows = get_query("""
+    SELECT R.title AS song,
+    ARRAY_REMOVE(
+        ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
+        NULL) AS main_artists,
+    NULLIF(ARRAY_REMOVE(
+        ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
+        NULL), '{}') AS featured_artists
+    FROM song S, artist A, song_credit C
+    WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
+    GROUP BY S.song_id, S.title
+    ORDER BY song, main_artists
+    """)
+    columns = ["song", "main_artists", "featured_artists"]
+    references = ["song","artist", "artist"]
+    extra_text = ["", " by "," featuring "]
+    context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
+    return render_template("songs.html", title="All Songs", **context)
     return redirect(url_for('user', var=session['username']))
 
 @app.route('/releases/<var>')
-def album(var):
+def release(var):
     return redirect(url_for('user', var=session['username']))
 
 
@@ -365,9 +383,9 @@ def user(var):
         columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
         references = ["song","artist","artist","artist","genre",None,None,None]
 
-    elif selection == 'albums':
+    elif selection == 'releases':
         query = (
-        "(SELECT R.title AS album, "
+        "(SELECT R.title AS release, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END), NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
@@ -379,7 +397,7 @@ def user(var):
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars"
         ") UNION ( "
-        "SELECT R.title AS album, "
+        "SELECT R.title AS release, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END), NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN NOT C.primary_artist THEN A.primary_name END), NULL), '{}') AS other_artists, "
             "NULL AS genres, "
@@ -391,7 +409,7 @@ def user(var):
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars);"
         )
-        columns = ["album","main_artists","other_artists","genres","release_date","release_type","love","stars"]
+        columns = ["release","main_artists","other_artists","genres","release_date","release_type","love","stars"]
         references = ["release","artist","artist","genre",None,None,None,None]
 
     elif selection == 'playlists':
