@@ -110,7 +110,7 @@ def songs():
 @app.route('/songs/<var>')
 def song(var):
     info = get_query(
-    "(SELECT "
+    "(SELECT R.title as release, "
         "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
         "NULL) AS main_artists, "
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
@@ -121,11 +121,11 @@ def song(var):
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
     "FROM song S, artist A, song_credit C, song_in_genre G, song_in_release SR, release R "
     f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
-    "AND SR.song_id = S.song_id AND R.release_id = SR.release_id "
+    "AND SR.song_id = S.song_id AND SR.release_id = R.release_id "
     "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
     "GROUP BY S.song_id, S.title, S.year "
     ") UNION ("
-    "SELECT "
+    "SELECT R.title as release, "
         "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
         "NULL) AS main_artists, "
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
@@ -134,14 +134,15 @@ def song(var):
         "NULL), '{}') AS other_artists, "
         "NULL as genres,"
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
-    "FROM song S, artist A, song_credit C "
+    "FROM song S, artist A, song_credit C, song_in_release SR, release R "
     f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
+    "AND SR.song_id = S.song_id AND SR.release_id = R.release_id "
     "AND A.artist_id = C.artist_id AND S.song_id not in (SELECT song_id from song_in_genre) "
     "GROUP BY S.song_id, S.title, S.year "
     ") "
     )
-    info_columns = ["main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
-    info_references = ["artist","artist","artist","genre",None,None,None]
+    info_columns = ["release","main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
+    info_references = ["release","artist","artist","artist","genre",None,None,None]
     files = get_query(
     "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin "
     "FROM song_file F, song S "
