@@ -82,16 +82,16 @@ null_text=None, extra_text=[], dash=False) %}
             {% for col in columns %}
                 {% set i = loop.index0 %}
                 {%- if row[col] != None and extra_text|length > i -%}{{extra_text[i]}}{%- endif -%}
-                {%- if references[i] == None or row[col] == None %}
+                {%- if references[i] == None or row[col] == None -%}
                     {{ display_val(row[col], dash=dash) }}
-                {% elif row[col] is iterable and row[col] is not string %}
+                {%- elif row[col] is iterable and row[col] is not string -%}
                     {% for parameter in row[col] %}
                         {{ reference(references[i], param=parameter) }}
                         {%- if not loop.last %},{% endif %}
                     {% endfor %}
-                {% else %}
+                {%- else -%}
                     {{ reference(references[i], param=row[col]) }}
-                {% endif -%}
+                {%- endif -%}
             {% endfor %}<td>
         </li>
         {% endfor %}
