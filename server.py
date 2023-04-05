@@ -355,7 +355,7 @@ def user(var):
         "FROM song S, artist A, song_credit C, song_opinion O "
         "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id AND S.song_id = O.song_id "
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
-        "GROUP BY S.song_id, S.title, S.year, O.love, O.stars): "
+        "GROUP BY S.song_id, S.title, S.year, O.love, O.stars); "
         )
         columns = ["song","main_artists","featured_artists","other_artists","genres","year","love","stars"]
         references = ["song","artist","artist","artist","genre",None,None,None]
