@@ -4,8 +4,7 @@
 
 {% block content %}
 {% if song_columns %}
-    <b>Songs</b>
-    {{ macros.display_all_as_table(songs, song_columns, song_references, yes_marker=True) }}
+    <b>Songs</b>{{ macros.display_all_as_table(songs, song_columns, song_references, yes_marker=True) }}
 {% else %}
     <h3>No saved songs by artist</h3>
 {% endif %}
