@@ -119,8 +119,9 @@ def song(var):
         "NULL), '{}') AS other_artists, "
         "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
         "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
-    "FROM song S, artist A, song_credit C, song_in_genre G, song_in_release R "
+    "FROM song S, artist A, song_credit C, song_in_genre G, song_in_release SR, release R "
     f"WHERE S.title = '{sql_string(var)}' AND S.song_id = C.song_id "
+    "AND SR.song_id = S.song_id AND R.release_id = SR.release_id "
     "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
     "GROUP BY S.song_id, S.title, S.year "
     ") UNION ("
@@ -265,14 +266,13 @@ def genre(var):
     return render_template("genre.html", title=var, **context)
 
 
-
 """"""
 """ *** RELEASES ***"""
 """"""
 @app.route('/releases')
 def releases():
     rows = get_query("""
-    SELECT R.title AS song,
+    SELECT R.title AS release,
     ARRAY_REMOVE(
         ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
         NULL) AS main_artists,
@@ -296,7 +296,6 @@ def release(var):
     return redirect(url_for('user', var=session['username']))
 
 
-
 """"""
 """ *** PLAYLISTS ***"""
 """"""
@@ -307,7 +306,6 @@ def playlists():
 @app.route('/playlists/<var>')
 def playlist(var):
     return redirect(url_for('user', var=session['username']))
-
 
 
 """"""
@@ -322,7 +320,6 @@ def artists():
 def artist(var):
     songs = get_query("SELECT * FROM app_user ORDER BY username")
     return redirect(url_for('user', var=session['username']))
-
 
 
 """"""
