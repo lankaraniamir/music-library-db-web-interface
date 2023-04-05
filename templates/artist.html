@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{title}}{% endblock title %}
 {% block content %}
-
-    {% if values %}
-
 {% if song_columns %}
     <b>Songs</b>
     {{ macros.display_all_as_table(songs, song_columns, song_references, yes_marker=True) }}
