@@ -111,7 +111,7 @@ def genre(var):
 
 
     description = get_query(
-        f"SELECT descriptor FROM genre WHERE name = '{var}'",
+        f"SELECT descriptor FROM genre WHERE name = '{sql_string(var)}'",
         single=True, deref=True
     )
 
@@ -395,7 +395,7 @@ def playlist(var):
             "date_created, date_modified "
         "FROM playlist P, other_playlist_creator O "
         "WHERE P.playlist_id = O.playlist_id "
-        "AND P.title = '{sql_string(var)'} "
+        f"AND P.title = '{sql_string(var)}' "
         "GROUP BY P.playlist_id, title, original_creator "
     )
     columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified"]
@@ -453,7 +453,7 @@ def user(var):
         "FROM song S, artist A, song_credit C, song_in_genre G, song_opinion O "
         "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id "
         "AND S.song_id = G.song_id AND S.song_id = O.song_id "
-        f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
+        f"AND O.username = '{sql_string(var)}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars "
         ") UNION ("
         "SELECT S.title AS song, "
@@ -468,7 +468,7 @@ def user(var):
         "FROM song S, artist A, song_credit C, song_opinion O "
         "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id AND S.song_id = O.song_id "
         "AND S.song_id NOT IN (SELECT G.song_id FROM song_in_genre G) "
-        f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
+        f"AND O.username = '{sql_string(var)}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars "
         "); "
         )
@@ -486,7 +486,7 @@ def user(var):
         "FROM release R, artist A, release_credit C, release_in_genre G, release_opinion O "
         "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id "
         "AND R.release_id = G.release_id AND R.release_id = O.release_id "
-        f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
+        f"AND O.username = '{sql_string(var)}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars"
         ") UNION ( "
         "SELECT R.title AS release, "
@@ -498,7 +498,7 @@ def user(var):
         "FROM release R, artist A, release_credit C, release_opinion O "
         "WHERE R.release_id = C.release_id AND A.artist_id = C.artist_id AND R.release_id = O.release_id "
         "AND R.release_id NOT IN (SELECT release_id FROM release_in_genre) "
-        f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
+        f"AND O.username = '{sql_string(var)}' AND (O.love = TRUE OR O.stars IS NOT NULL)"
         "GROUP BY R.release_id, R.title, R.release_date, O.love, O.stars);"
         )
         columns = ["release","main_artists","other_artists","genres","release_date","release_type","love","stars"]
@@ -507,7 +507,7 @@ def user(var):
     elif selection == 'playlists':
         query = (
         "SELECT DISTINCT playlist, "
-            f"ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN creator != '{var}' THEN creator END), NULL) AS other_creators, "
+            f"ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN creator != '{sql_string(var)}' THEN creator END), NULL) AS other_creators, "
             "date_created, date_modified "
         "FROM (( "
             "SELECT DISTINCT title as playlist, date_created, date_modified, original_creator as creator "
@@ -516,7 +516,7 @@ def user(var):
                 "SELECT Distinct P2.playlist_id as playlist_id "
                 "FROM playlist P2, other_playlist_creator O2 "
                 "WHERE P2.playlist_id = O2.playlist_id "
-                f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
+                f"AND (P2.original_creator = '{sql_string(var)}' OR O2.username = '{sql_string(var)}') "
             ") "
         ") UNION ( "
             "SELECT DISTINCT title as playlist, date_created, date_modified, username as creator "
@@ -526,7 +526,7 @@ def user(var):
                 "SELECT Distinct P2.playlist_id as playlist_id "
                 "FROM playlist P2, other_playlist_creator O2 "
                 "WHERE P2.playlist_id = O2.playlist_id "
-                f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
+                f"AND (P2.original_creator = '{sql_string(var)}' OR O2.username = '{sql_string(var)}') "
             ") "
         ")) AS F "
         "GROUP BY playlist, date_created, date_modified "
