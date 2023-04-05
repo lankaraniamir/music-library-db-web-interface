@@ -397,7 +397,7 @@ def playlist(var):
         "WHERE P.playlist_id = O.playlist_id "
         f"AND P.title = '{sql_string(var)}' "
         "GROUP BY P.playlist_id, title, original_creator "
-        "ORDER BY date_modified DESC, date_created DESC; "
+        "ORDER BY date_modified descending, date_created descending; "
     )
     info_columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified"]
     info_references = ["playlist", "user", "user", None, None]
