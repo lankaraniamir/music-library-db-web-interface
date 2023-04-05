@@ -11,15 +11,15 @@
     <body>
     &nbsp
 {% else %}
-    <h4>No tracks logged</h4>
+    <h4>No tracks logged for this release</h4>
     <body>
 {% endif %}
 
 <div>
 {% if tracks_needed > 0 %}
-    Missing {{tracks_needed}} tracks
+    Missing {{tracks_needed}} tracks from this release
 {% else %}
-    All tracks logged
+    All tracks logged in database
 {% endif %}
 </div>
 </body>
