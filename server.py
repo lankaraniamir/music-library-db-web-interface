@@ -438,7 +438,7 @@ def artist(var):
     # "ORDER BY S.title ",
     # single=True
     # )
-    artist = get_query(f"SELECT * FROM ARTIST WHERE primary_name = {sql_string(var)}")
+    artist = get_query(f"SELECT * FROM ARTIST WHERE primary_name = '{sql_string(var)}'")
 
     songs = get_query(
         "SELECT s.title as song, "
