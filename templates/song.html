@@ -19,11 +19,12 @@
 
 {{lyrics}}
 {% if lyrics %}
+    <h3>
     {% if lyrics.lyric_type %}
-        <h3>{{lyrics.lyric_type}}</h3>
-    {% else %}
-        <h3>Lyrics</h3>
+        {macros.capitalize(lyrics.lyric_type)}}
     {% endif %}
+    Lyrics
+    </h3>
     <p>{{lyrics.text}}</p>
 {% else %}
     <h4>No Lyrics for this Song</h4>
