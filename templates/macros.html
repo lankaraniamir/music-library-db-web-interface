@@ -37,17 +37,17 @@
     {{ col|replace("_", " ")|capitalize }}
 {%- endmacro %}
 
-{% macro reference(page, param=None, text=None, caps=False)%}
-    {%- if param == None and text == None %}
+{%- macro reference(page, param=None, text=None, caps=False) -%}
+    {%- if param == None and text == None -%}
         <a href="{{ url_for(page) }}">{{ f_capitalize(page, caps=caps) }}</a>
-    {%- elif param != None and text == None %}
+    {%- elif param != None and text == None -%}
         <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(param, caps=caps) }}</a>
-    {%- elif param == None %}
+    {%- elif param == None -%}
         <a href="{{ url_for(page) }}">{{ f_capitalize(text, caps=caps) }}</a>
-    {%- else %}
+    {%- else -%}
         <a href="{{ url_for(page, var=param) }}">{{ f_capitalize(text, caps=caps) }}</a>
-    {%- endif %}
-{%- endmacro %}
+    {%- endif -%}
+{%- endmacro -%}
 
 {% macro list_references(values, page, title=parameter, null_text=None,
 attr=None) %}
@@ -88,7 +88,8 @@ null_text=None, extra_text=[], dash=False) %}
                     {{- display_val(row[col], dash=dash) -}}
                 {%- elif row[col] is iterable and row[col] is not string -%}
                     {%- for parameter in row[col] -%}
-                        gooz
+                        {{- reference(references[i], param=parameter) -}}
+                        {%- if not loop.last -%},{%- endif -%}
                     {%- endfor -%}
                 {%- else -%}
                     {{- reference(references[i], param=row[col]) -}}
