@@ -428,11 +428,10 @@ def artists():
     artists = get_query("SELECT * FROM artist ORDER BY primary_name")
     context = dict(artists = artists)
     return render_template("artist.html", title="All Artists", **context)
-
-@app.route('/artists/<var>')
-def artist(var):
-    songs = get_query("SELECT * FROM artists ORDER BY primary_name")
-    return render_template("artist.html", title="All Artists")
+#
+# @app.route('/artists/<var>')
+# def artist(var):
+    # return render_template("artist.html", title="All Artists")
 
 
 """"""
