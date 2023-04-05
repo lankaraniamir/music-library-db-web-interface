@@ -503,25 +503,74 @@ def user(var):
         # "WHERE P.playlist_id = O.playlist_id "
         # f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
         # )
+
+        # query = (
+        #     "SELECT Distinct P.title as playlist, P.original_creator as original_creator, username as other_creators, date_created, date_modified, track_count "
+        #     "FROM playlist P, other_playlist_creator O "
+        #     "WHERE P.playlist_id = O.playlist_id "
+        #     f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
+        # )
+
+        # query = (
+        # "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, creator as creator "
+        # "FROM ( "
+        #     "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, original_creator as creator "
+        #     "FROM playlist P "
+        #     "WHERE original_creator != '{var}' "
+        #     "AND P.playlist_id in ( "
+        #         "SELECT Distinct P2.playlist_id as playlist_id "
+        #         "FROM playlist P2, other_playlist_creator O2 "
+        #         "WHERE P2.playlist_id = O2.playlist_id "
+        #         f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
+        # ") AS U1, ("
+        #     "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, username as creator "
+        #     "FROM playlist P, other_playlist_creator O"
+        #     "WHERE P.playlist_id = O.playlist_id "
+        #     "AND username != '{var}' "
+        #     "AND P.playlist_id in ( "
+        #         "SELECT Distinct P2.playlist_id as playlist_id "
+        #         "FROM playlist P2, other_playlist_creator O2 "
+        #         "WHERE P2.playlist_id = O2.playlist_id "
+        #         f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
+        # ") AS U2 "
+
         query = (
-            "SELECT Distinct P.title as playlist, P.original_creator as original_creator, username as other_creators, date_created, date_modified, track_count "
-            "FROM playlist P, other_playlist_creator O "
+        "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, creator as creator "
+            "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN creator != '{var}' THEN creator END), NULL) AS other_creators, "
+        "FROM ( "
+            "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, original_creator as creator "
+            "FROM playlist P "
+            # "WHERE original_creator != '{var}' "
+            "AND P.playlist_id in ( "
+                "SELECT Distinct P2.playlist_id as playlist_id "
+                "FROM playlist P2, other_playlist_creator O2 "
+                "WHERE P2.playlist_id = O2.playlist_id "
+                f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
+        ") UNION ("
+            "SELECT DISTINCT title as playlist, date_created, date_modified, track_count, username as creator "
+            "FROM playlist P, other_playlist_creator O"
             "WHERE P.playlist_id = O.playlist_id "
-            f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
+            # "AND username != '{var}' "
+            "AND P.playlist_id in ( "
+                "SELECT Distinct P2.playlist_id as playlist_id "
+                "FROM playlist P2, other_playlist_creator O2 "
+                "WHERE P2.playlist_id = O2.playlist_id "
+                f"AND (P2.original_creator = '{var}' OR O2.username = '{var}') "
+        ") "
+        "GROUP BY title, date_created, date_modified, track_count "
         )
         # new_query = (
         # "SELECT Distinct P.title as playlist, date_created, date_modified, track_count "
         # "FROM playlist P, other_playlist_creator O "
         # "WHERE P.playlist_id = O.playlist_id "
         # "AND P.title in ( "
-        #     "SELECT Distinct P.title as title"
+        #     "SELECT Distinct P.title as title, concat(P.original_creator, ', ', O.username) as creators"
         #     "FROM playlist P, other_playlist_creator O "
         #     "WHERE P.playlist_id = O.playlist_id "
         #     f"AND (P.original_creator = '{var}' OR O.username = '{var}') "
         # )
-        # )
-        columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified", "track_count"]
-        references = ["release", "user", "user", None, None, None]
+        columns = ["playlist", "date_created", "date_modified", "track_count", "other_creators"]
+        references = ["release", None, None, None, "user"]
 
     else:
         return render_template('user.html', title=var, user=var,
