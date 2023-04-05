@@ -110,7 +110,8 @@ def songs():
 @app.route('/songs/<var>')
 def song(var):
     info = get_query(
-    "(SELECT "
+    "( "
+        "(SELECT "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
             "NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
@@ -139,7 +140,7 @@ def song(var):
         "GROUP BY S.song_id, S.title, S.year, R.title "
         ") "
     ") UNION ("
-    "(SELECT R.title as release, "
+        "(SELECT R.title as release, "
             "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
             "NULL) AS main_artists, "
             "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
