@@ -453,7 +453,7 @@ def artist(var):
         "FROM song_credit C, artist A, song S "
         f"WHERE A.artist_id = C.artist_id AND S.song_id = C.song_id AND A.primary_name = '{sql_string(var)}' "
         "GROUP BY A.artist_id, S.song_id, song "
-        "ORDER BY song "
+        "ORDER BY alt_name "
     )
     song_columns = ["song", "primary_artist", "featured_artist", "credits"]
     song_references = ["song", None, None, None]
