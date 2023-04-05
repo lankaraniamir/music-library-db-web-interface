@@ -5,15 +5,15 @@
 
 
 {% if release_columns %}
-    <b>{{title}}'s Releases </b>
+    <b>Releases </b>
     {{ macros.display_all_as_table(releases, release_columns, release_references, yes_marker=True) }}
 {% else %}
     <h4>No saved releases by artist</h4>
 {% endif %}
-&nbsp <div></div><div></div>
+&nbsp <div> </div>
 
 {% if song_columns %}
-    <b>{{title}}'s Songs</b>
+    <b>Songs</b>
     {{ macros.display_all_as_table(songs, song_columns, song_references, yes_marker=True) }}
 {% else %}
     <h4>No saved songs by artist</h4>
