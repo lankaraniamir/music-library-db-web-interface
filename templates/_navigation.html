@@ -2,7 +2,7 @@
 {% import "macros.html" as macros %}
 
 {% if session['username'] %}
-    {% set links = ["artists","albums","playlists","songs","genres", "users", "user", "logout"] %}
+    {% set links = ["artists","releases","playlists","songs","genres", "users", "user", "logout"] %}
 {% else %}
     {% set links = ["songs","genres", "login", "register"] %}
 {% endif %}
