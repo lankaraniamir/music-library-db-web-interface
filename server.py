@@ -406,7 +406,7 @@ def playlist(var):
         "FROM playlist P, song_in_playlist SP, song S "
         f"WHERE P.title = '{sql_string(var)}' "
         "AND S.song_id = SP.song_id AND P.playlist_id = SP.playlist_id "
-        "ORDER BY SP.track_number; "
+        # "ORDER BY SP.track_number; "
     )
     track_columns = ["track_num","song"]
     track_references = [None,"song"]
