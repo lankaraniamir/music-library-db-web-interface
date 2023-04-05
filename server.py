@@ -355,7 +355,8 @@ def release(var):
         "SELECT SR.track_number as track_num, S.title as song "
         "FROM release R, song_in_release SR, song S "
         f"WHERE R.title = '{sql_string(var)}' "
-        "AND S.song_id = SR.song_id AND R.release_id = SR.release_id; "
+        "AND S.song_id = SR.song_id AND R.release_id = SR.release_id "
+        "ORDER BY track_number"; "
     )
     track_columns = ["track_num","song"]
     track_references = [None,"song"]
@@ -403,11 +404,11 @@ def playlist(var):
     info_references = ["user", "user", None, None]
 
     tracks = get_query(
-        "SELECT SP.track_number as track_num, S.title as song "
+        "SELECT track_number as track_num, S.title as song "
         "FROM playlist P, song_in_playlist SP, song S "
         f"WHERE P.title = '{sql_string(var)}' "
         "AND S.song_id = SP.song_id AND P.playlist_id = SP.playlist_id; "
-        # "ORDER BY SP.track_number; "
+        "ORDER BY track_num; "
     )
     track_columns = ["track_num","song"]
     track_references = [None,"song"]
@@ -423,6 +424,10 @@ def playlist(var):
 """"""
 @app.route('/artists')
 def artists():
+    users = get_query("SELECT * FROM artist ORDER BY username")
+    context = dict(users = users)
+    return render_template("users.html", title="All Users", **context)
+
     songs = get_query("SELECT * FROM app_user ORDER BY username")
     return redirect(url_for('user', var=session['username']))
 
