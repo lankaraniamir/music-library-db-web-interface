@@ -308,22 +308,19 @@ def releases():
     rows = get_query("""
     SELECT R.title AS release,
     ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END),
+        ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist THEN A.primary_name END),
         NULL) AS main_artists,
-    NULLIF(ARRAY_REMOVE(
-        ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END),
-        NULL), '{}') AS featured_artists
-    FROM song S, artist A, song_credit C
+        R.release_date as release_date, R.release_type AS release_type,
+    FROM release R, artist A, release_credit C
     WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id
-    GROUP BY S.song_id, S.title
-    ORDER BY song, main_artists
+    GROUP BY R.release_id, S.title
+    ORDER BY release, main_artists
     """)
-    columns = ["song", "main_artists", "featured_artists"]
-    references = ["song","artist", "artist"]
-    extra_text = ["", " by "," featuring "]
+    columns = ["release", "main_artists", "release_date"]
+    references = ["release","artist", None]
+    extra_text = ["", " by ","[", "]"]
     context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
-    return render_template("songs.html", title="All Songs", **context)
-    return redirect(url_for('user', var=session['username']))
+    return render_template("releases.html", title="All Songs", **context)
 
 @app.route('/releases/<var>')
 def release(var):
