@@ -270,11 +270,11 @@ def genre(var):
 """ *** RELEASES ***"""
 """"""
 @app.route('/releases')
-def releases(var):
+def albums(var):
     return redirect(url_for('user', var=session['username']))
 
 @app.route('/releases/<var>')
-def release(var):
+def album(var):
     return redirect(url_for('user', var=session['username']))
 
 
@@ -283,7 +283,7 @@ def release(var):
 """ *** PLAYLISTS ***"""
 """"""
 @app.route('/playlists')
-def paylists(var):
+def playlists(var):
     return redirect(url_for('user', var=session['username']))
 
 @app.route('/playlists/<var>')
