@@ -126,7 +126,7 @@ null_text=None, extra_text=[], dash=False) %}
             {% set i = loop.index0 %}
             {% if yes_marker %}
                 Yes
-            {%endif%}
+            {% endif %}
             {% if references[i] == None or row[col] == None %}
                 {{ display_val(row[col], dash=dash) }}
             {%- elif row[col] is iterable and row[col] is not string %}
@@ -135,7 +135,7 @@ null_text=None, extra_text=[], dash=False) %}
                     {%- if not loop.last %},{% endif %}
                 {% endfor %}
             {% else %}
-                {% elif yes_marker and row[col] == False %}
+                {% if yes_marker and row[col] == False %}
                     No
                 {% else %}
                     {{ reference(references[i], param=row[col]) }}
