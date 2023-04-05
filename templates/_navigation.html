@@ -4,7 +4,7 @@
 {% if session['username'] %}
     {% set links = ["artists","albums","playlists","songs","genres", "users", "user", "logout"] %}
 {% else %}
-    {% set links = ["charts","genres", "login", "register"] %}
+    {% set links = ["songs","genres", "login", "register"] %}
 {% endif %}
 
 <nav>
