@@ -354,7 +354,7 @@ def user(var):
             "S.year as year, O.love as love, ROUND(O.stars/2, 1) as stars "
         "FROM song S, artist A, song_credit C, song_opinion O "
         "WHERE S.song_id = C.song_id AND A.artist_id = C.artist_id AND S.song_id = O.song_id "
-        "AND S.song_id NOT IN (SELECT song_id FROM song_in_genre) "
+        "AND S.song_id NOT IN (SELECT G.song_id FROM song_in_genre G) "
         f"AND O.username = '{var}' AND (O.love = TRUE OR O.stars IS NOT NULL) "
         "GROUP BY S.song_id, S.title, S.year, O.love, O.stars "
         "); "
