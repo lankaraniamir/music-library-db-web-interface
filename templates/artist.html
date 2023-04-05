@@ -3,8 +3,8 @@
 {% block content %}
 <h3>{{title}}</h3>
 <h3>{{alt_names}}</h3>
-<h4>
 {% if artist[2] or artist[3] or artist[4] %}
+    <h4>
     Location:
 {% endif %}
 {% if artist.relevant_city %}
@@ -15,15 +15,14 @@
 {% endif %}
 {% if artist[4] %}
     {{artist[4]}}
+    &nbsp <div> </div>
 {% endif %}
-&nbsp <div> </div>
 {% if artist[5] %}
     Date of Birth: {{artist[5]}}
 {% endif %}
-</h4>
-<h4>
 {% if artist[6] %}
     Date of Death: {{artist[6]}}
+    &nbsp <div> </div>
 {% endif %}
 </h4>
 &nbsp <div> </div>
