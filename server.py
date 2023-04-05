@@ -443,7 +443,7 @@ def artist(var):
          "SELECT STRING_AGG(alt_name, ', ') AS alt_names "
          "FROM artist A, artist_alt_name B "
          f"WHERE A.artist_id = B.artist_id and primary_name = '{sql_string(var)}' "
-         "GROUP BY B.artist_id")[0][0]
+         "GROUP BY B.artist_id")[0]
 
     songs = get_query(
         "SELECT s.title as song, "
