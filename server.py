@@ -390,7 +390,7 @@ def playlists():
 @app.route('/playlists/<var>')
 def playlist(var):
     info = get_query(
-        "SELECT title AS original_creator as original_creator, "
+        "SELECT original_creator as original_creator, "
             "ARRAY_REMOVE(ARRAY_AGG(username), NULL) AS other_creators, "
             "date_created, date_modified "
         "FROM playlist P, other_playlist_creator O "
