@@ -319,7 +319,7 @@ def releases():
     references = ["release","artist"]
     extra_text = [""," by "]
     context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
-    return render_template("releases.html", title="All Songs", **context)
+    return render_template("releases.html", title="All Releases", **context)
 
 @app.route('/releases/<var>')
 def release(var):
@@ -384,7 +384,7 @@ def playlists():
     references = ["playlist", "user", "user"]
     extra_text = [""," created by ", " and "]
     context = dict(data=rows, columns=columns, references=references, extra_text=extra_text)
-    return render_template("releases.html", title="All Songs", **context)
+    return render_template("releases.html", title="All Playlists", **context)
 
 
 @app.route('/playlists/<var>')
@@ -399,8 +399,8 @@ def playlist(var):
         "GROUP BY P.playlist_id, title, original_creator "
         "ORDER BY date_modified DESC, date_created DESC; "
     )
-    info_columns = ["playlist", "original_creator", "other_creators", "date_created", "date_modified"]
-    info_references = ["playlist", "user", "user", None, None]
+    info_columns = ["original_creator", "other_creators", "date_created", "date_modified"]
+    info_references = ["user", "user", None, None]
     tracks = get_query(
         "SELECT SP.track_number as track_num, S.title as song "
         "FROM playlist P, song_in_playlist SP, song S "
