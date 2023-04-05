@@ -2,31 +2,16 @@
 
 {% block content %}
 <h2>{{ title }}</h2>
-{% if description %}
-    <h4>{{description}}</h4>
+
+
+<h3>Audio Characteristics</h3>
+{{ macros.display_all_as_table(data, columns, references) }}
+
+<h3>Traits</h3>
+
+{% if files %}
+<h3>Song Files</h3>
+{{ macros.display_all_as_table(files, file_columns, file_references) }}
+{% else %}
+<h3>{{macros.capitalize(user)}}'s Music</h3>
 {% endif %}
-
-<ul>
-    {{ macros.list_references(children, 'genre', 'Child Genres', 'No Child Genres') }}
-    {{ macros.list_references(parents, 'genre', 'Parent Genres', 'No Parent Genres') }}
-    {{ macros.list_references(subgenres, 'genre', 'All Subgenres', 'No Subgenres') }}
-    {{ macros.list_references(songs, 'song', 'Songs', 'No Songs in Genre') }}
-    {{ macros.list_references(releases, 'release', 'Releases', 'No Releases in Genre') }}
-</ul>
-
-<div>
-<body><br><b>Include songs & releases whose primary, secondary, or either
-genre is {{title}}? </b></body>
-<form action="{{ url_for('genre', var=main_genre) }}" method=post>
-    <input type="radio" id="primary" name="genre_type" value="primary">
-    <label for="primary">Primary</label><br>
-    <input type="radio" id="secondary" name="genre_type" value="secondary">
-    <label for="secondary">Secondary</label><br>
-    <input type="radio" id="either" name="genre_type" value="either">
-    <label for="either">Either Primary or Secondary</label><br>
-    <input type="submit">
-</form>
-</div>
-
-{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-{% endblock content %}

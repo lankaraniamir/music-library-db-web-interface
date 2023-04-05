@@ -109,7 +109,33 @@ def songs():
 
 @app.route('/song/<var>')
 def song(var):
-    return redirect(url_for('user', var=session['username']))
+    info = get_query(
+    "SELECT "
+        "ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+        "NULL) AS main_artists, "
+        "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN C.featured_artist THEN A.primary_name END), "
+        "NULL), '{}') AS featured_artists, "
+        "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CASE WHEN not C.primary_artist and not C.featured_artist THEN A.primary_name END), "
+        "NULL), '{}') AS other_artists, "
+        "NULLIF(ARRAY_REMOVE(ARRAY_AGG(DISTINCT genre), NULL), '{}') AS genres, "
+        "S.year as year, S.bpm as bpm, S.key_sig as key_sig "
+    "FROM song S, song_file F, artist A, song_credit C, song_in_genre G "
+    f"WHERE S.song_id = {var} AND S.song_id = C.song_id "
+    "AND A.artist_id = C.artist_id AND S.song_id = G.song_id "
+    "GROUP BY S.song_id, S.title, S.year;"
+    )
+    info_columns = ["main_artists","featured_artists","other_artists","genres","year","bpm","key_sig"]
+    info_references = [None,"artist","artist","artist","genre",None,None,None]
+
+    files = get_query(
+    "SELECT file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin"
+    f"WHERE song_id = {var} "
+    )
+    file_columns = ["file_type, duration,  file_location, file_name, file_ext, size, bitrate, origin"]
+    file_references = [None,None,None,None,None,None,None,None]
+
+    context = dict(info=info, info_columns=info_columns, info_references=info_references, files=files, file_columns=file_columns, file_references=file_references)
+    return render_template("song.html", title=var, **context)
 
 
 
