@@ -1,8 +1,3 @@
--- Member 1 Name: Imani Oluwafumilayo Maliti, UNI iom2105 
--- Member 2 Name: Amir Lankarani,             UNI al3625
--- SQL account name is al3625
-
-
 -- Query 1 
 -- Get all songs in the database along with info about all of its artists and genres
 -- Second query is the same but for music relases
