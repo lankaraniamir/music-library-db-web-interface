@@ -1,7 +1,4 @@
 
-"""
-Amir & Imani's Music Database Server
-"""
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
