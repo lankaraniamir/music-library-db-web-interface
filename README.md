@@ -1,9 +1,10 @@
 # Music Library Database Web Interface
 
 ## Description
-This is a PostgreSQL database and a corresponding web interface that can be used to store and access the data within any personal or professional music library. In order to run, you must store your own dataset using the provided SQL schema, and then alter the web schema to use the relevant IP for your system.
+This is a PostgreSQL database and a corresponding web interface that can be used to store and access the data within any personal or professional music library. In order to run, you must store your own dataset using the provided [SQL schema](https://github.com/lankaraniamir/music-library-db-web-interface/blob/master/music_lib_schema.sql), and then alter the commented out database information in [web interface](https://github.com/lankaraniamir/music-library-db-web-interface/blob/master/server.py) to use the relevant information for your system and database. [Example queries](https://github.com/lankaraniamir/music-library-db-web-interface/blob/master/example_queries.sql) show how to extract various data from the schema.
 
 ![alt text](https://github.com/lankaraniamir/music-library-db-web-interface/blob/master/er_diagram.png?raw=true)
+
 ## Database
 I created this database to store my own music in a way that made it easy: to extract audio data for my research studies, to find multiple versions of a song for my DJ sets & music production, to listen to my music in traditional forms such as an album, and to allow my library to be shared by my roommates as different users. It contains each entity and relationship that could be found in a typical music streaming service or music archive, along with some more that satisfy the criteria above. The database  is particuarly novel in that there is a distinction between a song and a song file allowing there to be multiple versions of a song that are linked together allowing users to listen to albums as normal while being able to extract alternative versions of the song --- such as instrumentals, acapellas, remixes, and samples --- without hassle.
 
