@@ -1,13 +1,12 @@
-
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, flash, session, url_for
 from jinja2 import Environment
 
-
-""" Pre-made Server Code """
-
+""""""
+""" *** PRE-MADE *** """
+""""""
 # Setting up flask
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -15,13 +14,13 @@ app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 
 # Creates database connecting to the given URI
-DATABASE_USERNAME = "al3625"
-DATABASE_PASSWRD = "bread"
-DATABASE_HOST = "34.148.107.47"
+# DATABASE_USERNAME =
+# DATABASE_PASSWRD = 
+# DATABASE_HOST = 
 DATABASEURI = f"postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWRD}@{DATABASE_HOST}/project1"
 engine = create_engine(DATABASEURI)
+# app.secret_key = 
 
-app.secret_key = b'11+\x0e\x9b\xe9A\xe4ZR]\xb5'
 @app.before_request
 def before_request():
 	"""
@@ -49,11 +48,9 @@ def teardown_request(exception):
 		pass
 
 
-
 """"""
 """ *** GLOBAL *** """
 """"""
-
 def get_query(query, single=False, deref=False):
     cursor = g.conn.execute(text(query))
     result = []
@@ -81,7 +78,6 @@ def home():
 """"""
 """ *** GENRES *** """
 """"""
-
 @app.route('/genres')
 def genres():
 	genres = get_query("SELECT * FROM genre ORDER BY name")
@@ -428,7 +424,6 @@ def playlist(var):
                             tracks=tracks, track_columns=track_columns, track_references=track_references)
 
 
-
 """"""
 """ *** ARTISTS ***"""
 """"""
@@ -616,7 +611,6 @@ def user(var):
 """"""
 """ *** LOGIN & REGISTRATION ***"""
 """"""
-
 @app.route('/login', methods=('GET', 'POST'))
 def login():
     error = None
@@ -692,7 +686,9 @@ def charts():
 
 
 
-""" More Pre-made ***"""
+""""""
+""" *** PRE-MADE *** """
+""""""
 if __name__ == "__main__":
 	import click
 	@click.command()
