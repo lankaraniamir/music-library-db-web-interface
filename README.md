@@ -1,4 +1,4 @@
-# Music Library Database Web Interface
+# Music Library Database & Web Interface
 
 ## Description
 This database/website pair can be used to store and access data within any personal or professional music library in a way that is flexible yet intricate. In order to run, you must store your own dataset using the provided [SQL schema](https://github.com/lankaraniamir/music-library-db-web-interface/blob/master/music_lib_schema.sql), and then alter the commented out database information in [web interface](https://github.com/lankaraniamir/music-library-db-web-interface/blob/master/server.py) to use the relevant information for your system and database. [Example queries](https://github.com/lankaraniamir/music-library-db-web-interface/blob/master/example_queries.sql) show how to extract various data from the schema.
